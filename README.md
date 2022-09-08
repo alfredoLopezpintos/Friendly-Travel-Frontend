@@ -1,10 +1,23 @@
-## Instalar herramientas para desarrollar aplicación SAM
+# Friendly-Travel-Frontend
 
-1. Instalar AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-2. Instalar SAM CLI: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install-windows.html
-3. Solicitar usuario, permisos y generar keys.
-4. Setear credenciales con aws configure: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-set-up-credentials.html
+Welcome. Below you can find more informationn about the project.
 
-* Info sobre SAM (Serverless framework): https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html
-* Comandos SAM: https://docs.aws.amazon.com/es_es/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html
-* Tutorial: Build a CRUD API with Lambda and DynamoDB: https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-dynamo-db.html
+<!-- TODO: MAKE PUBLIC WHEN LINK (Github-page) IS READY -->
+<!--You can see the running app following this link: Github-page
+//Or set it up locally:-->
+
+## Required Software :computer:
+
+Before starting, make sure your computer has up-to-date versions of the following installed:
+
+* Node/NPM (choose the latest version)
+* Git
+* Visual Studio Code as our main IDE.
+* ESLint as an extension for your Visual Studio Code.
+
+## Installing and running the project :zap:
+* Clone the repository in the directory of your preference using `git clone https://github.com/alfredoLopezpintos/aplicacion-react.git`
+* Type `cd aplicacion-react` to change your current directory to the repository folder.
+* Open this repository with Visual Studio Code.
+* Type `npm install` to install all of the project dependencies. Only if there is errors you may need to run `npm audit fix` too.
+* Start the project locally running: `npm start`
