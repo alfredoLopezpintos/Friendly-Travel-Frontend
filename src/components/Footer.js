@@ -28,16 +28,16 @@ function Footer() {
       <div class='footer-links'>
         <div className='footer-link-wrapper'>
           <div class='footer-link-items'>
-            <h2>About Us</h2>
-            <Link to='/sign-up'>How it works</Link>
-            <Link to='/'>Testimonials</Link>
-            <Link to='/'>Careers</Link>
-            <Link to='/'>Investors</Link>
-            <Link to='/'>Terms of Service</Link>
+            <h2>Empresa</h2>
+            <Link to='/sign-up'>Cómo funciona</Link>
+            <Link to='/'>Preguntas frecuentes</Link>
+            <Link to='/'>Quienes somos</Link>
+            <Link to='/'>Configuración de Cookies</Link>
+            <Link to='/'>Términos y Condiciones</Link>
           </div>
           <div class='footer-link-items'>
-            <h2>Contact Us</h2>
-            <Link to='/'>Contact</Link>
+            <h2>Contacto</h2>
+            <Link to='/'>Contacto</Link>
             <Link to='/'>Support</Link>
             <Link to='/'>Destinations</Link>
             <Link to='/'>Sponsorships</Link>
@@ -52,7 +52,7 @@ function Footer() {
             <Link to='/'>Influencer</Link>
           </div>
           <div class='footer-link-items'>
-            <h2>Social Media</h2>
+            <h2>Redes Sociales</h2>
             <Link to='/'>Instagram</Link>
             <Link to='/'>Facebook</Link>
             <Link to='/'>Youtube</Link>
