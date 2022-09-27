@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../App.css';
-import Cards from '../Cards';
+import ListadoDeViajes from '../ListadoDeViajes';
 import Footer2 from '../Footer2';
 
 {/*export default function Products() {
@@ -10,7 +10,7 @@ import Footer2 from '../Footer2';
 function Products() {
   return (
     <>
-      <Cards />
+      <ListadoDeViajes />
       <Footer2 />
     </>
   );
