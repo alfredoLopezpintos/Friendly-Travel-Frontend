@@ -7,6 +7,7 @@ import Services from './components/pages/Services';
 import Products from './components/pages/Products';
 import SignUp from './components/pages/SignUp';
 import RegistrarViaje from './components/pages/RegistrarViaje';
+import Succesful from './components/pages/Succesful';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/products' component={Products} />
           <Route path='/sign-up' component={SignUp} />
           <Route path='/addTrip' component={RegistrarViaje} />
+          <Route path='/success' component={Succesful} />
         </Switch>
       </Router>
     </>
