@@ -5,6 +5,7 @@
     /* border: 1px solid red; */
     margin: 0vw;
     padding: 7vw ;
+    padding-inline: 25vw;
     position:relative; 
     /* position:relative for .prevBtn and .nextBtn position:absolute; */
 }
