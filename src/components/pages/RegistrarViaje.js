@@ -3,6 +3,7 @@ import './RegistrarViaje.css';
 import { useForm } from "react-hook-form";
 import configData from '../../configData.json';
 import axios from 'axios';
+import { Button2 } from '../Button2';
 
 export default function RegistrarViaje() {
 
@@ -31,14 +32,18 @@ export default function RegistrarViaje() {
           
           <div className = "field1">
           <label> Agregar Viaje </label>
-          <input {...register("source")} placeholder="Nombre del viaje"/>
+          <input {...register("source")} placeholder="Origen"/>
           <input {...register("destination")} placeholder="Destino"/>
           <input {...register("tripDate")} placeholder="Fecha"/>
           <input {...register("availablePlaces")} placeholder="Lugares Disponibles"/>
           <input {...register("price")} placeholder="Precio"/>
           </div>
 
-          <button type = "submit" id= "submitBtn" className = "submitBtn"> submit</button>
+          <br />
+
+          <Button2 className='btns'
+          buttonStyle='btn--outline'
+          buttonSize='btn--large'> CREAR VIAJE</Button2>
       </form>
 
     </div>
