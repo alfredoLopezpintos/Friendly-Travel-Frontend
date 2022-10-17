@@ -15,7 +15,7 @@ function HeroSection() {
           buttonStyle='btn--outline'
           buttonSize='btn--large'
         >
-          BUSCAR VIAJE
+          CREAR VIAJE
         </Button>
         <Button
           className='btns'
