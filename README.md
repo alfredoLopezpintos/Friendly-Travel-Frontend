@@ -21,3 +21,8 @@ Before starting, make sure your computer has up-to-date versions of the followin
 * Open this repository with Visual Studio Code.
 * Type `npm install` to install all of the project dependencies. Only if there is errors you may need to run `npm audit fix` too.
 * Start the project locally running: `npm start`
+
+## Deploying project to AWS S3
+* Must have AWS programatic credentials configured.
+
+`npm run build && npm run deploy`
