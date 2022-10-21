@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import './RegistrarViaje.css';
 import { useForm } from "react-hook-form";
 import configData from '../../configData.json';
@@ -7,6 +7,9 @@ import { Button2 } from '../Button2';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import moment from 'moment';
+import DatePickerComponent   from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
 
 export default function RegistrarViaje() {
 
@@ -26,10 +29,7 @@ export default function RegistrarViaje() {
 
   function formValidate(data) {
     const dateObj = new Date();
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    const today = year + "-" + month + "-" + day;
+    const today = transformDate(dateObj);
 
     if(data.tripDate === "" ||
      data.source === "" ||
@@ -51,8 +51,16 @@ export default function RegistrarViaje() {
       return true;
     }
   }
+  
+  function transformDate(dateObj) {
+    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
+    return (year + "-" + month + "-" + day);
+  }
 
   async function fetchViajes(data, e) {
+    data.tripDate = transformDate(date);
 
     if(formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
@@ -72,7 +80,10 @@ export default function RegistrarViaje() {
 
   async function redirect2(data, e) {
     history.push("/success");
-  }
+  } 
+
+  const [date, setDate] = useState(new Date()); ;
+  const handleChange = date => setDate(date);
 
   return (
 
@@ -83,7 +94,8 @@ export default function RegistrarViaje() {
           <label> Nuevo Viaje </label>
           <input {...register("source")} placeholder="Origen"/>
           <input {...register("destination")} placeholder="Destino"/>
-          <input {...register("tripDate")} placeholder="Fecha"/>
+          <DatePickerComponent placeholderText={'Fecha'}
+          selected={date} onChange={handleChange} />
           <input {...register("availablePlaces")} placeholder="Lugares Disponibles"/>
           <input {...register("price")} placeholder="Precio (En Pesos Uruguayos)"/>
           </div>
