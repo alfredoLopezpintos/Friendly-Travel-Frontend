@@ -7,9 +7,11 @@ import { Button2 } from '../Button2';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import moment from 'moment';
-import DatePickerComponent   from "react-datepicker";
+import DatePickerComponent, { registerLocale } from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
+import es from "date-fns/locale/es";
+registerLocale("es", es);
 
 export default function RegistrarViaje() {
 
@@ -95,7 +97,7 @@ export default function RegistrarViaje() {
           <input {...register("source")} placeholder="Origen"/>
           <input {...register("destination")} placeholder="Destino"/>
           <DatePickerComponent placeholderText={'Fecha'}
-          selected={date} onChange={handleChange} />
+          selected={date} onChange={handleChange} locale="es" />
           <input {...register("availablePlaces")} placeholder="Lugares Disponibles"/>
           <input {...register("price")} placeholder="Precio (En Pesos Uruguayos)"/>
           </div>
