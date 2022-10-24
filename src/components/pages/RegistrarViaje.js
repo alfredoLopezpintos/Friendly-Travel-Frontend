@@ -64,6 +64,12 @@ export default function RegistrarViaje() {
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date);
 
+    // A MANO POR AHORA
+    data.user = "user";
+    data.vehicle = "GAB1234";
+
+    console.log(data)
+
     if(formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
     
@@ -94,7 +100,7 @@ export default function RegistrarViaje() {
           
           <div className = "field1">
           <label> Nuevo Viaje </label>
-          <input {...register("source")} placeholder="Origen"/>
+          <input {...register("origin")} placeholder="Origen"/>
           <input {...register("destination")} placeholder="Destino"/>
           <DatePickerComponent placeholderText={'Fecha'}
           selected={date} onChange={handleChange} locale="es" />
