@@ -8,13 +8,30 @@ import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
 import configData from '../configData.json'
 import axios from 'axios';
 import { render } from '@testing-library/react';
+import { useForm } from "react-hook-form";
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePickerComponent, { registerLocale } from "react-datepicker";
+import es from "date-fns/locale/es";
+registerLocale("es", es);
 
 export default function ListadoDeViajes() {
 
-  const [viajes, setViajes] = React.useState([])
+  const [viajes, setViajes] = React.useState([]);
+  const { register, handleSubmit } = useForm();
+  const [date, setDate] = useState(new Date()); ;
+  const handleChange = date => setDate(date);
+  const onSubmit = (data, e) => fetchViajes(data, e);
+  const onError = (errors, e) => console.log(errors, e);
 
-  async function fetchViajes() {
-    const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
+  async function fetchViajes(data, e) {
+    data.tripDate = transformDate(date);
+
+    //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
+    const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
+    "/trips?origin=" + data.origin + "&destination=" + data.destination +
+    "&tripDate=" + data.tripDate + "&price=" + data.price +
+    "&availablePlaces=" + data.availablePlaces;
 
     try {
       const response = await axios.get(viajesGetEndPoint);
@@ -33,14 +50,40 @@ export default function ListadoDeViajes() {
     return (year + "-" + month + "-" + day);
   }
 
-  React.useEffect(() => {
-    fetchViajes()
-  }, [])
-
   render()
   return (
     <main>
-      <ol class="gradient-list">
+      <div>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+          
+          <div className = "field1">
+            <div>
+              <label>ORIGEN: </label>
+              <input {...register("origin")} placeholder="Origen"/>
+            </div>
+            <div>
+              <label>DESTINO: </label>
+              <input {...register("destination")} placeholder="Destino"/>
+            </div>
+            <div>
+            <label>FECHA: </label>
+              <DatePickerComponent placeholderText={'Fecha'}
+              selected={date} onChange={handleChange} locale="es" />
+            </div>
+            <div>
+              <label>ASIENTOS: </label>
+              <input {...register("availablePlaces")} placeholder="Lugares Disponibles"/>
+            </div>
+            <div>
+              <label>PRECIO: </label>
+              <input {...register("price")} placeholder="Precio (En Pesos Uruguayos)"/>
+            </div>
+            <button className="btn-submit" type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+      <br /><br />
+      <ol className="gradient-list">
     {viajes && viajes.map(user =>
                   <li>
                     <div className='destination'>
@@ -59,8 +102,8 @@ export default function ListadoDeViajes() {
                         {user.arrival_time}
                       </div>
                     </div>
-                    <div class='social-media-wrap'>
-                      <div class='rating'>
+                    <div className='social-media-wrap'>
+                      <div className='rating'>
                       <MdOutlineAirlineSeatReclineNormal />{user.availablePlaces}
                       </div>
                       <div className='price'>
@@ -74,7 +117,32 @@ export default function ListadoDeViajes() {
   );
 }
 
-/*function ListadoDeViajes() {
+/*
+        <form>
+          <div>
+            <label>ORIGEN: </label>
+            <input placeholder="Origen" name="going" />
+          </div>
+          <div>
+            <label>DESTINO: </label>
+            <input placeholder="Destino" name="going" />
+          </div>
+          <div>
+            <label>FECHA: </label>
+            <input placeholder="mm/dd/yyyy" id="input-end" />
+          </div>
+          <div>
+            <label>PRECIO: </label>
+            <input placeholder="En Pesos Uruguayos ($)" name="going" />
+          </div>
+          <div>
+            <label>ASIENTOS: </label>
+            <input placeholder="Destino" name="going" />
+          </div>
+          <button className="btn-submit" type="submit">search</button>
+        </form>
+
+function ListadoDeViajes() {
   const [users, setUsers] = useState([
     { id: 1, price: 123, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" },
     { id: 2, price: 3333, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" },
@@ -84,7 +152,7 @@ export default function ListadoDeViajes() {
 ]);
   return (
     <main>
-      <ol class="gradient-list">
+      <ol className="gradient-list">
     {users && users.map(user =>
                   <li>
                     <div className='destination'>
@@ -103,8 +171,8 @@ export default function ListadoDeViajes() {
                         {user.arrival_time}
                       </div>
                     </div>
-                    <div class='social-media-wrap'>
-                      <div class='rating'>
+                    <div className='social-media-wrap'>
+                      <div className='rating'>
                         {user.rating}<BsFillStarFill></BsFillStarFill>
                       </div>
                       <div className='price'>
