@@ -1,4 +1,3 @@
 {
-    "AWS_REST_ENDPOINT": "https://l71cx6kntd.execute-api.us-east-1.amazonaws.com/dev",
-    "AWS_REST_ENDPOINT_VIEJO": "https://36c7h5psp9.execute-api.us-east-1.amazonaws.com/dev"
+    "AWS_REST_ENDPOINT": "https://1oynfiii46.execute-api.us-east-1.amazonaws.com/dev"
 }

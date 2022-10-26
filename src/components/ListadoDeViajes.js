@@ -3,32 +3,74 @@ import '../App.css';
 import { Button } from './Button';
 import './ListadoDeViajes.css';
 import { useState } from 'react';
-import { BsCurrencyDollar, BsFillStarFill } from "react-icons/bs";
+import { BsCurrencyDollar } from "react-icons/bs";
+import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
 import configData from '../configData.json'
 import axios from 'axios';
+import { render } from '@testing-library/react';
 
 export default function ListadoDeViajes() {
 
-  const [ a, setA] = React.useState([])
+  const [viajes, setViajes] = React.useState([])
 
   async function fetchViajes() {
-    const viajesGetEndPoint = configData.AWS_REST_ENDPOINT_VIEJO + "trips?source=minas&destination=artigas&tripDate=2022-12-24"
+    const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
 
     try {
+      const response = await axios.get(viajesGetEndPoint);
+      console.log(response.data)
+      setViajes(response.data)
 
-      const response = await axios.get(viajesGetEndPoint)
-      console.log(response)
     } catch(error) {
       console.error(error);
     }
+  }
+
+  function transformDate(dateObj) {
+    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const day = dateObj.getUTCDate();
+    const year = dateObj.getUTCFullYear();
+    return (year + "-" + month + "-" + day);
   }
 
   React.useEffect(() => {
     fetchViajes()
   }, [])
 
+  render()
   return (
-    <div>PRUEBA</div>
+    <main>
+      <ol class="gradient-list">
+    {viajes && viajes.map(user =>
+                  <li>
+                    <div className='destination'>
+                      <div>                        
+                        ORIGEN: {user.origin}
+                      </div>
+                      <div>
+                        FECHA: {user.tripDate}
+                      </div>
+                    </div>
+                    <div className='destination'>
+                      <div>                      
+                        DESTINO: {user.destination}
+                      </div>
+                      <div>
+                        {user.arrival_time}
+                      </div>
+                    </div>
+                    <div class='social-media-wrap'>
+                      <div class='rating'>
+                      <MdOutlineAirlineSeatReclineNormal />{user.availablePlaces}
+                      </div>
+                      <div className='price'>
+                        {user.price}<BsCurrencyDollar />                     
+                      </div>
+                    </div>               
+                  </li>
+                )}
+      </ol>
+    </main>
   );
 }
 
