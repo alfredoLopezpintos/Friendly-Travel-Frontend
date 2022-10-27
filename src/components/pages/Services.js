@@ -1,6 +1,14 @@
 import React from 'react';
 import '../../App.css';
+import Footer from '../Footer';
 
-export default function Services() {
-  return <h1 className='services'>SECCION</h1>;
+
+function Services() {
+  return (
+    <>
+      <h1 className='services'>informacion SOBRE NOSOTROS</h1>
+      <Footer />
+    </>
+  );
 }
+export default Services

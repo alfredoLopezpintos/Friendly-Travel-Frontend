@@ -23,7 +23,7 @@ function HeroSection() {
           buttonSize='btn--large'
           onClick={console.log('hey')}
         >
-          SOBRE CARPOOLING <i className='far fa-play-circle' />
+            SOBRE CARPOOLING  <i className='fa fa-info-circle' />
         </Button>
       </div>
     </div>
