@@ -1,3 +1,63 @@
+/* BUSCAR VIAJE */
+
+.field1 {
+	display: flex;
+}
+
+.btn-submit {
+	max-height: 50px;
+	margin-top: 15px;
+	padding: 10px 20px;
+	background-color: dodgerblue;
+	border: 1px solid #ddd;
+	color: white;
+}
+
+.btn-submit:hover {
+	background-color: royalblue;
+  }
+
+/* Style the form - display items horizontally */
+.form-inline {
+	height: 80px;
+    display: flex;
+    justify-content: center;
+	flex-flow: row wrap;
+	align-items: center;
+  }
+  
+  /* Add some margins for each label */
+  .form-inline label {
+	margin: 5px 10px 5px 0;
+  }
+  
+  /* Style the input fields */
+  .form-inline input {
+	vertical-align: middle;
+	margin: 5px 10px 5px 0;
+	padding: 10px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+  }
+  
+  /* Style the submit button */
+  
+  .form-inline button
+  
+  /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
+  @media (max-width: 800px) {
+	.form-inline input {
+	  margin: 10px 0;
+	}
+  
+	.form-inline {
+	  flex-direction: column;
+	  align-items: stretch;
+	}
+  }
+
+/* */
+
 @import url(https://fonts.googleapis.com/css?family=Montserrat:900|Raleway:400,400i,700,700i);
 /*** FONTS ***/
 /*** VARIABLES ***/

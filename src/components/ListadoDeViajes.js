@@ -25,7 +25,7 @@ export default function ListadoDeViajes() {
   const onError = (errors, e) => console.log(errors, e);
 
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
+    data.tripDate = transformDate(date)
 
     //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
     const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
@@ -36,7 +36,12 @@ export default function ListadoDeViajes() {
     try {
       const response = await axios.get(viajesGetEndPoint);
       console.log(response.data)
-      setViajes(response.data)
+      if(response.data.message ===
+        "No hay viajes que cumplan con las condiciones seleccionadas.") {
+          console.log("A")
+        } else {
+          setViajes(response.data)
+        }
 
     } catch(error) {
       console.error(error);
@@ -54,7 +59,7 @@ export default function ListadoDeViajes() {
   return (
     <main>
       <div>
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form className="form-inline" onSubmit={handleSubmit(onSubmit, onError)}>
           
           <div className = "field1">
             <div>
