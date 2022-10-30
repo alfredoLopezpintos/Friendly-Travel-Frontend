@@ -1,11 +1,11 @@
 import React from 'react';
-import '../App.css';
-import { Button } from './Button';
+import '../../App.css';
+import { Button } from '../../components/Button';
 import './ListadoDeViajes.css';
 import { useState } from 'react';
 import { BsCurrencyDollar } from "react-icons/bs";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
-import configData from '../configData.json'
+import configData from '../../configData.json'
 import axios from 'axios';
 import { render } from '@testing-library/react';
 import { useForm } from "react-hook-form";
@@ -19,13 +19,16 @@ export default function ListadoDeViajes() {
 
   const [viajes, setViajes] = React.useState([]);
   const { register, handleSubmit } = useForm();
-  const [date, setDate] = useState(new Date()); ;
-  const handleChange = date => setDate(date);
+  const [date, setDate] = useState(new Date());
+  //const [seat, setSeat] = useState(1);
+  const handleDateChange = date => setDate(date);
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
 
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date)
+
+    console.log(data.availablePlaces)
 
     //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
     const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
@@ -73,7 +76,7 @@ export default function ListadoDeViajes() {
             <div>
             <label>FECHA: </label>
               <DatePickerComponent placeholderText={'Fecha'}
-              selected={date} onChange={handleChange} locale="es" />
+              selected={date} onChange={handleDateChange} locale="es" />
             </div>
             <div>
               <label>ASIENTOS: </label>

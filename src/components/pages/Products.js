@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../App.css';
-import ListadoDeViajes from '../ListadoDeViajes';
+import ListadoDeViajes from '../pages/ListadoDeViajes';
 import Footer2 from '../Footer2';
 
 {/*export default function Products() {
