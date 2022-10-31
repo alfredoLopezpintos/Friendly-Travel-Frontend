@@ -25,29 +25,59 @@ export default function ListadoDeViajes() {
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
 
+  function isNumber(str) {
+    if (str.trim() === '') {
+      return false;
+    }
+  
+    return !isNaN(str);
+  }
+
+  function formValidate(data) {
+    const dateObj = new Date();
+    const today = transformDate(dateObj);
+
+    if(data.tripDate === "" ||
+     data.origin === "" ||
+     data.destination === "") {
+        alert("La busqueda debe tener por lo menos origen, destino y fecha.")
+        return false;
+    }else if (!isNumber(data.price) && data.price !== ""){
+      alert("El precio debe ser un número.")
+    }else if (!isNumber(data.availablePlaces) && data.availablePlaces !== ""){
+      alert("Asientos debe ser un número.")
+    }else if (!moment(data.tripDate).isValid()){
+      alert("Fecha inválida.")
+    }else if (moment(data.tripDate) < moment(today)){
+      alert("La fecha del viaje no puede ser anterior al día actual.")
+    }else {
+      return true;
+    }
+  }
+
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date)
 
-    console.log(data.availablePlaces)
+    if(formValidate(data)) {
+          //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
+      const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
+      "/trips?origin=" + data.origin + "&destination=" + data.destination +
+      "&tripDate=" + data.tripDate + "&price=" + data.price +
+      "&availablePlaces=" + data.availablePlaces;
 
-    //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
-    const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
-    "/trips?origin=" + data.origin + "&destination=" + data.destination +
-    "&tripDate=" + data.tripDate + "&price=" + data.price +
-    "&availablePlaces=" + data.availablePlaces;
+      try {
+        const response = await axios.get(viajesGetEndPoint);
+        console.log(response.data)
+        if(response.data.message ===
+          "No hay viajes que cumplan con las condiciones seleccionadas.") {
+            alert("No hay viajes que cumplan con las condiciones seleccionadas.")
+          } else {
+            setViajes(response.data)
+          }
 
-    try {
-      const response = await axios.get(viajesGetEndPoint);
-      console.log(response.data)
-      if(response.data.message ===
-        "No hay viajes que cumplan con las condiciones seleccionadas.") {
-          console.log("A")
-        } else {
-          setViajes(response.data)
-        }
-
-    } catch(error) {
-      console.error(error);
+      } catch(error) {
+        console.error(error);
+      }
     }
   }
 
