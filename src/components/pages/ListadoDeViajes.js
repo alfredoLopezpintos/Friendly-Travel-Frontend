@@ -13,6 +13,9 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePickerComponent, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import { ThreeDots } from 'react-loader-spinner';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -24,6 +27,25 @@ export default function ListadoDeViajes() {
   const handleDateChange = date => setDate(date);
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
+
+  const LoadingIndicator = props => {
+     const { promiseInProgress } = usePromiseTracker();
+
+     return (
+      promiseInProgress && 
+      <div
+        style={{
+          width: "100%",
+          height: "100",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        >
+      <ThreeDots color="#2BAD60" height="100" width="100" />
+    </div>
+     );  
+  }
 
   function isNumber(str) {
     if (str.trim() === '') {
@@ -60,13 +82,14 @@ export default function ListadoDeViajes() {
 
     if(formValidate(data)) {
           //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
+      
       const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
       "/trips?origin=" + data.origin + "&destination=" + data.destination +
       "&tripDate=" + data.tripDate + "&price=" + data.price +
       "&availablePlaces=" + data.availablePlaces;
 
       try {
-        const response = await axios.get(viajesGetEndPoint);
+        const response = await trackPromise(axios.get(viajesGetEndPoint));
         console.log(response.data)
         if(response.data.message ===
           "No hay viajes que cumplan con las condiciones seleccionadas.") {
@@ -122,6 +145,7 @@ export default function ListadoDeViajes() {
       </div>
       <br /><br />
       <ol className="gradient-list">
+      <LoadingIndicator/>
     {viajes && viajes.map(user =>
                   <li>
                     <div className='destination'>
