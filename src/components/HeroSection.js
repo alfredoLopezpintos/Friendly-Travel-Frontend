@@ -1,7 +1,9 @@
 import React from 'react';
 import '../App.css';
 import { Button } from './Button';
+import { useHistory } from "react-router-dom";
 import './HeroSection.css';
+
 
 function HeroSection() {
   return (
@@ -31,3 +33,4 @@ function HeroSection() {
 }
 
 export default HeroSection;
+ 

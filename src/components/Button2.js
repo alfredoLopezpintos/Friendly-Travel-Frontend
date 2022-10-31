@@ -12,7 +12,6 @@
 
 import React from 'react';
 import './Button2.css';
-import { Link } from 'react-router-dom';
 
 const STYLES = ['btn--primary', 'btn--outline', 'btn--test'];
 

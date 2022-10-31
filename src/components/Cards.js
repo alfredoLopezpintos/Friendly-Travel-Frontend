@@ -36,7 +36,7 @@ function Cards() {
             />
             <CardItem
               src='images/auto.jpg'
-              text='¡Viaja, explora, conoce nuestro país y has nuevos amigos!'
+              text='¡Viaja, explora, conoce nuestro país y haz nuevos amigos!'
               label='Aventura'
 
             />

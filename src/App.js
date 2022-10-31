@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from './components/Navbar';
 import './App.css';
-import Home from './components/pages/Home';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './components/pages/Home';
 import Services from './components/pages/Services';
 import Products from './components/pages/Products';
 import SignUp from './components/pages/SignUp';
@@ -10,6 +10,7 @@ import RegistrarViaje from './components/pages/RegistrarViaje';
 import RegistrarUsuario from './components/pages/RegistrarUsuario';
 import Succesful from './components/pages/Succesful';
 import Login from './components/pages/Login';
+import TravelPreviewer from './components/pages/TravelPreviewer'; 
 
 function App() {
   return (
@@ -25,11 +26,11 @@ function App() {
           <Route path='/success' component={Succesful} />
           <Route path='/regUser' component={RegistrarUsuario} />
           <Route path='/login' component={Login} />
+          <Route path='/map' component={TravelPreviewer} />
 
         </Switch>
       </Router>
     </>
   );
 }
-
 export default App;
