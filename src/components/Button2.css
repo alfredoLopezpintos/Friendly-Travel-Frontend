@@ -1,0 +1,44 @@
+.submitBtn {
+  --primary: #242424;
+}
+
+.submitBtn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.submitBtn {
+  background-color: var(--primary);
+  color: #242424;
+  border: 1px solid var(--primary);
+}
+
+.submitBtn {
+  background-color: transparent;
+  color: #242424;
+  padding: 8px 20px;
+  border: 1px solid var(--primary);
+  transition: all 0.3s ease-out;
+}
+
+.submitBtn {
+  padding: 8px 20px;
+  font-size: 18px;
+}
+
+.submitBtn {
+  padding: 12px 26px;
+  font-size: 20px;
+}
+
+.submitBtn:hover,
+.submitBtn:hover {
+  transition: all 0.3s ease-out;
+  background: #242424;
+  color: #fff;
+  transition: 250ms;
+}
+
