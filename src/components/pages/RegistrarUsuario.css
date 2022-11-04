@@ -17,7 +17,7 @@
     margin: 0 0 .5vh 0;
 }
 
-.form-box label{
+.form-box h1{
     display: block;
     text-align: center;
     font-size: 20px;
@@ -28,8 +28,9 @@
     display: block;
     width: 100%;
     padding: .5rem .8rem .5rem .8rem;
-    margin: .9vw 0 ;
-    border:0;
+    margin: .9vw 0;
+    border:1;
+    border-width: 1px;
     border-radius: 5px;
     font-size: 20px;
 }

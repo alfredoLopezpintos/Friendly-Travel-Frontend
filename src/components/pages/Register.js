@@ -18,7 +18,7 @@ import DatePickerComponent, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
 registerLocale("es", es);
 
-export default function SignUp() {
+export default function Register() {
 
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
@@ -38,23 +38,28 @@ export default function SignUp() {
     const dateObj = new Date();
     const today = transformDate(dateObj);
 
-    if(data.tripDate === "" ||
-     data.source === "" ||
-     data.price === "" ||
-     data.destination === "" ||
-     data.availablePlaces === "") {
+    if(data.email === "" ||
+     data.name === "" ||
+     data.surname === "" ||
+     data.birthDate === "" ||
+     data.documentId === "" ||
+     data.phoneNumber === "") {
         alert("Debe llenar todos los campos para poder crear el viaje.")
         return false;
-    }else if (!isNumber(data.price)){
-      alert("El precio debe ser un número.")
-    }else if (!isNumber(data.availablePlaces)){
-      alert("Lugares disponibles debe ser un número.")
     }else if (!moment(data.tripDate).isValid()){
-      //console.log(moment(data.tripDate))
-      alert("Fecha inválida.")
-    }else if (moment(data.tripDate) < moment(today)){
-      alert("La fecha del viaje no puede ser anterior al día actual.")
-    }else {
+      alert("Fecha inválida.");
+      return false;
+    }else if (moment(data.tripDate) > moment(today)){
+      alert("La fecha del viaje no puede ser anterior al día actual.");
+      return false;
+    }else if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email))) {
+      alert("El formato del correo electrónico no es válido.");
+      return false;
+    }else if (!(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gmi.test(data.phoneNumber))) {
+      alert("El formato del teléfono no es válido.");
+      return false;
+    }
+    else {
       return true;
     }
   }
@@ -76,7 +81,7 @@ export default function SignUp() {
     console.log(data)
 
     if(formValidate(data)) {
-      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
+      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users"
     
       try {
         const response = await axios.post(viajesGetEndpoint, data);
@@ -102,21 +107,24 @@ export default function SignUp() {
       <form onSubmit={handleSubmit(onSubmit, onError)}>
           
           <div className = "field1">
-          <label> Registrar usuario </label>
-          <input {...register("email")} placeholder="Email"/>
+          <h1> Registrar usuario </h1>
           <input {...register("name")} placeholder="Nombre"/>
           <input {...register("surname")} placeholder="Apellido"/>
-          <DatePickerComponent placeholderText={'Fecha de nacimiento'}
-          selected={date} onChange={handleChange} locale="es" />
+          <input {...register("email")} placeholder="Email"/>
+          <div>
+            <label> Fecha de nacimiento: </label>
+            <DatePickerComponent placeholderText={'Fecha de nacimiento'}
+            selected={date} onChange={handleChange} locale="es" />
+          </div>
           <input {...register("documentId")} placeholder="Cédula de identidad"/>
-          <input {...register("phoneNumber")} placeholder="Número de teléfono"/>
+          <input {...register("phoneNumber")} placeholder="Número de teléfono. EJ: (+598091123432)"/>
           </div>
 
           <br />
 
           <Button2 className='btns'
           buttonStyle='btn--outline'
-          buttonSize='btn--large'> CREAR VIAJE</Button2>
+          buttonSize='btn--large'> CREAR USUARIO</Button2>
       </form>
 
     </div>
