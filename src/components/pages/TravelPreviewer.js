@@ -1,49 +1,40 @@
-import React, { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
-import moment from 'moment';
-import configData from '../../configData.json';
-import { useHistory } from "react-router-dom";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
-import es from "date-fns/locale/es";
-
-import {
-  GoogleMap,
-  useJsApiLoader,
-  Autocomplete,
-  DirectionsRenderer,
-} from "@react-google-maps/api";
-import styled from "styled-components";
+import { Autocomplete, DirectionsRenderer, GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import axios from 'axios';
-registerLocale("es", es);
+import Moment from 'moment';
+import React, { useRef, useState } from "react";
+import 'react-datepicker/dist/react-datepicker.css';
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import configData from '../../configData.json';
 
 const MapContainer = styled.div`
-    position: relative;
+  position: relative;
   `;
 
   const Modal = styled.div`
-    position: fixed;
-    left: 20%;
-    transform: translate(-50%, 20px);
-    width: 300px;
-    height:500px;
-    padding: 40px 80px;
-    background-color: gray;
-    border-radius: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    z-index: 999;
+  position: fixed;
+  left: 20%;
+  transform: translate(-50%, 20px);
+  width: 300px;
+  height:500px;
+  padding: 40px 80px;
+  background-color: gray;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  z-index: 999;
   `;
   
-  const Button = styled.button`
+const Button = styled.button`
   background: transparent;
   border-radius: 3px;
   border: 2px solid black;
   color: black;
   margin: 0 1em;
   padding: 0.25em 1em;
-`;
+  `;
 
 function TravelPreviewer() {
 
@@ -72,13 +63,17 @@ function TravelPreviewer() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
-  const [date, setDate] = useState(new Date()); ;
-  const handleChange = date => setDate(date);
   const redirect = (data, e) => redirect2(data, e);
   const history = useHistory();
 
   const originRef = useRef();
   const destiantionRef = useRef();
+  const dateRef = useRef();
+
+  const currentDate = new Date()
+  const formatDate = Moment().format('DD-MM-YYYY')
+  console.log(currentDate)
+  console.log(formatDate)
 
   function isNumber(str) {
     if (str.trim() === '') {
@@ -94,38 +89,36 @@ function TravelPreviewer() {
 
   
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
-
     // A MANO POR AHORA
     data.user = "user";
     data.vehicle = "GAB1234";
     data.origin = origen;
     data.destination = destino;
+    data.tripDate = dateRef.current.value;
 
     console.log(data)
 
     if(formValidate(data)) {
+      
+      data.tripDate = Moment(data.tripDate).format('DD-MM-YYYY')
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
     
       try {
-        //const response = await axios.get(viajesGetEndpoint);
         console.log(data)
         const response = await axios.post(viajesGetEndpoint, data);
         console.log(response)
         redirect();
-        //setViajes(response.data);
       } catch(error) {
         console.error(error);
-        //alert('Error inesperado');
       }
     }
   }
-
+  
   function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth(); //months from 1-12
+    const month = dateObj.getUTCMonth();
     const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
-    return (year + "-" + month + "-" + day);
+    return (day + "-" + month + "-" + year);
   }
 
   function formValidate(data) {
@@ -143,11 +136,11 @@ function TravelPreviewer() {
       alert("El precio debe ser un número.")
     }else if (!isNumber(data.availablePlaces)){
       alert("Lugares disponibles debe ser un número.")
-    }else if (!moment(data.tripDate).isValid()){
-      //console.log(moment(data.tripDate))
+    }else if (Moment(data.tripDate) < Moment(today)){
+        alert("La fecha del viaje no puede ser anterior al día actual.")
+    }else if (!Moment(data.tripDate).isValid()){
       alert("Fecha inválida.")
-    }else if (moment(data.tripDate) < moment(today)){
-      alert("La fecha del viaje no puede ser anterior al día actual.")
+
     }else {
       return true;
     }
@@ -185,11 +178,11 @@ function TravelPreviewer() {
     originRef.current.value = "";
     destiantionRef.current.value = "";
   }
-  
+
   return (
     <MapContainer>
         <Modal>
-          <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
           <div>
           <label>Origen</label>
             <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
@@ -201,10 +194,9 @@ function TravelPreviewer() {
             </Autocomplete>  
 
             <Button onClick={calculateRoute} value={first} onChange={event => setFirst(event.target.value)}>Ver Ruta</Button>
-            <Button onClick={clearRoute}>Borrar Campos</Button>
 
           <label>Fecha del Viaje
-          <DatePickerComponent placeholderText={'Fecha'} selected={date} onChange={handleChange} locale="es" />
+            <input {...register("tripDate")} type="date" ref={dateRef} min="01-01-2020"/>
           </label>
 
           <label>Lugares Disponibles
