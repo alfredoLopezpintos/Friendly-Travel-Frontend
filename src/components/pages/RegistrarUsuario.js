@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { Button2 } from '../Button2';
 import { useHistory } from "react-router-dom";
 import DatePickerComponent, { registerLocale } from "react-datepicker";
-import moment from 'moment';
 import configData from '../../configData.json';
 import './RegistrarUsuario.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -47,7 +46,7 @@ export default function RegistrarUsuario() {
   }
   
   function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
+    const month = dateObj.getUTCMonth();
     const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
     return (year + "-" + month + "-" + day);

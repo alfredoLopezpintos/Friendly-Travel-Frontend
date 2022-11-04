@@ -6,6 +6,12 @@ import './HeroSection.css';
 
 
 function HeroSection() {
+  const history = useHistory();
+
+  const handleHistory = () => {
+    history.push("/map");
+  }
+
   return (
     <div className='hero-container'>
       {/*<video src='/videos/video-2.mp4' autoPlay loop muted />*/}
@@ -16,6 +22,7 @@ function HeroSection() {
           className='btns'
           buttonStyle='btn--outline'
           buttonSize='btn--large'
+          onClick={handleHistory}
         >
           CREAR VIAJE
         </Button>

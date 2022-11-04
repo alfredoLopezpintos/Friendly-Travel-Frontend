@@ -4,12 +4,11 @@ import { useForm } from "react-hook-form";
 import configData from '../../configData.json';
 import axios from 'axios';
 import { Button2 } from '../Button2';
-import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import moment from 'moment';
 import DatePickerComponent, { registerLocale } from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
+
 import es from "date-fns/locale/es";
 registerLocale("es", es);
 
