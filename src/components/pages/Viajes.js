@@ -1,13 +1,12 @@
 import React from 'react';
 import '../../App.css';
-import ListadoDeViajes from '../pages/ListadoDeViajes';
-import Footer2 from '../Footer2';
+import ListadoDeViajes from './ListadoDeViajes';
 
 {/*export default function Products() {
   return <h1 className='products'>PRODUCTS</h1>;
 }*/}
 
-function Products() {
+function Viajes() {
   return (
     <>
       <ListadoDeViajes />
@@ -15,4 +14,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Viajes;
