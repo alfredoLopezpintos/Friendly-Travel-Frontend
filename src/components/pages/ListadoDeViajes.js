@@ -93,6 +93,7 @@ export default function ListadoDeViajes() {
         console.log(response.data)
         if(response.data.message ===
           "No hay viajes que cumplan con las condiciones seleccionadas.") {
+            setViajes()
             alert("No hay viajes que cumplan con las condiciones seleccionadas.")
           } else {
             setViajes(response.data)
