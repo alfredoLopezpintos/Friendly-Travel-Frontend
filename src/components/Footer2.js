@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom';
 
 function Footer2() {
   return (
-    <div className='footer-container'>
-        <div class='social-media-wrap'>
-          <div class='footer-logo'>
+    <div className='footer-container' id="footer">
+        <div className='social-media-wrap'>
+          <div className='footer-logo'>
             <Link to='/' className='social-logo'>
               FRIENDLY TRAVEL
-              <i class='fab fa-typo3' />
+              <i className='fab fa-typo3' />
             </Link>
           </div>
-          <small class='website-rights'>FRIENDLY TRAVEL © 2022</small>
+          <small className='website-rights'>FRIENDLY TRAVEL © 2022</small>
         </div>
     </div>
   );
