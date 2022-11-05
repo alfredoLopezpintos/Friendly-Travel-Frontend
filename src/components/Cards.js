@@ -5,41 +5,40 @@ import CardItem from './CardItem';
 function Cards() {
   return (
     <div className='cards'>
-      <h1>Check out these EPIC Destinations!</h1>
+      <h1>¡Tu próximo destino te espera!</h1>
       <div className='cards__container'>
         <div className='cards__wrapper'>
           <ul className='cards__items'>
             <CardItem
-              src='images/img-9.jpg'
-              text='Explore the hidden waterfall deep inside the Amazon Jungle'
-              label='Adventure'
-              path='/services'
+              src='images/colonia.jpg'
+              text='Viaja y explora su Barrio Histórico con calles de adoquines'
+              label='Colonia'
             />
             <CardItem
-              src='images/img-2.jpg'
-              text='Travel through the Islands of Bali in a Private Cruise'
-              label='Luxury'
-              path='/services'
+              src='images/faro.jpg'
+              text='La costa este de Uruguay es una sucesión de balnearios con paisajes tan variados como maravillosos'
+              label='Costa Atlántica'
+
             />
           </ul>
           <ul className='cards__items'>
             <CardItem
-              src='images/img-3.jpg'
-              text='Set Sail in the Atlantic Ocean visiting Uncharted Waters'
-              label='Mystery'
-              path='/services'
+              src='images/punta.jpg'
+              text='Es uno de los centros turísticos más importante y elegidos del país'
+              label='Punta del Este'
+
             />
             <CardItem
-              src='images/img-4.jpg'
-              text='Experience Football on Top of the Himilayan Mountains'
-              label='Adventure'
-              path='/products'
+              src='images/traffic.jpg'
+              text='Explora la capital del país y sus sitios más iconicos'
+              label='Montevideo'
+ 
             />
             <CardItem
-              src='images/img-8.jpg'
-              text='Ride through the Sahara Desert on a guided camel tour'
-              label='Adrenaline'
-              path='/sign-up'
+              src='images/auto.jpg'
+              text='¡Viaja, explora, conoce nuestro país y haz nuevos amigos!'
+              label='Aventura'
+
             />
           </ul>
         </div>
