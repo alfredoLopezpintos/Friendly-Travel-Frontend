@@ -11,7 +11,6 @@ function Products() {
   return (
     <>
       <ListadoDeViajes />
-      <Footer2 />
     </>
   );
 }

@@ -106,9 +106,12 @@ export default function ListadoDeViajes() {
 
   function transformDate(dateObj) {
     const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
+    var day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
-    return (year + "-" + month + "-" + day);
+    if (/^\d$/.test(dateObj.getUTCDate()))  {
+      day = "0" + dateObj.getUTCDate();
+    }
+    return (day + "-" + month + "-" + year);
   }
 
   render()
@@ -150,7 +153,7 @@ export default function ListadoDeViajes() {
                   <li>
                     <div className='destination'>
                       <div>                        
-                        ORIGEN: {user.origin}
+                        ORIGEN: {user.origin.toUpperCase()}
                       </div>
                       <div>
                         FECHA: {user.tripDate}
@@ -158,7 +161,7 @@ export default function ListadoDeViajes() {
                     </div>
                     <div className='destination'>
                       <div>                      
-                        DESTINO: {user.destination}
+                        DESTINO: {user.destination.toUpperCase()}
                       </div>
                       <div>
                         {user.arrival_time}
