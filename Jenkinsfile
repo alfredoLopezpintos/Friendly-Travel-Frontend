@@ -34,17 +34,17 @@ pipeline {
         //     }    
         
         // }
-        stage("Dependencies"){            
-            agent any
-            steps {
-                sh 'rm -rf node_modules'
-                sh 'rm -f package-lock.json'
-                sh 'npm cache clean --force'
-                // sh 'npm install -g npm@latest'
-                // sh 'npm install --legacy-peer-deps'
-                // sh 'npm audit fix'
-            }
-        }
+        // stage("Dependencies"){            
+        //     agent any
+        //     steps {
+        //         sh 'rm -rf node_modules'
+        //         sh 'rm -f package-lock.json'
+        //         sh 'npm cache clean --force'
+        //         // sh 'npm install -g npm@latest'
+        //         // sh 'npm install --legacy-peer-deps'
+        //         // sh 'npm audit fix'
+        //     }
+        // }
         stage("Test & Build"){            
             agent any
             steps {
@@ -63,13 +63,13 @@ pipeline {
             }
         }
         stage("Destroy old deployment"){
-            when {
-                anyOf{
-                    equals expected: 'Friendly-Travel-Frontend/develop', actual: env.GIT_BRANCH
-                    // equals expected: 'front-end/main', actual: env.GIT_BRANCH
-                }
-                equals expected:"SUCCESS", actual:currentBuild.currentResult
-            }
+            // when {
+            //     anyOf{
+            //         equals expected: 'Friendly-Travel-Frontend/develop', actual: env.GIT_BRANCH
+            //         // equals expected: 'front-end/main', actual: env.GIT_BRANCH
+            //     }
+            //     equals expected:"SUCCESS", actual:currentBuild.currentResult
+            // }
             agent any
             steps{
             //     withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
