@@ -56,7 +56,7 @@ pipeline {
                 //     """
                 //     writeFile(file: '.env', text: data)
                 // }
-                // sh 'npm ci'
+                sh 'npm ci'
                 // sh 'npm run test -- --watchAll=false'
                 sh 'npm run build'
                 stash includes: 'build/', name: 'build_app' 
