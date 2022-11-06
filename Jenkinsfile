@@ -57,14 +57,14 @@ pipeline {
                 equals expected:"SUCCESS", actual:currentBuild.currentResult
             }
             agent any
-            // steps{
+            steps{
             //     withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
             //         sh "bash -c 'aws s3 rm --recursive s3://dev-tmt-bucket/ | true'"
                     sh "bash -c 'aws s3 rm --recursive s3://dev-friendly-bucket/front-end/ | true'"
             //         sh "aws cloudformation delete-stack --stack-name 'TMT-Frontend-${env.ENV_NAME}'"
             //         sh "aws cloudformation wait stack-delete-complete --stack-name 'TMT-Frontend-${env.ENV_NAME}'"
             //     }
-            // }
+            }
         }
         stage("Deploy"){
             when {
