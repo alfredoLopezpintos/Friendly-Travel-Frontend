@@ -34,17 +34,17 @@ pipeline {
         //     }    
         
         // }
-        stage("Dependencies"){            
-            agent any
-            steps {
-                sh 'rm -rf node_modules'
-                sh 'rm -f package-lock.json'
-                sh 'npm cache clean --force'
-                sh 'npm install -g npm@latest'
-                sh 'npm install --legacy-peer-deps'
-                sh 'npm audit fix'
-            }
-        }
+        // stage("Dependencies"){            
+        //     agent any
+        //     steps {
+        //         sh 'rm -rf node_modules'
+        //         sh 'rm -f package-lock.json'
+        //         sh 'npm cache clean --force'
+        //         sh 'npm install -g npm@latest'
+        //         sh 'npm install --legacy-peer-deps'
+        //         sh 'npm audit fix'
+        //     }
+        // }
         stage("Test & Build"){            
             agent any
             steps {
