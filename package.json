@@ -19,15 +19,15 @@
     "mdb-react-ui-kit": "^4.2.0",
     "mdb-ui-kit": "^5.0.0",
     "moment": "^2.29.4",
-    "react": "^16.13.1",
+    "react": "^18.2.0",
     "react-datepicker": "^2.5.0",
-    "react-dom": "^16.13.1",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
     "react-icons": "^4.6.0",
     "react-loader-spinner": "^5.3.4",
     "react-promise-tracker": "^2.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "5.0.1",
     "styled-components": "^5.3.6"
   },
   "scripts": {
