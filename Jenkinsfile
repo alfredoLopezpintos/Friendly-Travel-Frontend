@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        node '16.17.0'
+    }
     environment {
         AWS_DEFAULT_REGION = "us-east-1"
         ENV_NAME="${env.GIT_BRANCH == 'Friendly-Travel-Frontend/main' ? 'production' : 'dev'}"
