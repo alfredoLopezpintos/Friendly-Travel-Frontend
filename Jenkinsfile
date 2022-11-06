@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh 'rm -rf node_modules'
                 sh 'rm -f package-lock.json'
-                sh 'npm cache clean'
+                sh 'npm cache clean --force'
                 sh 'npm install -g npm@latest'
                 sh 'npm install'
                 sh 'npm audit fix'
