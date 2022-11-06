@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'Docker'
-    }
+    agent any
     environment {
         AWS_DEFAULT_REGION = "us-east-1"
         ENV_NAME="${env.GIT_BRANCH == 'Friendly-Travel-Frontend/main' ? 'production' : 'dev'}"
@@ -34,13 +32,7 @@ pipeline {
         
         // }
         stage("Test & Build"){            
-            agent { 
-                docker{
-                    image 'node:16.16.0-alpine'
-                    label 'Docker'
-                    args '-u root'
-                }    
-            }
+            agent any
             steps {
                 // script{
                 //     data="""
@@ -64,13 +56,7 @@ pipeline {
                 }
                 equals expected:"SUCCESS", actual:currentBuild.currentResult
             }
-            agent {
-                docker {
-                    image 'amazon/aws-cli:2.7.28'
-                    label 'Docker'
-                    args '-u root --entrypoint ""'
-                }    
-            }
+            agent any
             // steps{
             //     withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
             //         sh "bash -c 'aws s3 rm --recursive s3://dev-tmt-bucket/ | true'"
@@ -88,13 +74,7 @@ pipeline {
                 }
                 equals expected:"SUCCESS", actual:currentBuild.currentResult
             }
-            agent {
-                docker {
-                    image 'amazon/aws-cli:2.7.28'
-                    label 'Docker'
-                    args '-u root --entrypoint ""'
-                }    
-            }
+            agent any
             steps{
                 script{
                     // withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
