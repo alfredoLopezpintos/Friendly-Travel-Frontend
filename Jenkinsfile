@@ -41,7 +41,7 @@ pipeline {
                 sh 'rm -f package-lock.json'
                 sh 'npm cache clean --force'
                 sh 'npm install -g npm@latest'
-                sh 'npm install'
+                sh 'npm install --legacy-peer-deps'
                 sh 'npm audit fix'
             }
         }
