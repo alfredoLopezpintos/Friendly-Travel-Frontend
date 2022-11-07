@@ -75,8 +75,8 @@ pipeline {
                 withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
             //         sh "bash -c 'aws s3 rm --recursive s3://dev-tmt-bucket/ | true'"
                     sh "bash -c 'aws s3 rm --recursive s3://${env.ENV_NAME}-friendly-bucket/ | true'"
-                    sh "aws cloudformation delete-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
-                    sh "aws cloudformation wait stack-delete-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
+                    // sh "aws cloudformation delete-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
+                    // sh "aws cloudformation wait stack-delete-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
                 }
             }
         }
