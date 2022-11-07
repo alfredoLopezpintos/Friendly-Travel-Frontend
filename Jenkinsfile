@@ -75,8 +75,8 @@ pipeline {
                 withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
             //         sh "bash -c 'aws s3 rm --recursive s3://dev-tmt-bucket/ | true'"
                     sh "bash -c 'aws s3 rm --recursive s3://${env.ENV_NAME}-friendly-bucket/ | true'"
-                    // sh "aws cloudformation delete-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
-                    // sh "aws cloudformation wait stack-delete-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
+                    sh "aws cloudformation delete-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
+                    sh "aws cloudformation wait stack-delete-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
                 }
             }
         }
@@ -105,13 +105,13 @@ pipeline {
     post{
         failure {
             script{
-                EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
             }
-                emailext to: "${EMAIL}",
+                emailext to: "${GIT_COMMITTER_EMAIL}",
                 attachLog: true,
                 subject: "jenkins build: ${currentBuild.currentResult}-${env.JOB_NAME}",
                 compressLog: true,
-                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nEl build fallo. Mas info puede ser encontrada aqui: ${env.BUILD_URL}\n\nGrupo Tranqui"
+                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nEl build fallo. Mas info puede ser encontrada aqui: ${env.BUILD_URL}\n\nGrupo Tranqui."
         }
     }
 }
