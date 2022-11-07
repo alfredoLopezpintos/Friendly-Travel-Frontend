@@ -9,109 +9,62 @@ pipeline {
     	CI=false
     }
     stages {
-        // stage("Retrieve Cognito Parameters") {
-        //     agent { 
-        //         docker{
-        //             image 'amazon/aws-cli:2.7.28'
-        //             label 'Docker'
-        //             args '-u root --entrypoint ""'
-        //         }    
-        //     }
-        //     steps {
-        //         script {                                 
-        //             withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-        //                 catchError(buildResult: 'UNSTABLE'){
-        //                     userpool_id = sh(script: "aws cognito-idp list-user-pools --max-results 20 --query 'reverse(sort_by(UserPools, &CreationDate))[?Name==`TMT-Pool-${env.ENV_NAME}`].Id | [0]'", returnStdout: true).trim()
-        //                     userpool_id=userpool_id.replaceAll("\"", "");
-        //                     client_id = sh(script: "aws cognito-idp list-user-pool-clients --max-results 1 --query 'UserPoolClients[].ClientId | [0]' --user-pool-id ${userpool_id}", returnStdout: true).trim()
-        //                     client_id=client_id.replaceAll("\"", "");
-        //                     base_url=sh(script: "aws apigateway get-rest-apis --query 'items[?name==`TMTApi${env.ENV_NAME}`].id | [0]'", returnStdout: true).trim()
-        //                     base_url=base_url.replaceAll("\"", "");
-        //                     base_url="https://${base_url}.execute-api.us-east-1.amazonaws.com"
-        //                 }
-        //             }
-        //         }
-        //     }    
-        
-        // }
-        stage("Dependencies"){            
-            agent any
-            steps {
-                sh 'rm -rf node_modules'
-                sh 'rm -f package-lock.json'
-                sh 'npm cache clean --force'
-                sh 'npm install -g npm@latest'
-                sh 'npm install'
-                sh 'npm audit fix'
-            }
-        }
         stage("Test & Build"){            
             agent any
             steps {
-                // script{
-                //     data="""
-                //     REACT_APP_BASE_URL=${base_url}
-                //     REACT_APP_USER_POOL=${userpool_id}
-                //     REACT_APP_CLIENT_ID=${client_id}
-                //     """
-                //     writeFile(file: '.env', text: data)
-                // }
-                // sh 'npm ci'
-                // sh 'npm run test -- --watchAll=false'
+                sh 'npm ci'
                 sh 'npm run build'
                 stash includes: 'build/', name: 'build_app' 
             }
         }
         stage("Destroy old deployment"){
-            when {
-                anyOf{
-                    equals expected: 'Friendly-Travel-Frontend/develop', actual: env.GIT_BRANCH
-                    // equals expected: 'front-end/main', actual: env.GIT_BRANCH
-                }
-                equals expected:"SUCCESS", actual:currentBuild.currentResult
-            }
             agent any
             steps{
-            //     withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-            //         sh "bash -c 'aws s3 rm --recursive s3://dev-tmt-bucket/ | true'"
-                    sh "bash -c 'aws s3 rm --recursive s3://dev-friendly-bucket/front-end/ | true'"
-            //         sh "aws cloudformation delete-stack --stack-name 'TMT-Frontend-${env.ENV_NAME}'"
-            //         sh "aws cloudformation wait stack-delete-complete --stack-name 'TMT-Frontend-${env.ENV_NAME}'"
-            //     }
+                withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
+                    sh "bash -c 'aws s3 rm --recursive s3://${env.ENV_NAME}-friendly-bucket/ | true'"
+                    sh "aws cloudformation delete-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
+                    sh "aws cloudformation wait stack-delete-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'"
+                }
             }
         }
         stage("Deploy"){
-            when {
-                anyOf{
-                    equals expected: 'Friendly-Travel-Frontend/develop', actual: env.GIT_BRANCH
-                    // equals expected: 'front-end/main', actual: env.GIT_BRANCH
-                }
-                equals expected:"SUCCESS", actual:currentBuild.currentResult
-            }
             agent any
             steps{
                 script{
-                    // withCredentials([usernamePassword(credentialsId: 'tmt_aws_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
                         sh(script: "aws s3 cp template.yaml s3://friendly-bucket/front-end/")
                         sh(script: "aws cloudformation create-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}' --template-url 'https://friendly-bucket.s3.amazonaws.com/front-end/template.yaml' --parameter ParameterKey=Stage,ParameterValue='${env.ENV_NAME}' --capabilities CAPABILITY_IAM")
                         unstash "build_app"
                         sh(script: "aws cloudformation wait stack-create-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'")
-                        sh(script: "aws s3 cp ./build s3://dev-friendly-bucket/front-end/ --recursive")
-                    // }
+                        sh(script: "aws s3 cp ./build s3://${env.ENV_NAME}-friendly-bucket/ --recursive")
+                    }
                 }
             }
         }
     }
-    // post{
-    //     failure {
-    //         script{
-    //             GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
-    //         }
-    //             emailext to: "${GIT_COMMITTER_EMAIL}",
-    //             attachLog: true,
-    //             subject: "jenkins build: ${currentBuild.currentResult}-${env.JOB_NAME}",
-    //             compressLog: true,
-    //             body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nMore Info can be found here: ${env.BUILD_URL}"
-    //     }
-    // }
+    post{
+        failure {
+            script{
+                GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+            }
+                emailext to: "${GIT_COMMITTER_EMAIL}",
+                attachLog: true,
+                subject: "jenkins build: ${currentBuild.currentResult}-${env.JOB_NAME}",
+                compressLog: true,
+                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nEl build fallo. Mas info puede ser encontrada aqui: ${env.BUILD_URL}\n\nGrupo Tranqui."
+        }
+        success {
+            script{
+                GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
+                    DOMAIN_NAME=sh(script: "aws cloudfront list-distributions --query 'DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName} | [0].DomainName'")
+                }
+            }
+                emailext to: "${GIT_COMMITTER_EMAIL}",
+                attachLog: true,
+                subject: "Build FRONTEND exitoso: ${currentBuild.currentResult}-${env.JOB_NAME}",
+                compressLog: true,
+                body: "El nuevo dominio es: ${DOMAIN_NAME}\n\nGrupo Tranqui."
+        }
+    }
 }
