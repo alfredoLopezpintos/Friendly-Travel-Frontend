@@ -111,7 +111,7 @@ pipeline {
                 attachLog: true,
                 subject: "jenkins build: ${currentBuild.currentResult}-${env.JOB_NAME}",
                 compressLog: true,
-                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nEl build fallo. Mas info puede ser encontrada aqui: ${env.BUILD_URL}\n\nGrupo Tranqui."
+                body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nEl build fallo. Mas info puede ser encontrada aqui: ${env.BUILD_URL}\n\nGrupo Tranqui"
         }
     }
 }
