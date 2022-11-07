@@ -56,7 +56,9 @@ pipeline {
         success {
             script{
                 GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
-                DOMAIN_NAME=sh(script: "aws cloudfront list-distributions --query 'DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName} | [0].DomainName'")
+                withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
+                    DOMAIN_NAME=sh(script: "aws cloudfront list-distributions --query 'DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName} | [0].DomainName'")
+                }
             }
                 emailext to: "${GIT_COMMITTER_EMAIL}",
                 attachLog: true,
