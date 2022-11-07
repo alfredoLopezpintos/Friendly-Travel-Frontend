@@ -110,6 +110,7 @@ pipeline {
                 emailext to: "${GIT_COMMITTER_EMAIL}",
                 attachLog: true,
                 subject: "jenkins build: ${currentBuild.currentResult}-${env.JOB_NAME}",
+                body: "El build fallo. El log esta adjunto a este email. \n\nGrupo Tranqui."
                 compressLog: true,
                 body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nMas info puede ser encontrada aqui: ${env.BUILD_URL}"
         }
