@@ -60,7 +60,7 @@ pipeline {
                     DOMAIN_NAME=sh(script: "aws cloudfront list-distributions --query 'DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName} | [0].DomainName'")
                 }
             }
-                emailext to: "${GIT_COMMITER_EMAIL}",
+                emailext to: "${GIT_COMMITTER_EMAIL}",
                 attachLog: true,
                 subject: "Build FRONTEND exitoso: ${currentBuild.currentResult}-${env.JOB_NAME}",
                 compressLog: true,
