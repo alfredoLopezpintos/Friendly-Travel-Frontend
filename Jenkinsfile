@@ -53,5 +53,16 @@ pipeline {
                 compressLog: true,
                 body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} - Environment: ${env.ENV_NAME}\nEl build fallo. Mas info puede ser encontrada aqui: ${env.BUILD_URL}\n\nGrupo Tranqui."
         }
+        success {
+            script{
+                GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                DOMAIN_NAME=sh(script: "aws cloudfront list-distributions --query 'DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName} | [0].DomainName'")
+            }
+                emailext to: "${GIT_COMMITTER_EMAIL}",
+                attachLog: true,
+                subject: "Build FRONTEND exitoso: ${currentBuild.currentResult}-${env.JOB_NAME}",
+                compressLog: true,
+                body: "El nuevo dominio es: ${DOMAIN_NAME}\n\nGrupo Tranqui."
+        }
     }
 }
