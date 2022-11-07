@@ -56,15 +56,16 @@ pipeline {
         success {
             script{
                 GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                GIT_CONTRIBUTORS_EMAIL=sh(script:"git shortlog -sea | grep -E -o '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b' | awk '{print tolower($0)}' | sort | uniq | grep -wv 'users.noreply.github.com'")
                 withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
                     DOMAIN_NAME=sh(script: "aws cloudfront list-distributions --query 'DistributionList.Items[].{DomainName: DomainName, OriginDomainName: Origins.Items[0].DomainName} | [0].DomainName'")
                 }
             }
-                emailext to: "${GIT_COMMITTER_EMAIL}",
+                emailext to: "${GIT_CONTRIBUTORS_EMAIL}",
                 attachLog: true,
                 subject: "Build FRONTEND exitoso: ${currentBuild.currentResult}-${env.JOB_NAME}",
                 compressLog: true,
-                body: "El nuevo dominio es: ${DOMAIN_NAME}\n\nGrupo Tranqui."
+                body: "El ultimo commit fue hecho por ${GIT_COMMITTER_EMAIL}.\nEl nuevo dominio es: ${DOMAIN_NAME}\n\nGrupo Tranqui."
         }
     }
 }
