@@ -105,9 +105,9 @@ pipeline {
     post{
         failure {
             script{
-                GIT_COMMITTER_EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
+                EMAIL=sh(script:"git --no-pager show -s --format='%ae' ${env.GIT_COMMIT}", returnStdout: true)
             }
-                emailext to: "${GIT_COMMITTER_EMAIL}",
+                emailext to: "${EMAIL}",
                 attachLog: true,
                 subject: "jenkins build: ${currentBuild.currentResult}-${env.JOB_NAME}",
                 compressLog: true,
