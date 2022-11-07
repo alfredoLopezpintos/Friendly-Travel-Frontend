@@ -74,7 +74,7 @@ pipeline {
             steps{
                 withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
             //         sh "bash -c 'aws s3 rm --recursive s3://dev-tmt-bucket/ | true'"
-                    sh "bash -c 'aws s3 rm --recursive s3://dev-friendly-bucket/front-end/ | true'"
+                    sh "bash -c 'aws s3 rm --recursive s3://front-friendly-bucket/ | true'"
             //         sh "aws cloudformation delete-stack --stack-name 'TMT-Frontend-${env.ENV_NAME}'"
             //         sh "aws cloudformation wait stack-delete-complete --stack-name 'TMT-Frontend-${env.ENV_NAME}'"
                 }
@@ -96,7 +96,7 @@ pipeline {
                         sh(script: "aws cloudformation create-stack --stack-name 'Friendly-Frontend-${env.ENV_NAME}' --template-url 'https://friendly-bucket.s3.amazonaws.com/front-end/template.yaml' --parameter ParameterKey=Stage,ParameterValue='${env.ENV_NAME}' --capabilities CAPABILITY_IAM")
                         unstash "build_app"
                         sh(script: "aws cloudformation wait stack-create-complete --stack-name 'Friendly-Frontend-${env.ENV_NAME}'")
-                        sh(script: "aws s3 cp ./build s3://dev-friendly-bucket/front-end/ --recursive")
+                        sh(script: "aws s3 cp ./build s3://front-friendly-bucket/ --recursive")
                     }
                 }
             }
