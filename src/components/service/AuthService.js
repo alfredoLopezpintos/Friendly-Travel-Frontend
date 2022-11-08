@@ -1,6 +1,6 @@
 module.exports = {
     getUser: function() {
-      const user = sessionStorage.getItem('user');
+      const user = sessionStorage.getItem('email');
       if (user === 'undefined' || !user) {
         return null;
       } else {
@@ -13,7 +13,7 @@ module.exports = {
     },
   
     setUserSession: function(user, token) {
-      sessionStorage.setItem('user', JSON.stringify(user));
+      sessionStorage.setItem('email', JSON.stringify(user));
       sessionStorage.setItem('token', token);
     },
   

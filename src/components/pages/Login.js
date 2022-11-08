@@ -5,6 +5,7 @@ import configData from '../../configData.json';
 import './Login.css'
 //const loginAPIUrl = 'https://gzcxszjnze.execute-api.us-east-1.amazonaws.com/prod/login';
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login"
+//const loginAPIUrl = "https://friendlytravel.auth.us-east-1.amazoncognito.com/login"
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ const Login = (props) => {
     setErrorMessage(null);
     const requestConfig = {
       headers: {
-        'x-api-key': 'OkhIJdHFMomDeRVUXGfa1EXWiGBAWpdakg7ZRCFf'
+        'Authorization': 'OkhIJdHFMomDeRVUXGfa1EXWiGBAWpdakg7ZRCFf'
       }
     }
     const requestBody = {
@@ -28,9 +29,11 @@ const Login = (props) => {
       password: password
     }
 
-    axios.post(loginAPIUrl, requestBody, requestConfig).then((response) => {
+    console.log(requestBody)
+
+    axios.post(loginAPIUrl, requestBody).then((response) => {
       setUserSession(response.data.user, response.data.token);
-      props.history.push('/premium-content');
+      props.history.push('/loggedIn');
     }).catch((error) => {
       if (error.response.status === 401 || error.response.status === 403) {
         setErrorMessage(error.response.data.message);

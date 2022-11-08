@@ -7,6 +7,7 @@ import Services from './components/pages/Services';
 import Products from './components/pages/Products';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
+import LoggedIn from './components/pages/LoggedIn';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/products' component={Products} />
           <Route path='/register' component={Register} />
           <Route path='/login' component={Login} />
+          <Route path='/loggedIn' component={LoggedIn} />
         </Switch>
       </Router>
     </>
