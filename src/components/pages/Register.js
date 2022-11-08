@@ -36,9 +36,6 @@ export default function Register() {
 
   function formValidate(data) {
 
-    console.log(data.tripDate)
-    console.log(moment().diff(data.tripDate, 'years'))
-
     if(data.email === "" ||
      data.name === "" ||
      data.surname === "" ||
@@ -47,10 +44,10 @@ export default function Register() {
      data.phoneNumber === "") {
         alert("Debe llenar todos los campos para poder crear el usuario.")
         return false;
-    }else if (!moment(data.tripDate).isValid()){
+    }else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()){
       alert("Fecha inválida.");
       return false;
-    }else if (moment().diff(data.tripDate, 'years') <= 18){
+    }else if (moment().diff(data.birthDate, 'years') <= 18){
       alert("El usuario debe ser mayor de edad.");
       return false;
     }else if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email))) {
@@ -68,20 +65,19 @@ export default function Register() {
   }
   
   function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    return (day + "-" + month + "-" + year);
+    const fecha = moment(dateObj);
+    console.log(fecha.format("DD-MM-YYYY"))
+    return (fecha.format("DD-MM-YYYY"));
+    //return (day + "-" + month + "-" + year);
   }
 
   async function fetchViajes(data, e) {
-    //data.tripDate = transformDate(data.tripDate);
-
-    console.log(data.tripDate)
+    data.birthDate = transformDate(data.birthDate);
 
     // A MANO POR AHORA
-    data.user = "user";
-    data.vehicle = "GAB1234";
+    //data.user = "user";
+    //data.vehicle = "GAB1234";
+    console.log(data)
 
     if(formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users"
@@ -116,7 +112,7 @@ export default function Register() {
           <input {...register("email")} placeholder="Email"/>
           <div>
             <label> Fecha de nacimiento: </label>
-            <input {...register("tripDate")} type="date" format="DD-MM-YYYY" />
+            <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
           </div>
           <input {...register("documentId")} placeholder="Cédula de identidad sin puntos ni guiones. EJ: (42345678)"/>
           <input {...register("phoneNumber")} placeholder="Número de teléfono. EJ: (+598091123432)"/>
