@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import './Navbar.css';
 
 function Navbar() {
@@ -9,6 +10,7 @@ function Navbar() {
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
+  const history = useHistory();
 
   const showButton = () => {
     if (window.innerWidth <= 1185) {
@@ -21,6 +23,10 @@ function Navbar() {
   useEffect(() => {
     showButton();
   }, []);
+
+  function handleHistory(data, e) {
+    history.push("/login");
+  } 
 
   window.addEventListener('resize', showButton);
 
@@ -62,7 +68,7 @@ function Navbar() {
 
             <li>
               <Link
-                to='/register'
+                to='/login'
                 className='nav-links-mobile'
                 onClick={closeMobileMenu}
               >
@@ -70,7 +76,7 @@ function Navbar() {
               </Link>
             </li>
           </ul>
-          {button && <Button buttonStyle='btn--outline'>Iniciar sesión</Button>}
+          {button && <Button onClick={handleHistory} buttonStyle='btn--outline'>Iniciar sesión</Button>}
         </div>
       </nav>
     </>
