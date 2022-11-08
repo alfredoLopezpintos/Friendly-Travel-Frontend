@@ -35,8 +35,9 @@ export default function Register() {
   }
 
   function formValidate(data) {
-    const dateObj = new Date();
-    const today = transformDate(dateObj);
+
+    console.log(data.tripDate)
+    console.log(moment().diff(data.tripDate, 'years'))
 
     if(data.email === "" ||
      data.name === "" ||
@@ -44,13 +45,13 @@ export default function Register() {
      data.birthDate === "" ||
      data.documentId === "" ||
      data.phoneNumber === "") {
-        alert("Debe llenar todos los campos para poder crear el viaje.")
+        alert("Debe llenar todos los campos para poder crear el usuario.")
         return false;
     }else if (!moment(data.tripDate).isValid()){
       alert("Fecha inválida.");
       return false;
-    }else if (moment(data.tripDate) > moment(today)){
-      alert("La fecha del viaje no puede ser anterior al día actual.");
+    }else if (moment().diff(data.tripDate, 'years') <= 18){
+      alert("El usuario debe ser mayor de edad.");
       return false;
     }else if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email))) {
       alert("El formato del correo electrónico no es válido.");
@@ -58,8 +59,10 @@ export default function Register() {
     }else if (!(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gmi.test(data.phoneNumber))) {
       alert("El formato del teléfono no es válido.");
       return false;
-    }
-    else {
+    }else if(!isNumber(data.documentId) || (data.documentId.length > 8) || (data.documentId.length < 8)) {
+      alert("La cédula de identidad no es válida.")
+      return false;
+    }else {
       return true;
     }
   }
@@ -68,17 +71,17 @@ export default function Register() {
     const month = dateObj.getUTCMonth() + 1; //months from 1-12
     const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
-    return (year + "-" + month + "-" + day);
+    return (day + "-" + month + "-" + year);
   }
 
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
+    //data.tripDate = transformDate(data.tripDate);
+
+    console.log(data.tripDate)
 
     // A MANO POR AHORA
     data.user = "user";
     data.vehicle = "GAB1234";
-
-    console.log(data)
 
     if(formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users"
@@ -98,7 +101,7 @@ export default function Register() {
     history.push("/success");
   } 
 
-  const [date, setDate] = useState(new Date()); ;
+  const [date, setDate] = useState(new Date());
   const handleChange = date => setDate(date);
 
   return (
@@ -113,10 +116,9 @@ export default function Register() {
           <input {...register("email")} placeholder="Email"/>
           <div>
             <label> Fecha de nacimiento: </label>
-            <DatePickerComponent placeholderText={'Fecha de nacimiento'}
-            selected={date} onChange={handleChange} locale="es" />
+            <input {...register("tripDate")} type="date" format="DD-MM-YYYY" />
           </div>
-          <input {...register("documentId")} placeholder="Cédula de identidad"/>
+          <input {...register("documentId")} placeholder="Cédula de identidad sin puntos ni guiones. EJ: (42345678)"/>
           <input {...register("phoneNumber")} placeholder="Número de teléfono. EJ: (+598091123432)"/>
           </div>
 
