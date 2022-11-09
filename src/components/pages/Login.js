@@ -30,10 +30,12 @@ const Login = (props) => {
       password: password
     }
 
-    console.log(requestBody)
+    //console.log(requestBody)
 
     axios.post(loginAPIUrl, requestBody).then((response) => {
-      setUserSession(response.data.user, response.data.token);
+      console.log(response)
+      console.log(response.data)
+      setUserSession(response.data.email, response.data.token);
       props.history.push('/loggedIn');
     }).catch((error) => {
       if (error.response.status === 401 || error.response.status === 403) {

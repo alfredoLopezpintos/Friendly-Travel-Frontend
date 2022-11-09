@@ -1,5 +1,6 @@
 module.exports = {
     getUser: function() {
+      console.log(sessionStorage)
       const user = sessionStorage.getItem('email');
       if (user === 'undefined' || !user) {
         return null;
