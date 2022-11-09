@@ -8,6 +8,7 @@ import Products from './components/pages/Products';
 import Register from './components/pages/Register';
 import Login from './components/pages/Login';
 import LoggedIn from './components/pages/LoggedIn';
+import ChangePass from './components/pages/ChangePass';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/register' component={Register} />
           <Route path='/login' component={Login} />
           <Route path='/loggedIn' component={LoggedIn} />
+          <Route path='/changePass' component={ChangePass} />
         </Switch>
       </Router>
     </>
