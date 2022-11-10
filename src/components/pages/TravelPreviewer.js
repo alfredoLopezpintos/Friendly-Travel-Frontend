@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import configData from '../../configData.json';
+import './TravelPreviewer.css';
 
 const MapContainer = styled.div`
   position: relative;
@@ -48,7 +49,7 @@ function TravelPreviewer() {
   };
   
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyDPAJQ9rD8Qjsz1mzrVF5i0nT_XhhC-F3w',
+    googleMapsApiKey: configData.GPC_MAPS_API,
     libraries
   });
 
@@ -182,7 +183,7 @@ function TravelPreviewer() {
   return (
     <MapContainer>
         <Modal>
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)} className = "form-box">
           <div>
           <label>Origen</label>
             <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
