@@ -9,7 +9,7 @@ function HeroSection() {
   const history = useHistory();
 
   const handleHistory = () => {
-    history.push("/map");
+    history.push("/viajes");
   }
 
   return (
@@ -24,7 +24,7 @@ function HeroSection() {
           buttonSize='btn--large'
           onClick={handleHistory}
         >
-          CREAR VIAJE
+          BUSCAR VIAJE
         </Button>
         <Button
           className='btns'

@@ -12,24 +12,24 @@ function Services() {
         <div className='cards__wrapper'>
           <ul className='cards__items'>
             <CardItem
-              src='images/nosotros.png'
+              src={require("../../assets/images/nosotros.png")}
               text='Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, odio!'
               label='¿Quienes somos?'
             />
             <CardItem
-              src='images/utec.jpg'
+              src={require("../../assets/images/utec.jpg")}
               text='Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, odio!'
               label='UTEC Durazno'
             />
           </ul>
           <ul className='cards__items'>
             <CardItem
-              src='images/parada.jpg'
+              src={require("../../assets/images/parada.jpg")}
               text='Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, odio!'
               label='Nuestra problemática'
             />
             <CardItem
-              src='images/viaje.jpg'
+              src={require("../../assets/images/parada.jpg")}
               text='Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, odio!'
               label='Nuestra misión'
  

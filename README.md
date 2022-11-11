@@ -16,8 +16,13 @@ Before starting, make sure your computer has up-to-date versions of the followin
 * ESLint as an extension for your Visual Studio Code.
 
 ## Installing and running the project :zap:
-* Clone the repository in the directory of your preference using `git clone https://github.com/alfredoLopezpintos/aplicacion-react.git`
+* Clone the repository in the directory of your preference using `git clone https://github.com/alfredoLopezpintos/Friendly-Travel-Frontend.git`
 * Type `cd Friendly-Travel-Frontend` to change your current directory to the repository folder.
 * Open this repository with Visual Studio Code.
 * Type `npm install` to install all of the project dependencies. Only if there is errors you may need to run `npm audit fix` too.
 * Start the project locally running: `npm start`
+
+## Deploying project to AWS S3
+* Must have AWS programatic credentials configured.
+
+`npm run build && npm run deploy`
