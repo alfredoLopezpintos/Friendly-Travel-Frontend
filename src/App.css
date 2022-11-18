@@ -8,6 +8,7 @@
 .home,
 .services,
 .products,
+.success,
 .sign-up {
   display: flex;
   height: 90vh;
@@ -17,7 +18,16 @@
 }
 
 .services {
-  background-image: url('/images/img-2.jpg');
+  background-image: url('./assets/images/img-2.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 100px;
+}
+
+.success {
+  background-image: url('./assets/images/cars.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -26,7 +36,7 @@
 }
 
 .products {
-  background-image: url('/images/img-1.jpg');
+  background-image: url('./assets/images/img-1.jpg');
   background-position: center;
   background-size: fill;
   background-repeat: no-repeat;
@@ -35,7 +45,7 @@
 }
 
 .sign-up {
-  background-image: url('/images/img-8.jpg');
+  background-image: url('./assets/images/img-8.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
