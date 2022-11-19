@@ -26,10 +26,10 @@ function App() {
           <Route path='/addTrip' component={RegistrarViaje} />
           <Route path='/success' component={Succesful} />
           <Route path='/regUser' component={RegistrarUsuario} />
-          <Route path='/register' component={Register} />
           <Route path='/login' component={Login} />
-          <Route path='/loggedIn' component={LoggedIn} />
-          <Route path='/changePass' component={ChangePass} />
+          {/* <Route path='/loggedIn' component={LoggedIn} />
+          <Route path='/register' component={Register} />
+          <Route path='/changePass' component={ChangePass} /> */}
           <Route path='/map' component={TravelPreviewer} />
 
         </Switch>

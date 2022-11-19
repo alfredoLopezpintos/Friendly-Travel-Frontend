@@ -27,9 +27,7 @@ function Navbar() {
     showButton();
   }, []);
 
-  function handleHistory(data, e) {
-    history.push("/login");
-  } 
+
 
   window.addEventListener('resize', showButton);
 
