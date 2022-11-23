@@ -15,9 +15,9 @@ pipeline {
                 script{
                     withAWS(credentials: 'friendly_credentials_aws', region: 'us-east-1') {
                         catchError(buildlResult: 'UNSTABLE'){
-                            aws_rest_endpoint=sh(script: "aws apigateway get-rest-apis --query 'items[?name==`FriendlyApi${env.ENV_NAME}`].id | [0]'", returnStdout: true).trim()
-                            aws_rest_endopoint=aws_rest_endopoint.replaceAll("\"", "");
-                            aws_rest_endopoint="https://${aws_rest_endopoint}.execute-api.us-east-1.amazonaws.com"
+                            aws_rest_endpoint=sh(script: "aws apigateway get-rest-apis --query 'items[?name==`FriendlyApi-${env.ENV_NAME}`].id | [0]'", returnStdout: true).trim()
+                            aws_rest_endpoint=aws_rest_endopoint.replaceAll("\"", "");
+                            aws_rest_endpoint="https://${aws_rest_endopoint}.execute-api.us-east-1.amazonaws.com"
                         }
                     }
                 }
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script{
                     data="""
-                    {AWS_REST_ENDPOINT:${aws_rest_endopoint}}
+                    {AWS_REST_ENDPOINT:${aws_rest_endpoint}}
                     """
                     writeFile(file: 'src/configData.json', text: data)
                 }
