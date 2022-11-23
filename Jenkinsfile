@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script{
                     data="""
-                    {"AWS_REST_ENDPOINT":"${aws_rest_endpoint}"}
+                    {"AWS_REST_ENDPOINT":"${aws_rest_endpoint}/${env.ENV_NAME}"}
                     """
                     writeFile(file: 'src/configData.json', text: data)
                 }
