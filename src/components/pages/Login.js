@@ -5,9 +5,7 @@ import configData from '../../configData.json';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import './Login.css'
-//const loginAPIUrl = 'https://gzcxszjnze.execute-api.us-east-1.amazonaws.com/prod/login';
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login"
-//const loginAPIUrl = "https://friendlytravel.auth.us-east-1.amazoncognito.com/login"
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -32,7 +30,7 @@ const Login = (props) => {
       password: password
     }
 
-    //console.log(requestBody)
+    console.log(axios.post(loginAPIUrl, requestBody))
 
     axios.post(loginAPIUrl, requestBody).then((response) => {
       console.log(response)

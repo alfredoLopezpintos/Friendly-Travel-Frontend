@@ -71,6 +71,7 @@ function Navbar() {
               <Link
                 to='/login'
                 className='nav-links-mobile'
+                onClick={closeMobileMenu}
               >
                 Iniciar sesión
               </Link>

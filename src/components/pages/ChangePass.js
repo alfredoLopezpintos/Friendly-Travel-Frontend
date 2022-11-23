@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import './RegistrarUsuario.css';
 import { useForm } from "react-hook-form";
 import configData from '../../configData.json';
@@ -59,10 +59,12 @@ export default function ChangePass() {
     <div className = "form-box">
       <form onSubmit={handleSubmit(onSubmit, onError)}>
           
-          <div className = "field1">
+          <div>
             <h1> Para continuar debe cambiar su contraseña </h1>
             <input {...register("email")} placeholder="Email"/>
+            <label> Contraseña Actual: </label>
             <input {...register("password")} placeholder="••••••••••••" type="password"/>
+            <label> Nueva contraseña: </label>
             <input {...register("newPassword")} placeholder="••••••••••••" type="password"/>
           </div>
 

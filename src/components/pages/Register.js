@@ -105,7 +105,7 @@ export default function Register() {
     <div className = "form-box">
       <form onSubmit={handleSubmit(onSubmit, onError)}>
           
-          <div className = "field1">
+          <div>
           <h1> Registrar usuario </h1>
           <input {...register("name")} placeholder="Nombre"/>
           <input {...register("surname")} placeholder="Apellido"/>
@@ -115,7 +115,7 @@ export default function Register() {
             <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
           </div>
           <input {...register("documentId")} placeholder="Cédula de identidad sin puntos ni guiones. EJ: (42345678)"/>
-          <input {...register("phoneNumber")} placeholder="Número de teléfono. EJ: (+598091123432)"/>
+          <input {...register("phoneNumber")} placeholder="Número de teléfono. EJ: (+59891123432)"/>
           </div>
 
           <br />
