@@ -5,7 +5,7 @@ import { Button2 } from '../Button2';
 import { useHistory } from "react-router-dom";
 import DatePickerComponent, { registerLocale } from "react-datepicker";
 import configData from '../../configData.json';
-import './RegistrarUsuario.css';
+//import './RegistrarUsuario.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from "date-fns/locale/es";
 
@@ -85,7 +85,7 @@ export default function RegistrarUsuario() {
     <div className = "form-box">
       <form onSubmit={handleSubmit(onSubmit, onError)}>
           
-          <div className = "field1">
+          <div>
           <label> Nuevo Usuario </label>
           <input {...register("email")} placeholder="Email"/>
           <input {...register("name")} placeholder="Nombre"/>
