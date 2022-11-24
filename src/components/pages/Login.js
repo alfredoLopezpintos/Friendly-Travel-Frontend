@@ -5,6 +5,7 @@ import configData from '../../configData.json';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import './Login.css'
+import jwt_decode from "jwt-decode";
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login"
 
 const Login = (props) => {
@@ -30,16 +31,18 @@ const Login = (props) => {
       password: password
     }
 
-    console.log(axios.post(loginAPIUrl, requestBody))
+    //console.log(axios.post(loginAPIUrl, requestBody))
 
     axios.post(loginAPIUrl, requestBody).then((response) => {
-      console.log(response)
-      console.log(response.data)
+      //console.log(response.data)
+      //console.log(jwt_decode(response.data.object.idToken))
       if(response.data.message === "NEW_PASSWORD_REQUIRED") {
         history.push("/changePass");
       } else {
-        setUserSession(response.data.email, response.data.token);
-        props.history.push('/loggedIn');
+        //setUserSession(response.data.email, response.data.token);
+        setUserSession(jwt_decode(response.data.object.idToken).email, response.data.object.idToken);
+        props.history.push('/');
+        window.location.reload(false);
       }      
     }).catch((error) => {
       if (error.response.status === 401 || error.response.status === 403) {

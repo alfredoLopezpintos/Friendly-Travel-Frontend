@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { Link, useHistory } from 'react-router-dom';
+import { getUser, getToken, resetUserSession } from './service/AuthService';
 import './Navbar.css';
 
 function Navbar() {
@@ -13,6 +14,18 @@ function Navbar() {
 
   const handleHistory = () => {
     history.push("/login");
+  }
+
+  const logoutHandler = () => {
+    resetUserSession();
+    closeMobileMenu();
+    //props.history.push('login');
+  }
+
+  const logoutHandler2 = () => {
+    resetUserSession();
+    window.location.reload(false);
+    //closeMobileMenu();
   }
 
   const showButton = () => {
@@ -68,16 +81,11 @@ function Navbar() {
             </li>
 
             <li onClick={handleHistory}>
-              <Link
-                to='/login'
-                className='nav-links-mobile'
-                onClick={closeMobileMenu}
-              >
-                Iniciar sesión
-              </Link>
+            {getToken() === null ? (<Link to='/login' className='nav-links-mobile' onClick={closeMobileMenu}>Iniciar sesión</Link>) : (<Link to='/' className='nav-links-mobile' onClick={logoutHandler}>Cerrar sesión</Link>)}
+              
             </li>
           </ul>
-          {button && <Button onClick={handleHistory} buttonStyle='btn--outline'>Iniciar sesión</Button>}
+          {button && (getToken() === null ? (<Button onClick={handleHistory} buttonStyle='btn--outline'>Iniciar sesión</Button>) : (<Button onClick={logoutHandler2} buttonStyle='btn--outline'>Cerrar sesión</Button>))}
         </div>
       </nav>
     </>
