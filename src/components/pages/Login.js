@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import './Login.css'
 import jwt_decode from "jwt-decode";
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import { ThreeDots } from 'react-loader-spinner';
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login"
 
 const Login = (props) => {
@@ -14,10 +17,29 @@ const Login = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
 
+  const LoadingIndicator = props => {
+    const { promiseInProgress } = usePromiseTracker();
+
+    return (
+     promiseInProgress && 
+     <div
+       style={{
+         width: "100%",
+         height: "100",
+         display: "flex",
+         justifyContent: "center",
+         alignItems: "center"
+       }}
+       >
+     <ThreeDots color="#2BAD60" height="100" width="100" />
+   </div>
+    );  
+ }
+
   const submitHandler = (event) => {
     event.preventDefault();
     if (email.trim() === '' || password.trim() === '') {
-      setErrorMessage('Usuario y contraseña no pueden ser vacios.');
+      setErrorMessage('Usuario y/o contraseña no pueden ser vacios.');
       return;
     }
     setErrorMessage(null);
@@ -33,7 +55,7 @@ const Login = (props) => {
 
     //console.log(axios.post(loginAPIUrl, requestBody))
 
-    axios.post(loginAPIUrl, requestBody).then((response) => {
+    trackPromise(axios.post(loginAPIUrl, requestBody).then((response) => {
       //console.log(response.data)
       //console.log(jwt_decode(response.data.object.idToken))
       if(response.data.message === "NEW_PASSWORD_REQUIRED") {
@@ -52,7 +74,7 @@ const Login = (props) => {
       } else {
         setErrorMessage('Lo sentimos, el servidor parece encontrarse en mantenimiento. Por favor intentelo de nuevo más tarde.');
       }
-    })
+    }))
   }
 
   return (
@@ -84,6 +106,7 @@ const Login = (props) => {
           </div>
 
           {errorMessage && <p className="message">{errorMessage}</p>}
+          <LoadingIndicator/>
           <br />
         </form>
 
