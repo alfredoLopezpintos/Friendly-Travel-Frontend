@@ -68,7 +68,7 @@ export default function ListadoDeViajes() {
       alert("El precio debe ser un número.")
     }else if (!isNumber(data.availablePlaces) && data.availablePlaces !== ""){
       alert("Asientos debe ser un número.")
-    }else if (!moment(data.tripDate).isValid()){
+    }else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()){
       alert("Fecha inválida.")
     }else if (moment(data.tripDate) < moment(today)){
       alert("La fecha del viaje no puede ser anterior al día actual.")
@@ -81,12 +81,14 @@ export default function ListadoDeViajes() {
     data.tripDate = transformDate(date)
 
     if(formValidate(data)) {
-          //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
-      
+        //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
+
       const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
       "/trips?origin=" + data.origin + "&destination=" + data.destination +
       "&tripDate=" + data.tripDate + "&price=" + data.price +
       "&availablePlaces=" + data.availablePlaces;
+
+      console.log(viajesGetEndPoint)
 
       try {
         const response = await trackPromise(axios.get(viajesGetEndPoint));
@@ -132,8 +134,7 @@ export default function ListadoDeViajes() {
             </div>
             <div>
             <label>FECHA: </label>
-              <DatePickerComponent placeholderText={'Fecha'}
-              selected={date} onChange={handleDateChange} locale="es" />
+              <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
             </div>
             <div>
               <label>ASIENTOS: </label>

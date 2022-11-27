@@ -1,103 +1,122 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import axios from 'axios';
-import { useForm } from "react-hook-form";
-import { Button2 } from '../Button2';
-import { useHistory } from "react-router-dom";
-import moment from 'moment';
+import { setUserSession } from '../service/AuthService'
 import configData from '../../configData.json';
-import './Login.css';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import './Login.css'
+import jwt_decode from "jwt-decode";
+import { usePromiseTracker } from "react-promise-tracker";
+import { trackPromise } from 'react-promise-tracker';
+import { ThreeDots } from 'react-loader-spinner';
+const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login"
 
-export default function RegistrarViaje() {
-
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data, e) => fetchViajes(data, e);
-  const onError = (errors, e) => console.log(errors, e);
-  const redirect = (data, e) => redirect2(data, e);
+const Login = (props) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
-  
-  function isNumber(str) {
-    if (str.trim() === '') {
-      return false;
+
+  const LoadingIndicator = props => {
+    const { promiseInProgress } = usePromiseTracker();
+
+    return (
+     promiseInProgress && 
+     <div
+       style={{
+         width: "100%",
+         height: "100",
+         display: "flex",
+         justifyContent: "center",
+         alignItems: "center"
+       }}
+       >
+     <ThreeDots color="#2BAD60" height="100" width="100" />
+   </div>
+    );  
+ }
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    if (email.trim() === '' || password.trim() === '') {
+      setErrorMessage('Usuario y/o contraseña no pueden ser vacios.');
+      return;
     }
-  
-    return !isNaN(str);
-  }
-
-  function formValidate(data) {
-    const dateObj = new Date();
-    const today = transformDate(dateObj);
-
-    if(data.tripDate === "" ||
-     data.source === "" ||
-     data.price === "" ||
-     data.destination === "" ||
-     data.availablePlaces === "") {
-        alert("Debe llenar todos los campos para poder crear el viaje.")
-        return false;
-    }else if (!isNumber(data.price)){
-      alert("El precio debe ser un número.")
-    }else if (!isNumber(data.availablePlaces)){
-      alert("Lugares disponibles debe ser un número.")
-    }else if (!moment(data.tripDate).isValid()){
-      //console.log(moment(data.tripDate))
-      alert("Fecha inválida.")
-    }else if (moment(data.tripDate) < moment(today)){
-      alert("La fecha del viaje no puede ser anterior al día actual.")
-    }else {
-      return true;
-    }
-  }
-  
-  function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    return (year + "-" + month + "-" + day);
-  }
-
-  async function fetchViajes(data, e) {
-
-    if(formValidate(data)) {
-      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users"
-    
-      try {
-        //const response = await axios.get(viajesGetEndpoint);
-        const response = await axios.post(viajesGetEndpoint, data);
-        console.log(response)
-        redirect();
-        //setViajes(response.data);
-      } catch(error) {
-        console.error(error);
-        //alert('Error inesperado');
+    setErrorMessage(null);
+    const requestConfig = {
+      headers: {
+        'Authorization': 'OkhIJdHFMomDeRVUXGfa1EXWiGBAWpdakg7ZRCFf'
       }
     }
+    const requestBody = {
+      email: email,
+      password: password
+    }
+
+    //console.log(axios.post(loginAPIUrl, requestBody))
+
+    trackPromise(axios.post(loginAPIUrl, requestBody).then((response) => {
+      //console.log(response.data)
+      //console.log(jwt_decode(response.data.object.idToken))
+      if(response.data.message === "NEW_PASSWORD_REQUIRED") {
+        history.push("/changePass");
+      } else {
+        //setUserSession(response.data.email, response.data.token);
+        setUserSession(jwt_decode(response.data.object.idToken).email, response.data.object.idToken);
+        props.history.push('/');
+        window.location.reload(false);
+      }      
+    }).catch((error) => {
+      if (error.response.status === 401 || error.response.status === 403) {
+        setErrorMessage(error.response.data.message);
+      } else if(error.response.status === 400) {
+        setErrorMessage("Usuario y/o contraseña incorrectos.")
+      } else {
+        setErrorMessage('Lo sentimos, el servidor parece encontrarse en mantenimiento. Por favor intentelo de nuevo más tarde.');
+      }
+    }))
   }
 
-  async function redirect2(data, e) {
-    history.push("/success");
-  } 
-
-
   return (
+    <div>
+      <div className="grid align__item">
 
-    <div className = "form-box">
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-          
-          <div className = "field1">
-          <label> Login </label>
-          <input {...register("usuario")} placeholder="Usuario"/>
-          <input {...register("contraseña")} placeholder="Contraseña"/>
+      <div className="register">
+
+        <svg xmlns="http://www.w3.org/2000/svg" className="site__logo" width="56" height="84" viewBox="77.7 214.9 274.7 412"><defs><linearGradient id="a" x1="0%" y1="0%" y2="0%"><stop offset="0%" stop-color="#8ceabb"/><stop offset="100%" stop-color="#378f7b"/></linearGradient></defs><path fill="url(#a)" d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"/></svg>
+
+        <h2>Iniciar sesión</h2>
+
+        <br />
+
+        <form onSubmit={submitHandler} className="form">
+
+          <div className="form__field">
+            <input value={email} onChange={event => setEmail(event.target.value)}
+            type="email" placeholder="info@mailaddress.com" />
           </div>
+
+          <div className="form__field">
+            <input value={password} onChange={event => setPassword(event.target.value)}
+            type="password" placeholder="••••••••••••" />
+          </div>
+
+          <div className="form__field">
+            <input type="submit" value="Aceptar" />
+          </div>
+
+          {errorMessage && <p className="message">{errorMessage}</p>}
+          <LoadingIndicator/>
           <br />
+        </form>
 
-          <Button2 className='btns'
-          buttonStyle='btn--outline'
-          buttonSize='btn--large'>Iniciar Sesión</Button2>
-      </form>
+        <p>¿No tienes cuenta? <Link to="/register">Registrate</Link></p>
 
+      </div>
+
+      </div>
     </div>
-  );
+  )
 }
 
-
+export default Login;
