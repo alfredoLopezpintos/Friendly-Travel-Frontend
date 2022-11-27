@@ -43,9 +43,13 @@
 
 .register input {
   border: 1px solid #242c37;
-  border-radius: 999px;
+  border-radius: 5px;
   background-color: transparent;
-  text-align: center;
+}
+
+.big_logo i {
+  font-size: 100px;
+  color: rgb(26, 23, 23) 100%);;
 }
 
 .register input[type="email"],
@@ -56,10 +60,18 @@
 }
 
 .register input[type="submit"] {
-  background-image: linear-gradient(160deg, #8ceabb 0%, #378f7b 100%);
-  color: #fff;
-  margin-bottom: 1rem;
+  border: 1px solid #242c37;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
   width: 100%;
+}
+
+.register input[type="submit"]:hover,
+.register input[type="submit"]:hover {
+  transition: all 0.3s ease-out;
+  background: #242424;
+  color: #fff;
+  transition: 250ms;
 }
 
 .form-box {
@@ -100,37 +112,6 @@ textarea {
 
 .form-box textarea {
   height: 15vh;
-}
-
-.prevBtn,
-.nextBtn {
-  display: inline-block;
-  width: 30%;
-  height: 2rem;
-  color: red;
-  border: 0;
-  bottom: 0;
-  cursor: pointer;
-  font-size: 20px;
-  position: absolute;
-
-}
-
-.prevBtn {
-  margin: 1rem 0 1rem 0;
-  border-radius: 20px 0 0 20px;
-}
-
-.nextBtn {
-  margin: 1rem 0 1rem 8rem;
-  margin-left: 52%;
-  border-radius: 0 20px 20px 0;
-}
-
-.nextBtn:hover,
-.prevBtn:hover {
-  background-color: rgb(245, 245, 78);
-  transition: 1s background ease;
 }
 
 .prevBtn,
