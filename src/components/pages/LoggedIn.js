@@ -7,7 +7,7 @@ const LoggedIn = (props) => {
   const token = getToken();
   //const name = user !== 'undefined' && user ? user.name : '';
 
-  //console.log(user)
+  console.log(user)
   console.log(jwt_decode(token))
 
   const logoutHandler = () => {
