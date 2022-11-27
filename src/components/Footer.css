@@ -162,10 +162,6 @@
     width: 100%;
   }
 
-  .btn {
-    display: flex;
-  }
-
   .footer-link-wrapper {
     flex-direction: column;
   }

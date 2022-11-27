@@ -94,17 +94,26 @@
   
   /* Style the submit button */
   
-  .form-inline button
+  /*.form-inline button*/
   
   /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
-  @media (max-width: 800px) {
+  @media screen and (max-width: 1020px) {
 	.form-inline input {
-	  margin: 10px 0;
+		margin: 10px 0;
 	}
-  
+
 	.form-inline {
-	  flex-direction: column;
-	  align-items: stretch;
+		flex-direction: column;
+		margin-top: 200px;
+		/*align-items: stretch;*/
+	}
+
+	.field1 {
+		display: block;
+	}
+
+	.inputDate {
+		width: 176px;
 	}
   }
 
