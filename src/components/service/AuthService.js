@@ -1,7 +1,7 @@
 module.exports = {
     getUser: function() {
       //console.log(sessionStorage)
-      const user = sessionStorage.getItem('email');
+      const user = window.localStorage.getItem('email');
       if (user === 'undefined' || !user) {
         return null;
       } else {
@@ -10,16 +10,24 @@ module.exports = {
     },
   
     getToken: function() {
-      return sessionStorage.getItem('token');
+      return window.localStorage.getItem('token');
     },
   
     setUserSession: function(user, token) {
-      sessionStorage.setItem('email', JSON.stringify(user));
-      sessionStorage.setItem('token', token);
+      //sessionStorage.setItem('email', JSON.stringify(user));
+      //sessionStorage.setItem('token', token);
+      window.localStorage.setItem(
+        "email", JSON.stringify(user)
+      )
+      window.localStorage.setItem(
+        "token", JSON.stringify(token)
+      )
     },
   
     resetUserSession: function() {
-      sessionStorage.removeItem('email');
-      sessionStorage.removeItem('token');
+      //sessionStorage.removeItem('email');
+      //sessionStorage.removeItem('token');
+      window.localStorage.removeItem("email")
+      window.localStorage.removeItem("token")
     }
   }
