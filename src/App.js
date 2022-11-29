@@ -11,6 +11,8 @@ import TravelPreviewer from './components/pages/TravelPreviewer';
 import LoggedIn from './components/pages/LoggedIn';
 import Register from './components/pages/Register';
 import ChangePass from './components/pages/ChangePass';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -29,6 +31,7 @@ function App() {
           <Route path='/changePass' component={ChangePass} />
           <Route path='/map' component={TravelPreviewer} />
         </Switch>
+        <ToastContainer position="top-center"/>
       </Router>
     </>
   );

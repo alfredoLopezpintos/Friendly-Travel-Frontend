@@ -97,13 +97,15 @@ function TravelPreviewer() {
   }
 
   async function redirect2(data, e) {
-    history.push("/success");
+    history.push("/");
+    toast.success("Viaje creado correctamente!")
   } 
 
-  
+  const your_token = "eyJraWQiOiJabmpSSllzQ0FyZ0dMRXlWcU1ZdkwwTGdMRjU4NjNwZUtxSlJ4dVhGUGtVPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwZjA3ZjYxYi1iOWYwLTRmMGMtODA4Zi02OTIxMjk2MDlmZmQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfSTExRkNDRjhIIiwiY29nbml0bzp1c2VybmFtZSI6IjBmMDdmNjFiLWI5ZjAtNGYwYy04MDhmLTY5MjEyOTYwOWZmZCIsIm9yaWdpbl9qdGkiOiI5ZmFkMjM0NC0zMzJiLTQ1MjUtYTVjOS03NTk1ZmZiZTFiZWIiLCJhdWQiOiI3OGd1N29pdmgzcnZmZnRlbW5pM2g4YnFwIiwiZXZlbnRfaWQiOiJhZDJiZjU5Ny00M2UwLTQzNTYtOGFjZi1jMzZlNzM0YWQwNGIiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTY2OTU4NjU3OSwiZXhwIjoxNjY5NTkwMTc5LCJpYXQiOjE2Njk1ODY1NzksImp0aSI6ImFkMzhkMjA0LWQ5Y2YtNDUxZC1iNTA4LTI4N2I1ZDgxYTBjYyIsImVtYWlsIjoiZGllZ28ucm9zYWxlc0Blc3R1ZGlhbnRlcy51dGVjLmVkdS51eSJ9.a2pFuZVewWAyzETXYlcC5NiViEwyqlqNx0sN1f9q0jX21u6mlW6g1wnx1dvRO2SUe3NTcSo38-luYOD_iGQwruastTrXTblThW5D25fT-_GxVb6Okz2tVzlyTezK1lI3XyWgEHlmvTQQQTo_s6L1jA-CaRLx-Q9SMS07XRbHNzSU_G7zyH9x_hLetKxQpfoCU_3f2M7C2OhL3WG1k5zz5aBJbbAKiJ9I9fZBrU1Q_yqmU5WFSqBoWWh3lm0bxfOPIVXaaLGFvPSl1o7DETHE02dmIUTX3dQ3q8SKWl_tGYiJD-uH0F6NfsGanDz0xz3sFxsNaTpFazq9aZzSlRknfg"; //aca va el token cuando se tenga
+
+
   async function fetchViajes(data, e) {
     // A MANO POR AHORA
-    data.user = "user";
     data.vehicle = "GAB1234";
     data.origin = origen;
     data.destination = destino;
@@ -118,9 +120,15 @@ function TravelPreviewer() {
     
       try {
         console.log(data)
-        const response = await axios.post(viajesGetEndpoint, data);
+        console.log(your_token)
+        const response = await axios.post(viajesGetEndpoint, data, {
+          headers: {
+              'Authorization': your_token,
+              'Accept' : 'application/json',
+              'Content-Type': 'application/json'
+          }
+      });
         console.log(response)
-        toast.success('Viaje creado correctamente!', {});
         clearRoute()
         redirect();
       } catch(error) {
@@ -199,7 +207,7 @@ function TravelPreviewer() {
     <>
     <MapContainer>
         <Modal>
-        <form onSubmit={handleSubmit(onSubmit, onError)} class="form">
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
           <div>
           <h3>¡Publica tu viaje aquí!</h3>
           <br></br>

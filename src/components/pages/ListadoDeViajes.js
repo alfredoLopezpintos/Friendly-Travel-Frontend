@@ -16,7 +16,10 @@ import es from "date-fns/locale/es";
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
 import { ThreeDots } from 'react-loader-spinner';
+import { Autocomplete, DirectionsRenderer, GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 registerLocale("es", es);
+
+
 
 export default function ListadoDeViajes() {
 
@@ -27,6 +30,7 @@ export default function ListadoDeViajes() {
   const handleDateChange = date => setDate(date);
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
+  const [ libraries ] = useState(['places']);
 
   const LoadingIndicator = props => {
      const { promiseInProgress } = usePromiseTracker();
@@ -55,6 +59,11 @@ export default function ListadoDeViajes() {
     return !isNaN(str);
   }
 
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: configData.MAPS_KEY,
+    libraries
+  });
+  
   function formValidate(data) {
     const dateObj = new Date();
     const today = transformDate(dateObj);
@@ -124,14 +133,18 @@ export default function ListadoDeViajes() {
         <form className="form-inline" onSubmit={handleSubmit(onSubmit, onError)}>
           
           <div className = "field1">
+            <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
             <div>
               <label>ORIGEN: </label>
               <input {...register("origin")} placeholder="Origen"/>
             </div>
+              </Autocomplete> 
+              <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
             <div>
               <label>DESTINO: </label>
               <input {...register("destination")} placeholder="Destino"/>
             </div>
+            </Autocomplete> 
             <div>
             <label>FECHA: </label>
               <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
