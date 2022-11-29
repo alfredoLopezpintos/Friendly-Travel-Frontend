@@ -136,25 +136,30 @@ export default function ListadoDeViajes() {
             <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
             <div>
               <label>ORIGEN: </label>
+              <br/>
               <input {...register("origin")} placeholder="Origen"/>
             </div>
               </Autocomplete> 
               <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
             <div>
               <label>DESTINO: </label>
+              <br/>
               <input {...register("destination")} placeholder="Destino"/>
             </div>
             </Autocomplete> 
             <div>
             <label>FECHA: </label>
-              <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
+            <br/>
+              <input {...register("birthDate")} className="inputDate" type="date" format="DD-MM-YYYY" />
             </div>
             <div>
               <label>ASIENTOS: </label>
+              <br/>
               <input {...register("availablePlaces")} placeholder="Lugares Disponibles"/>
             </div>
             <div>
               <label>PRECIO: </label>
+              <br/>
               <input {...register("price")} placeholder="Precio (En Pesos Uruguayos)"/>
             </div>
             <button className="btn-submit" type="submit">Buscar</button>
