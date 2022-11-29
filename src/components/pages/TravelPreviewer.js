@@ -67,7 +67,7 @@ function TravelPreviewer() {
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");  console.log(nafta) 
+  const [duration, setDuration] = useState("");
 
   const [origen, setOrigen] = useState("");
   const [destino, setDestino] = useState("");
@@ -83,11 +83,6 @@ function TravelPreviewer() {
   const destiantionRef = useRef();
   const dateRef = useRef();
 
-  const currentDate = new Date()
-  const formatDate = Moment().format('DD-MM-YYYY')
-  console.log(currentDate)
-  console.log(formatDate)
-
   function isNumber(str) {
     if (str.trim() === '') {
       return false;
@@ -100,8 +95,6 @@ function TravelPreviewer() {
     history.push("/");
     toast.success("Viaje creado correctamente!")
   } 
-
-   //aca va el token cuando se tenga
   
   async function fetchViajes(data, e) {
     // A MANO POR AHORA
@@ -109,30 +102,24 @@ function TravelPreviewer() {
     data.origin = origen;
     data.destination = destino;
     data.tripDate = dateRef.current.value;
-    const token = JSON.parse(getToken());
-    console.log(data)
-    console.log(token)
 
     if(formValidate(data)) {
       
       data.tripDate = Moment(data.tripDate).format('DD-MM-YYYY')
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
       try {
-        console.log(data)
-        const response = await axios.post(viajesGetEndpoint, data, {
+        await axios.post(viajesGetEndpoint, data, {
           headers: {
-              'Authorization': {token},
+              'Authorization': JSON.parse(getToken()),
               'Accept' : 'application/json',
               'Content-Type': 'application/json'
           }
       });
-      console.log(getToken())
-        console.log(response)
         clearRoute()
         redirect();
       } catch(error) {
         console.error(error);
-        toast.error('No se pudo crear el viaje', { });
+        toast.error('No se pudo crear el viaje');
       }
     }
   }
