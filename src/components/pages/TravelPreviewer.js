@@ -10,6 +10,7 @@ import configData from '../../configData.json';
 import Footer2 from '../Footer2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getToken } from '../service/AuthService';
 
 
 const nafta = configData.PRECIO_NAFTA;
@@ -100,32 +101,32 @@ function TravelPreviewer() {
     toast.success("Viaje creado correctamente!")
   } 
 
-  const your_token = window.localStorage.getItem('token'); //aca va el token cuando se tenga
-
+   //aca va el token cuando se tenga
+  
   async function fetchViajes(data, e) {
     // A MANO POR AHORA
     data.vehicle = "GAB1234";
     data.origin = origen;
     data.destination = destino;
     data.tripDate = dateRef.current.value;
-
+    const token = JSON.parse(getToken());
     console.log(data)
+    console.log(token)
 
     if(formValidate(data)) {
       
       data.tripDate = Moment(data.tripDate).format('DD-MM-YYYY')
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
-    
       try {
         console.log(data)
-        console.log(your_token)
         const response = await axios.post(viajesGetEndpoint, data, {
           headers: {
-              'Authorization': your_token,
+              'Authorization': {token},
               'Accept' : 'application/json',
               'Content-Type': 'application/json'
           }
       });
+      console.log(getToken())
         console.log(response)
         clearRoute()
         redirect();
