@@ -1,6 +1,6 @@
-import React from 'react';
-import '../../App.css';
-import ListadoDeViajes from './ListadoDeViajes';
+import React from "react";
+import "../../App.css";
+import ListadoDeViajes from "./ListadoDeViajes";
 
 function Viajes() {
   return (

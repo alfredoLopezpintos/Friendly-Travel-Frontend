@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion : '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   Stage:
     Type: String
@@ -10,42 +10,42 @@ Parameters:
 
 Resources:
   S3Bucket:
-    Type: 'AWS::S3::Bucket'
+    Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Sub ${Stage}-friendly-bucket
       WebsiteConfiguration:
-        IndexDocument: 'index.html'
-        ErrorDocument: 'index.html'
+        IndexDocument: "index.html"
+        ErrorDocument: "index.html"
 
   # Configure the bucket as a CloudFront Origin
   ReadPolicy:
-    Type: 'AWS::S3::BucketPolicy'
+    Type: "AWS::S3::BucketPolicy"
     Properties:
       Bucket: !Ref S3Bucket
       PolicyDocument:
         Statement:
-          - Action: 's3:GetObject'
+          - Action: "s3:GetObject"
             Effect: Allow
-            Resource: !Sub 'arn:aws:s3:::${S3Bucket}/*'
-            Principal: 
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+            Principal:
               CanonicalUser: !GetAtt CloudFrontOriginAccessIdentity.S3CanonicalUserId
 
   # Configure Access to CloudFroun
   CloudFrontOriginAccessIdentity:
-    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+    Type: "AWS::CloudFront::CloudFrontOriginAccessIdentity"
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: !Ref S3Bucket
 
   # Configure CloudFront
   CloudFrontDistribution:
-    Type: 'AWS::CloudFront::Distribution'
+    Type: "AWS::CloudFront::Distribution"
     Properties:
       DistributionConfig:
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 404
-            ResponsePagePath: '/index.html'
+            ResponsePagePath: "/index.html"
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
@@ -64,16 +64,16 @@ Resources:
           MaxTTL: 8640
           MinTTL: 60
           TargetOriginId: s3origin
-          ViewerProtocolPolicy: 'allow-all'
-        DefaultRootObject: '/index.html'
+          ViewerProtocolPolicy: "allow-all"
+        DefaultRootObject: "/index.html"
         Enabled: true
         HttpVersion: http2
         Origins:
-          - DomainName: !GetAtt 'S3Bucket.DomainName'
+          - DomainName: !GetAtt "S3Bucket.DomainName"
             Id: s3origin
             S3OriginConfig:
-              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
-        PriceClass: 'PriceClass_All'
+              OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
+        PriceClass: "PriceClass_All"
 
 ######## OUTPUT ########
 
@@ -82,5 +82,5 @@ Outputs:
     Description: "Url de la pagina Friendly Travel"
     Value: !GetAtt "S3Bucket.WebsiteURL"
   Domain:
-    Description: 'Cloudfront Domain for Friendly Travel'
+    Description: "Cloudfront Domain for Friendly Travel"
     Value: !GetAtt CloudFrontDistribution.DomainName

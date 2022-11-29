@@ -1,0 +1,20 @@
+.form-box input[type="submit"] {
+  border: 1px solid #242c37;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.form-box input[type="submit"] {
+  border: 1px solid #242c37;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form-box input[type="submit"]:hover,
+.form-box input[type="submit"]:hover {
+  transition: all 0.3s ease-out;
+  background: #242424;
+  color: #fff;
+  transition: 250ms;
+}

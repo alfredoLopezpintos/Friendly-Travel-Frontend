@@ -13,14 +13,14 @@
 }
 
 #content-wrap {
-  padding-bottom: 2.5rem;    /* Footer height */
+  padding-bottom: 2.5rem; /* Footer height */
 }
 
 #footer {
   position: relative;
   bottom: 0;
   width: 100%;
-  height: 10.5rem;            /* Footer height */
+  height: 10.5rem; /* Footer height */
 }
 
 .footer-subscription {
@@ -36,8 +36,8 @@
 }
 
 .footer-subscription > p {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 
 .footer-subscription-heading {
