@@ -77,9 +77,50 @@
 .form-box {
   min-width: 100%;
   /* border: 1px solid red; */
-  padding-top: 1vw;
+  padding-top: 2vw;
   padding-inline: 25vw;
   /* position:relative for .prevBtn and .nextBtn position:absolute; */
+}
+
+@media screen and (max-width: 1000px) {
+  .form-box {
+    padding-top: 4vw;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .form-box {
+    padding-top: 4vw;
+  }
+  h1 {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .form-box {
+    padding-top: 4vw;
+  }
+  h1 {
+    font-size: 16px;
+  }
+
+  body .form-box label {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .form-box {
+    padding-top: 4vw;
+  }
+  h1 {
+    font-size: 14px;
+  }
+
+  body .form-box label {
+    font-size: 14px;
+  }
 }
 
 .form-box h5 {
