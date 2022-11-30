@@ -26,7 +26,9 @@ function HeroSection() {
         >
           BUSCAR VIAJE
         </Button>
+
         <Button
+        
           className='btns'
           buttonStyle='btn--primary'
           buttonSize='btn--large'
@@ -34,6 +36,7 @@ function HeroSection() {
         >
             SOBRE CARPOOLING  <i className='fa fa-info-circle' />
         </Button>
+
       </div>
     </div>
   );

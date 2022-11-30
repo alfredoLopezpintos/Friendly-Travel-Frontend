@@ -6,7 +6,22 @@ import './Text.css';
 function Text() {
   return (
     <div className='text'>
-      <h1>¡Tu próximo destino te espera!</h1>
+      <div className='text__container'>
+        <div className='text__wrapper'>
+          <h1>¿Qué es Carpooling?</h1>
+          <ul className='text__items'>
+            <TextItem
+              text='El Carpooling es la práctica que consiste en 
+              compartir un automóvil con otras personas tanto para viajes periódicos como para trayectos puntuales. Con Friendly Travel reduciremos la 
+              congestión de tránsito en las grandes ciudades así como también facilitaremos los desplazamientos de personas que no dispongan de coche propio. Además, supone una 
+              notable disminución de emisiones de CO2, al reducir el número de coches en las carreteras. A su vez, favorece las relaciones sociales entre personas que realizan 
+              los mismos recorridos.'
+            />
+          
+          </ul>
+        </div>
+      </div>
+      <h1>Ventajas de utilizar Friendly Travel</h1>
       <div className='text__container'>
         <div className='text__wrapper'>
           <ul className='text__items'>
@@ -14,15 +29,20 @@ function Text() {
               src={require("../assets/images/carpool.jpg")}
             />
             <TextItem
-              text='La costa este de Uruguay es una sucesión de balnearios con paisajes tan variados como maravillosos'
+              text='Ofrecer una mejor solución en movilidad a todas aquellas personas que necesiten trasladarse y 
+              estén en la busqueda de una forma más eficiente de hacerlo en 
+              materia de tiempos, costos y beneficios.'
             />
           </ul>
+          <br></br><br></br>
           <ul className='cards__items'>
               <TextItem
-                text='La costa este de Uruguay es una sucesión de balnearios con paisajes tan variados como maravillosos'
+                text='No solo es una medida para combatir y ayudar a mitigar la contaminación del aire debido a los impactos ambientales de los vehículos, 
+                también es una manera de descongestionar el transporte y las vías públicas,
+                 una manera de aprovechar más el tiempo, de romper la rutina y de viajar más cómodo.'
               />
             <CardItem2
-              src={require("../assets/images/carpool.jpg")}
+              src={require("../assets/images/comparte.jpg")}
             />
           </ul>
         </div>

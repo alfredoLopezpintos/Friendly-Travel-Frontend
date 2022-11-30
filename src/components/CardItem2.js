@@ -9,7 +9,7 @@ function CardItem2(props) {
           <figure className='text__item__pic-wrap'>
             <img
               className='text__item__img'
-              alt='Travel Image'
+              alt='Travel'
               src={props.src}
             />
           </figure>

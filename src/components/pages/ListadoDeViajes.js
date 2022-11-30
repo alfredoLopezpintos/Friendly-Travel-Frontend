@@ -11,12 +11,12 @@ import { render } from '@testing-library/react';
 import { useForm } from "react-hook-form";
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import DatePickerComponent, { registerLocale } from "react-datepicker";
+import DatePickerComonent, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
 import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
 import { ThreeDots } from 'react-loader-spinner';
-import { Autocomplete, DirectionsRenderer, GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 registerLocale("es", es);
 
 
@@ -63,6 +63,10 @@ export default function ListadoDeViajes() {
     googleMapsApiKey: configData.MAPS_KEY,
     libraries
   });
+
+  if (!isLoaded) {
+    return <>loading...</>;
+  }
   
   function formValidate(data) {
     const dateObj = new Date();

@@ -3,7 +3,7 @@ import CardItem2 from '../CardItem2';
 import TextItem from '../TextItem';
 import '../Text.css';
 
-function Text() {
+function Carpool() {
   return (
     <div className='text'>
       <div className='text__container'>
@@ -51,4 +51,4 @@ function Text() {
   );
 }
 
-export default Text;
+export default Carpool;
