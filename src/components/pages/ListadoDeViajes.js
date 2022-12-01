@@ -1,6 +1,5 @@
 import React from "react";
 import "../../App.css";
-import { Button } from "../../components/Button";
 import "./ListadoDeViajes.css";
 import { useState } from "react";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -11,49 +10,19 @@ import { render } from "@testing-library/react";
 import { useForm } from "react-hook-form";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
-import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from "react-promise-tracker";
-import { ThreeDots } from "react-loader-spinner";
+import { LoadingIndicator, transformDate, isNumber} from "../Utilities";
+
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
   const [viajes, setViajes] = React.useState([]);
   const { register, handleSubmit } = useForm();
   const [date, setDate] = useState(new Date());
-  //const [seat, setSeat] = useState(1);
-  const handleDateChange = (date) => setDate(date);
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
-
-  const LoadingIndicator = (props) => {
-    const { promiseInProgress } = usePromiseTracker();
-
-    return (
-      promiseInProgress && (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ThreeDots color="#2BAD60" height="100" width="100" />
-        </div>
-      )
-    );
-  };
-
-  function isNumber(str) {
-    if (str.trim() === "") {
-      return false;
-    }
-
-    return !isNaN(str);
-  }
 
   function formValidate(data) {
     const dateObj = new Date();
@@ -79,8 +48,6 @@ export default function ListadoDeViajes() {
     data.tripDate = transformDate(date);
 
     if (formValidate(data)) {
-      //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
-
       const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips?origin=" +
@@ -94,11 +61,8 @@ export default function ListadoDeViajes() {
         "&availablePlaces=" +
         data.availablePlaces;
 
-      console.log(viajesGetEndPoint);
-
       try {
         const response = await trackPromise(axios.get(viajesGetEndPoint));
-        console.log(response.data);
         if (
           response.data.message ===
           "No hay viajes que cumplan con las condiciones seleccionadas."
@@ -112,16 +76,6 @@ export default function ListadoDeViajes() {
         console.error(error);
       }
     }
-  }
-
-  function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    if (/^\d$/.test(dateObj.getUTCDate())) {
-      day = "0" + dateObj.getUTCDate();
-    }
-    return day + "-" + month + "-" + year;
   }
 
   render();

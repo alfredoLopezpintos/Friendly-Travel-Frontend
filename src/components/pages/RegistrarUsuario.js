@@ -1,22 +1,18 @@
-/*import React from 'react';
-import '../../App.css';
-
-export default function SignUp() {
-  return <h1 className='sign-up'>LIKE & SUBSCRIBE</h1>;
-}*/
-
-import React, { useState } from "react";
+import React from "react";
 import "./RegistrarUsuario.css";
 import "./RegistrarUsuario.css";
 import { useForm } from "react-hook-form";
 import configData from "../../configData.json";
 import axios from "axios";
-import { Button2 } from "../Button2";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
+import { isNumber, transformDate2 } from "../Utilities";
 import es from "date-fns/locale/es";
+import { getUser } from "../service/AuthService";
+import { trackPromise } from "react-promise-tracker";
+import { LoadingIndicator } from "../Utilities";
 registerLocale("es", es);
 
 export default function Register() {
@@ -25,14 +21,6 @@ export default function Register() {
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
   const history = useHistory();
-
-  function isNumber(str) {
-    if (str.trim() === "") {
-      return false;
-    }
-
-    return !isNaN(str);
-  }
 
   function formValidate(data) {
     if (
@@ -73,31 +61,21 @@ export default function Register() {
     }
   }
 
-  function transformDate(dateObj) {
-    const fecha = moment(dateObj);
-    console.log(fecha.format("DD-MM-YYYY"));
-    return fecha.format("DD-MM-YYYY");
-    //return (day + "-" + month + "-" + year);
-  }
-
   async function fetchViajes(data, e) {
-    data.birthDate = transformDate(data.birthDate);
+    data.birthDate = transformDate2(data.birthDate);
+    data.user = getUser();
 
     // A MANO POR AHORA
-    //data.user = "user";
     //data.vehicle = "GAB1234";
-    console.log(data);
 
     if (formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
 
       try {
-        const response = await axios.post(viajesGetEndpoint, data);
-        console.log(response);
+        await trackPromise(axios.post(viajesGetEndpoint, data));
         redirect();
       } catch (error) {
         console.error(error);
-        //alert('Error inesperado');
       }
     }
   }
@@ -105,10 +83,6 @@ export default function Register() {
   async function redirect2(data, e) {
     history.push("/success");
   }
-
-  const [date, setDate] = useState(new Date());
-  const handleChange = (date) => setDate(date);
-
   return (
     <div className="form-box">
       <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -134,6 +108,7 @@ export default function Register() {
         <div className="form__field">
           <input type="submit" value="Aceptar" />
         </div>
+        <LoadingIndicator />
       </form>
     </div>
   );

@@ -8,8 +8,7 @@ import Viajes from "./components/pages/Viajes";
 import Succesful from "./components/pages/Succesful";
 import Login from "./components/pages/Login";
 import TravelPreviewer from "./components/pages/TravelPreviewer";
-import LoggedIn from "./components/pages/LoggedIn";
-import Register from "./components/pages/Register";
+import Register from "./components/pages/RegistrarUsuario";
 import ChangePass from "./components/pages/ChangePass";
 
 function App() {
@@ -23,7 +22,6 @@ function App() {
           <Route path="/viajes" component={Viajes} />
           <Route path="/success" component={Succesful} />
           <Route path="/login" component={Login} />
-          <Route path="/loggedIn" component={LoggedIn} />
           <Route path="/register" component={Register} />
           <Route path="/changePass" component={ChangePass} />
           <Route path="/map" component={TravelPreviewer} />

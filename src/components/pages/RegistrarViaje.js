@@ -3,10 +3,12 @@ import "./RegistrarViaje.css";
 import { useForm } from "react-hook-form";
 import configData from "../../configData.json";
 import axios from "axios";
-import { Button2 } from "../Button2";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
+import { isNumber, transformDate, LoadingIndicator } from "../Utilities";
+import { getUser } from "../service/AuthService";
+import { trackPromise } from "react-promise-tracker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import es from "date-fns/locale/es";
@@ -18,14 +20,6 @@ export default function RegistrarViaje() {
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
   const history = useHistory();
-
-  function isNumber(str) {
-    if (str.trim() === "") {
-      return false;
-    }
-
-    return !isNaN(str);
-  }
 
   function formValidate(data) {
     const dateObj = new Date();
@@ -45,7 +39,6 @@ export default function RegistrarViaje() {
     } else if (!isNumber(data.availablePlaces)) {
       alert("Lugares disponibles debe ser un número.");
     } else if (!moment(data.tripDate).isValid()) {
-      //console.log(moment(data.tripDate))
       alert("Fecha inválida.");
     } else if (moment(data.tripDate) < moment(today)) {
       alert("La fecha del viaje no puede ser anterior al día actual.");
@@ -54,34 +47,21 @@ export default function RegistrarViaje() {
     }
   }
 
-  function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    return year + "-" + month + "-" + day;
-  }
-
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
+    //data.tripDate = transformDate(date);
+    data.user = getUser();
 
-    // A MANO POR AHORA
-    data.user = "user";
+    // A MANO POR AHORA    
     data.vehicle = "GAB1234";
-
-    console.log(data);
 
     if (formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";
 
       try {
-        //const response = await axios.get(viajesGetEndpoint);
-        const response = await axios.post(viajesGetEndpoint, data);
-        console.log(response);
+        trackPromise(await axios.post(viajesGetEndpoint, data));
         redirect();
-        //setViajes(response.data);
       } catch (error) {
         console.error(error);
-        //alert('Error inesperado');
       }
     }
   }
@@ -90,9 +70,6 @@ export default function RegistrarViaje() {
     history.push("/success");
   }
 
-  const [date, setDate] = useState(new Date());
-  const handleChange = (date) => setDate(date);
-
   return (
     <div className="form-box">
       <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -100,12 +77,7 @@ export default function RegistrarViaje() {
           <label> Nuevo Viaje </label>
           <input {...register("origin")} placeholder="Origen" />
           <input {...register("destination")} placeholder="Destino" />
-          <DatePickerComponent
-            placeholderText={"Fecha"}
-            selected={date}
-            onChange={handleChange}
-            locale="es"
-          />
+          <input {...register("tripDate")} type="date" format="DD-MM-YYYY" placeholder="Fecha" />
           <input
             {...register("availablePlaces")}
             placeholder="Lugares Disponibles"
@@ -118,14 +90,10 @@ export default function RegistrarViaje() {
 
         <br />
 
-        <Button2
-          className="btns"
-          buttonStyle="btn--outline"
-          buttonSize="btn--large"
-        >
-          {" "}
-          CREAR VIAJE
-        </Button2>
+        <div className="form__field">
+          <input type="submit" value="Aceptar" />
+        </div>
+        <LoadingIndicator />
       </form>
     </div>
   );

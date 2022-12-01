@@ -3,14 +3,13 @@ import "./RegistrarUsuario.css";
 import { useForm } from "react-hook-form";
 import configData from "../../configData.json";
 import axios from "axios";
-import { Button2 } from "../Button2";
 import { useHistory } from "react-router-dom";
 
 export default function ChangePass() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
-  const redirect = (data, e) => redirect2(data, e);
+  const redirect = () => redirect2();
   const history = useHistory();
 
   function formValidate(data) {
@@ -26,18 +25,12 @@ export default function ChangePass() {
   }
 
   async function fetchViajes(data, e) {
-    // A MANO POR AHORA
-    //data.user = "user";
-    //data.vehicle = "GAB1234";
-    console.log(data);
-
     if (formValidate(data)) {
       const viajesGetEndpoint =
         configData.AWS_REST_ENDPOINT + "/login/new-password";
 
       try {
         const response = await axios.post(viajesGetEndpoint, data);
-        console.log(response);
         redirect();
       } catch (error) {
         console.error(error);
@@ -46,7 +39,7 @@ export default function ChangePass() {
     }
   }
 
-  async function redirect2(data, e) {
+  async function redirect2() {
     history.push("/login");
   }
 
@@ -72,14 +65,9 @@ export default function ChangePass() {
 
         <br />
 
-        <Button2
-          className="btns"
-          buttonStyle="btn--outline"
-          buttonSize="btn--large"
-        >
-          {" "}
-          ACEPTAR
-        </Button2>
+        <div className="form__field">
+          <input type="submit" value="Aceptar" />
+        </div>
       </form>
     </div>
   );

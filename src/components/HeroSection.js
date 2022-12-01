@@ -29,7 +29,6 @@ function HeroSection() {
           className="btns"
           buttonStyle="btn--primary"
           buttonSize="btn--large"
-          /*onClick={console.log('hey')}*/
         >
           SOBRE CARPOOLING <i className="fa fa-info-circle" />
         </Button>
