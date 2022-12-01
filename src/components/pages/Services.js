@@ -3,12 +3,13 @@ import CardItem2 from '../CardItem2';
 import TextItem from '../TextItem';
 import '../Text.css';
 
-function Text() {
+function Services() {
   return (
     <div className='text'>
       <div className='text__container'>
         <div className='text__wrapper'>
-          <h1>¿Qué es Carpooling?</h1>
+          <h1>¿Quienes somos?</h1>
+          <br></br>
           <ul className='text__items'>
             <TextItem
               text='El Carpooling es la práctica que consiste en 
@@ -16,8 +17,9 @@ function Text() {
               congestión de tránsito en las grandes ciudades así como también facilitaremos los desplazamientos de personas que no dispongan de coche propio. Además, supone una 
               notable disminución de emisiones de CO2, al reducir el número de coches en las carreteras. A su vez, favorece las relaciones sociales entre personas que realizan 
               los mismos recorridos.'
-            />
-          
+
+            />  
+            <img src={require("../../assets/images/utec.jpg")} alt="utec"></img>   
           </ul>
         </div>
       </div>
@@ -51,4 +53,4 @@ function Text() {
   );
 }
 
-export default Text;
+export default Services;
