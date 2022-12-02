@@ -20,7 +20,16 @@ export default function Register() {
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
+  let checkBox = false;
   const history = useHistory();
+
+  const handleCheckBoxChange = event => {
+    if (event.target.checked) {
+      checkBox = true;
+    } else {
+      checkBox = false;
+    }
+  };
 
   function formValidate(data) {
     if (
@@ -67,16 +76,20 @@ export default function Register() {
 
     // A MANO POR AHORA
     //data.vehicle = "GAB1234";
-
-    if (formValidate(data)) {
-      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
-
-      try {
-        await trackPromise(axios.post(viajesGetEndpoint, data));
-        redirect();
-      } catch (error) {
-        console.error(error);
+    if(checkBox) {
+      if (formValidate(data)) {
+        const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
+  
+        try {
+          await trackPromise(axios.post(viajesGetEndpoint, data));
+          redirect();
+        } catch (error) {
+          console.error(error);
+        }
       }
+    } else {
+      alert("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
+      " para poder registrarse.");
     }
   }
 
@@ -103,6 +116,13 @@ export default function Register() {
             {...register("phoneNumber")}
             placeholder="Número de teléfono. EJ: (+59891123432)"
           />
+          <br />
+          <label id="checkBox" className="container">
+            Confirmo haber leído y estar de acuerdo con las
+            <a href="/policy"> políticas de uso de FriendlyTravel</a>
+            <input type="checkbox" onChange={handleCheckBoxChange} />
+            <span class="checkmark"></span>
+          </label>      
         </div>
 
         <div className="form__field">

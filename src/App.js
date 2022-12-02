@@ -10,6 +10,7 @@ import Login from "./components/pages/Login";
 import TravelPreviewer from "./components/pages/TravelPreviewer";
 import Register from "./components/pages/RegistrarUsuario";
 import ChangePass from "./components/pages/ChangePass";
+import Policy from "./components/pages/Policy";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/changePass" component={ChangePass} />
           <Route path="/map" component={TravelPreviewer} />
+          <Route path="/policy" component={Policy} />
         </Switch>
       </Router>
     </>
