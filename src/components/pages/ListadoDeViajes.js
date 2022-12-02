@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useRef, useState } from "react";
 import '../../App.css';
 import { Button } from '../../components/Button';
 import './ListadoDeViajes.css';
-import { useState } from 'react';
 import { BsCurrencyDollar } from "react-icons/bs";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
 import configData from '../../configData.json'
@@ -17,6 +16,8 @@ import { usePromiseTracker } from "react-promise-tracker";
 import { trackPromise } from 'react-promise-tracker';
 import { ThreeDots } from 'react-loader-spinner';
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+
+import Moment from 'moment';
 registerLocale("es", es);
 
 
@@ -31,6 +32,13 @@ export default function ListadoDeViajes() {
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const [ libraries ] = useState(['places']);
+
+  const originRef = useRef();
+  const destiantionRef = useRef();
+  const dateRef = useRef();
+  const [origen, setOrigen] = useState("");
+  const [destino, setDestino] = useState("");
+  const [first, setFirst] = useState('');
 
   const LoadingIndicator = props => {
      const { promiseInProgress } = usePromiseTracker();
@@ -69,19 +77,25 @@ export default function ListadoDeViajes() {
   }
   
   function formValidate(data) {
+
+    
     const dateObj = new Date();
     const today = transformDate(dateObj);
-
+    data.tripDate = dateRef.current.value;
+    data.destination = destiantionRef.current.value;
+    data.origin = originRef.current.value;
+    data.tripDate = Moment(data.tripDate).format('DD-MM-YYYY')
+    
     if(data.tripDate === "" ||
-     data.origin === "" ||
-     data.destination === "") {
+    data.origin === "" ||
+    data.destination === "") {
         alert("La busqueda debe tener por lo menos origen, destino y fecha.")
         return false;
-    }else if (!isNumber(data.price) && data.price !== ""){
-      alert("El precio debe ser un número.")
-    }else if (!isNumber(data.availablePlaces) && data.availablePlaces !== ""){
+      }else if (!isNumber(data.price) && data.price !== ""){
+        alert("El precio debe ser un número.")
+      }else if (!isNumber(data.availablePlaces) && data.availablePlaces !== ""){
       alert("Asientos debe ser un número.")
-    }else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()){
+    }else if (!moment(data.tripDate, "DD-MM-YYYY").isValid()){
       alert("Fecha inválida.")
     }else if (moment(data.tripDate) < moment(today)){
       alert("La fecha del viaje no puede ser anterior al día actual.")
@@ -89,7 +103,7 @@ export default function ListadoDeViajes() {
       return true;
     }
   }
-
+  
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date)
 
@@ -141,20 +155,20 @@ export default function ListadoDeViajes() {
             <div>
               <label>ORIGEN: </label>
               <br/>
-              <input {...register("origin")} placeholder="Origen"/>
+              <input {...register("origin")} placeholder="Origen" ref={originRef}/>
             </div>
               </Autocomplete> 
               <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
             <div>
               <label>DESTINO: </label>
               <br/>
-              <input {...register("destination")} placeholder="Destino"/>
+              <input {...register("destination")} placeholder="Destino" ref={destiantionRef}/>
             </div>
             </Autocomplete> 
             <div>
             <label>FECHA: </label>
             <br/>
-              <input {...register("birthDate")} className="inputDate" type="date" format="DD-MM-YYYY" />
+            <input {...register("tripDate")} type="date" ref={dateRef} min="01-01-2020"/>
             </div>
             <div>
               <label>ASIENTOS: </label>

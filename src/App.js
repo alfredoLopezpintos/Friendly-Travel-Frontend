@@ -13,6 +13,7 @@ import Register from './components/pages/Register';
 import ChangePass from './components/pages/ChangePass';
 import FaqsPage from './components/pages/FaqsPage';
 import Carpool from './components/pages/Carpool';
+import NotFound from './components/pages/NotFound';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,6 +35,7 @@ function App() {
           <Route path='/map' component={TravelPreviewer} />
           <Route path='/faqsPage' component={FaqsPage} />
           <Route path='/carpool' component={Carpool} />
+          <Route path='*' component={NotFound}/>
         </Switch>
         <ToastContainer position="top-center"/>
       </Router>

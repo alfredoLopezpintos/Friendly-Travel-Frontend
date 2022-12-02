@@ -1,55 +1,95 @@
 import React from 'react';
 import CardItem2 from '../CardItem2';
 import TextItem from '../TextItem';
+import Footer2 from '../Footer2';
 import '../Text.css';
 
 function Services() {
   return (
+    <>
     <div className='text'>
       <div className='text__container'>
         <div className='text__wrapper'>
           <h1>¿Quienes somos?</h1>
           <br></br>
+          <hr></hr>
+          <br></br><br></br><br></br>
           <ul className='text__items'>
+            <ul>
+              
+            <CardItem2
+              src={require("../../assets/images/diego.png")}
+            />
             <TextItem
-              text='El Carpooling es la práctica que consiste en 
-              compartir un automóvil con otras personas tanto para viajes periódicos como para trayectos puntuales. Con Friendly Travel reduciremos la 
-              congestión de tránsito en las grandes ciudades así como también facilitaremos los desplazamientos de personas que no dispongan de coche propio. Además, supone una 
-              notable disminución de emisiones de CO2, al reducir el número de coches en las carreteras. A su vez, favorece las relaciones sociales entre personas que realizan 
-              los mismos recorridos.'
-
+                text=' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;Diego Rosales &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
+                
+              />
+            </ul>
+            <ul>
+            <CardItem2
+              src={require("../../assets/images/rodrigo.png")}
+            />
+            <TextItem
+                text=' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Rodrigo Serrón &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
+              />
+            </ul>
+            <ul>
+            <CardItem2
+              src={require("../../assets/images/alfredo.png")}
+            />
+            <TextItem
+                text=' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Alfredo López Píntos  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;'
+              />
+            </ul>
+          </ul>
+          
+          <br></br><br></br><br></br><br></br>
+          
+          <ul className='text__items'>
+          <hr></hr>
+            <TextItem
+              text='Como estudiantes del último semestre de la universidad tecnológica del Uruguay (UTEC) y materializando el proyecto final de titulación, 
+              es que detectamos esta necesidad. La cual responde a la posibilidad de traslado desde cada punto del territorio nacional hacia los centros de UTEC 
+              en las jornadas presenciales y evidenciando la escasa conectividad y frecuencia que los transportes convencionales ofrecen en este sentido.'
             />  
-            <img src={require("../../assets/images/utec.jpg")} alt="utec"></img>   
+            <img src={require("../../assets/images/utec.jpg")} alt="utec" width={500}></img>   
           </ul>
         </div>
       </div>
-      <h1>Ventajas de utilizar Friendly Travel</h1>
+      <br></br>
+      <h1>¿Por qué elegimos Friendly Travel?</h1>
+     
+      <br></br>
       <div className='text__container'>
         <div className='text__wrapper'>
           <ul className='text__items'>
+            
             <CardItem2
-              src={require("../../assets/images/carpool.jpg")}
+              src={require("../../assets/images/code.jpg")}
             />
+            
             <TextItem
-              text='Ofrecer una mejor solución en movilidad a todas aquellas personas que necesiten trasladarse y 
-              estén en la busqueda de una forma más eficiente de hacerlo en 
-              materia de tiempos, costos y beneficios.'
+              text='En la busqueda de un proyecto que nos fuera de interés para llevarlo adelante como proyecto de titulación, comenzamos a pensar en varias alternativas.
+               Fué así que llegamos a Friendly Travel, habiendo vivido todos los integrantes del equipo esta problemática durante toda la carrera, se nos ocurrió una solución como alternativa a este problema y ayudar a otros.  '
             />
+           
           </ul>
           <br></br><br></br>
+          <hr></hr>
           <ul className='cards__items'>
+          <hr></hr>
               <TextItem
-                text='No solo es una medida para combatir y ayudar a mitigar la contaminación del aire debido a los impactos ambientales de los vehículos, 
-                también es una manera de descongestionar el transporte y las vías públicas,
-                 una manera de aprovechar más el tiempo, de romper la rutina y de viajar más cómodo.'
+                text='En adición a la solución en movilidad, Friendly Travel nos terminó de convencer por muchos otros motivos. Entre los más importantes están por supuesto el transporte a un mucho menor costo, la construcción de una comunidad de usuarios que compartan esta problemática, la disminución de la huella de carbono, la contribución a la agilización del transito en grandes cuidades, entre otras...'
               />
             <CardItem2
-              src={require("../../assets/images/comparte.jpg")}
+              src={require("../../assets/images/idea.jpg")}
             />
           </ul>
         </div>
       </div>
     </div>
+    <Footer2 />
+    </>
   );
 }
 

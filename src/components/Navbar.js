@@ -50,7 +50,7 @@ function Navbar() {
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
             FRIENDLY TRAVEL 
-            <img src={require("../assets/images/logo.png")} alt="Friendly Travel logo" width="60" height="60"/>
+            <i className='fab fa-typo3' />
           </Link>
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />

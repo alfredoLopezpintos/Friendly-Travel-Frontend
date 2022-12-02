@@ -9,6 +9,9 @@ function Text() {
       <div className='text__container'>
         <div className='text__wrapper'>
           <h1>¿Qué es Carpooling?</h1>
+          <br></br>
+          <hr></hr>
+          <br></br>
           <ul className='text__items'>
             <TextItem
               text='El Carpooling es la práctica que consiste en 
@@ -17,23 +20,31 @@ function Text() {
               notable disminución de emisiones de CO2, al reducir el número de coches en las carreteras. A su vez, favorece las relaciones sociales entre personas que realizan 
               los mismos recorridos.'
             />
-          
+              <img src={require("../assets/images/cp.jpg")} alt="carpool" width={500}></img>
           </ul>
         </div>
       </div>
-      <h1>Ventajas de utilizar Friendly Travel</h1>
+      
       <div className='text__container'>
         <div className='text__wrapper'>
+        <br></br><br></br>
+      <h1>Ventajas de utilizar Friendly Travel</h1>
+      <br></br><br></br>
+      <hr></hr>
+          <br></br><br></br>
           <ul className='text__items'>
             <CardItem2
               src={require("../assets/images/carpool.jpg")}
             />
+            
             <TextItem
               text='Ofrecer una mejor solución en movilidad a todas aquellas personas que necesiten trasladarse y 
               estén en la busqueda de una forma más eficiente de hacerlo en 
               materia de tiempos, costos y beneficios.'
             />
           </ul>
+          <br></br><br></br>
+          <hr></hr>
           <br></br><br></br>
           <ul className='cards__items'>
               <TextItem
