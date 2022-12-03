@@ -105,87 +105,87 @@ export default function Register() {
 
   return (
     <>
-    <div>
-      <div className="grid align__item">
-        <div className="register">
-          <div className="big_logo">
-            <i className="fab fa-typo3"></i>
-          </div>
-          <br />
-          <h2> Registrar usuario </h2>
-          <br />
-          <br />
-          <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
-            <div>
-              <label>Nombre</label>
-              <div className="form__field">
-                <input
-                  {...register("name")}
-                  placeholder="Ingrese su nombre"
-                  type="text"
-                />
-              </div>
-
-              <label>Apellido</label>
-              <div className="form__field">
-                <input
-                  {...register("surname")}
-                  placeholder="Ingrese su apellido"
-                  type="text"
-                />
-              </div>
-
-              <label>Email</label>
-              <div className="form__field">
-                <input
-                  {...register("email")}
-                  placeholder="Ingrese su email"
-                  type="email"
-                />
-              </div>
-
-              <label>Fecha de nacimiento</label>
-              <div className="form__field">
-                <input
-                  {...register("birthDate")}
-                  type="date"
-                  format="DD-MM-YYYY"
-                />
-              </div>
-
-              <label>Cédula de identidad</label>
-              <div className="form__field">
-                <input
-                  {...register("documentId")}
-                  placeholder="Sin puntos ni guiones, ej. 43215678"
-                  type="number"
-                />
-              </div>
-
-              <label>Teléfono de contacto</label>
-              <div className="form__field">
-                <input
-                  {...register("phoneNumber")}
-                  placeholder="Número de teléfono, ej. 59899111333"
-                  type="number"
-                />
-              </div>
-
-              <br />
-              <Button2
-                className="btns"
-                buttonStyle="btn--outline"
-                buttonSize="btn--large"
-              >
-                {" "}
-                CREAR USUARIO
-              </Button2>
+      <div>
+        <div className="grid align__item">
+          <div className="register">
+            <div className="big_logo">
+              <i className="fab fa-typo3"></i>
             </div>
-          </form>
+            <br />
+            <h2> Registrar usuario </h2>
+            <br />
+            <br />
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
+              <div>
+                <label>Nombre</label>
+                <div className="form__field">
+                  <input
+                    {...register("name")}
+                    placeholder="Ingrese su nombre"
+                    type="text"
+                  />
+                </div>
+
+                <label>Apellido</label>
+                <div className="form__field">
+                  <input
+                    {...register("surname")}
+                    placeholder="Ingrese su apellido"
+                    type="text"
+                  />
+                </div>
+
+                <label>Email</label>
+                <div className="form__field">
+                  <input
+                    {...register("email")}
+                    placeholder="Ingrese su email"
+                    type="email"
+                  />
+                </div>
+
+                <label>Fecha de nacimiento</label>
+                <div className="form__field">
+                  <input
+                    {...register("birthDate")}
+                    type="date"
+                    format="DD-MM-YYYY"
+                  />
+                </div>
+
+                <label>Cédula de identidad</label>
+                <div className="form__field">
+                  <input
+                    {...register("documentId")}
+                    placeholder="Sin puntos ni guiones, ej. 43215678"
+                    type="number"
+                  />
+                </div>
+
+                <label>Teléfono de contacto</label>
+                <div className="form__field">
+                  <input
+                    {...register("phoneNumber")}
+                    placeholder="Número de teléfono, ej. 59899111333"
+                    type="number"
+                  />
+                </div>
+
+                <br />
+                <Button2
+                  className="btns"
+                  buttonStyle="btn--outline"
+                  buttonSize="btn--large"
+                >
+                  {" "}
+                  CREAR USUARIO
+                </Button2>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-          <ToastContainer position="top-center" />
-          </>
+      <ToastContainer position="top-center" />
+    </>
   );
 }

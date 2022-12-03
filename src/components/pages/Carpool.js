@@ -20,7 +20,7 @@ function Carpool() {
                 text="Es una plataforma colaborativa que conecta conductores con acompañantes para compartir gastos en trayectos de cualquier distancia, generando una forma más económica
                y sustentable de viajar. De esta manera, tanto el conductor como los acompañante se ven beneficiados, al haber compartido una experiencia más económica, amigable y sustentable."
               />
-              
+
               <CardItem2 src={require("../../assets/images/comu.jpg")} />
             </ul>
           </div>

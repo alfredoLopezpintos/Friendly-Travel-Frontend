@@ -1,7 +1,7 @@
 {
-    "AWS_REST_ENDPOINT": "https://yiy5lgimeg.execute-api.us-east-1.amazonaws.com/dev",
+  "AWS_REST_ENDPOINT": "https://yiy5lgimeg.execute-api.us-east-1.amazonaws.com/dev",
 
-    "MAPS_KEY" : "AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE",
-    
-    "PRECIO_NAFTA" : 74.880
+  "MAPS_KEY": "AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE",
+
+  "PRECIO_NAFTA": 74.88
 }
