@@ -11,6 +11,16 @@ function FaqsPage () {
       open: false
     },
     {
+      question: '¿Es seguro utilizar Friendly Travel?',
+      answer: 'COMPLETAR.',
+      open: false
+    },
+    {
+      question: '¿Qué necesito para utilizar Friendly Travel?',
+      answer: 'COMPLETAR.',
+      open: false
+    },
+    {
       question: '¿Qué tipos de viaje puedo hacer con Friendly Travel?',
       answer: 'En Friendly Travel podés crear o encontrar viajes a corta, media y larga distancia, desde cualquier punto del territorio nacional. Los viajes los crean los mismos usuarios según su destino y disponibilidad horario. En base a esa propuesta de viaje, otros usuarios pueden solicitarle al conductor acompañarlo en trayecto.',
       open: false
