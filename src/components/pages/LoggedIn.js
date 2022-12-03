@@ -1,5 +1,5 @@
-import React from 'react';
-import { getUser, getToken, resetUserSession } from '../service/AuthService';
+import React from "react";
+import { getUser, getToken, resetUserSession } from "../service/AuthService";
 import jwt_decode from "jwt-decode";
 
 const LoggedIn = (props) => {
@@ -7,18 +7,17 @@ const LoggedIn = (props) => {
   const token = getToken();
   //const name = user !== 'undefined' && user ? user.name : '';
 
-  console.log(user)
-  console.log(jwt_decode(token))
+  console.log(user);
+  console.log(jwt_decode(token));
 
   const logoutHandler = () => {
     resetUserSession();
-    props.history.push('/');
-  }
+    props.history.push("/");
+  };
   return (
-    <div className = "form-box">
-    <form >
-        
-        <div className = "field1">
+    <div className="form-box">
+      <form>
+        <div className="field1">
           <h1> Mi Perfil </h1>
           <div>
             Hola {user}! Te logueaste correctamente!!!! Bienvenido. <br />
@@ -27,10 +26,9 @@ const LoggedIn = (props) => {
         </div>
 
         <br />
-    </form>
-
-  </div>
-  )
-}
+      </form>
+    </div>
+  );
+};
 
 export default LoggedIn;

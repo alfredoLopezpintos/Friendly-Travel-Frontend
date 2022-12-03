@@ -5,7 +5,6 @@ import Navbar from './components/Navbar';
 import Home from './components/pages/Home';
 import Services from './components/pages/Services';
 import Viajes from './components/pages/Viajes';
-import Succesful from './components/pages/Succesful';
 import Login from './components/pages/Login';
 import TravelPreviewer from './components/pages/TravelPreviewer';
 import LoggedIn from './components/pages/LoggedIn';
@@ -27,7 +26,6 @@ function App() {
           <Route path='/' exact component={Home} />
           <Route path='/services' component={Services} />
           <Route path='/viajes' component={Viajes} />
-          <Route path='/success' component={Succesful} />
           <Route path='/login' component={Login} />
           <Route path='/loggedIn' component={LoggedIn} />
           <Route path='/register' component={Register} />

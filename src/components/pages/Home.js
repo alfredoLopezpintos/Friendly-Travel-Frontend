@@ -1,9 +1,9 @@
-import React from 'react';
-import '../../App.css';
-import Cards from '../Cards';
-import HeroSection from '../HeroSection';
-import Footer2 from '../Footer2';
-import Text from '../Text';
+import React from "react";
+import "../../App.css";
+import Cards from "../Cards";
+import HeroSection from "../HeroSection";
+import Footer from "../Footer";
+import Text from "../Text";
 
 function Home() {
   return (
@@ -11,7 +11,7 @@ function Home() {
       <HeroSection />
       <Text />
       <Cards />
-      <Footer2 />
+      <Footer />
     </>
   );
 }

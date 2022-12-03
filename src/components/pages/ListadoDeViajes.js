@@ -1,134 +1,136 @@
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { render } from "@testing-library/react";
+import axios from "axios";
+import es from "date-fns/locale/es";
+import moment from "moment";
 import React, { useRef, useState } from "react";
-import '../../App.css';
-import { Button } from '../../components/Button';
-import './ListadoDeViajes.css';
+import DatePickerComonent, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
-import configData from '../../configData.json'
-import axios from 'axios';
-import { render } from '@testing-library/react';
-import { useForm } from "react-hook-form";
-import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-import DatePickerComonent, { registerLocale } from "react-datepicker";
-import es from "date-fns/locale/es";
-import { usePromiseTracker } from "react-promise-tracker";
-import { trackPromise } from 'react-promise-tracker';
-import { ThreeDots } from 'react-loader-spinner';
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { ThreeDots } from "react-loader-spinner";
+import { trackPromise, usePromiseTracker } from "react-promise-tracker";
+import { toast, ToastContainer } from "react-toastify";
+import "../../App.css";
+import { Button } from "../../components/Button";
+import configData from "../../configData.json";
+import "./ListadoDeViajes.css";
 
-import Moment from 'moment';
+import Moment from "moment";
 registerLocale("es", es);
 
-
-
 export default function ListadoDeViajes() {
-
   const [viajes, setViajes] = React.useState([]);
   const { register, handleSubmit } = useForm();
   const [date, setDate] = useState(new Date());
   //const [seat, setSeat] = useState(1);
-  const handleDateChange = date => setDate(date);
+  const handleDateChange = (date) => setDate(date);
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
-  const [ libraries ] = useState(['places']);
+  const [libraries] = useState(["places"]);
 
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
-  const [origen, setOrigen] = useState("");
-  const [destino, setDestino] = useState("");
-  const [first, setFirst] = useState('');
 
-  const LoadingIndicator = props => {
-     const { promiseInProgress } = usePromiseTracker();
+  const LoadingIndicator = (props) => {
+    const { promiseInProgress } = usePromiseTracker();
 
-     return (
-      promiseInProgress && 
-      <div
-        style={{
-          width: "100%",
-          height: "100",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
+    return (
+      promiseInProgress && (
+        <div
+          style={{
+            width: "100%",
+            height: "100",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-      <ThreeDots color="#2BAD60" height="100" width="100" />
-    </div>
-     );  
-  }
+          <ThreeDots color="#2BAD60" height="100" width="100" />
+        </div>
+      )
+    );
+  };
 
   function isNumber(str) {
-    if (str.trim() === '') {
+    if (str.trim() === "") {
       return false;
     }
-  
+
     return !isNaN(str);
   }
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: configData.MAPS_KEY,
-    libraries
+    libraries,
   });
 
   if (!isLoaded) {
     return <>loading...</>;
   }
-  
-  function formValidate(data) {
 
-    
+  function formValidate(data) {
     const dateObj = new Date();
     const today = transformDate(dateObj);
     data.tripDate = dateRef.current.value;
     data.destination = destiantionRef.current.value;
     data.origin = originRef.current.value;
-    data.tripDate = Moment(data.tripDate).format('DD-MM-YYYY')
-    
-    if(data.tripDate === "" ||
-    data.origin === "" ||
-    data.destination === "") {
-        alert("La busqueda debe tener por lo menos origen, destino y fecha.")
-        return false;
-      }else if (!isNumber(data.price) && data.price !== ""){
-        alert("El precio debe ser un número.")
-      }else if (!isNumber(data.availablePlaces) && data.availablePlaces !== ""){
-      alert("Asientos debe ser un número.")
-    }else if (!moment(data.tripDate, "DD-MM-YYYY").isValid()){
-      alert("Fecha inválida.")
-    }else if (moment(data.tripDate) < moment(today)){
-      alert("La fecha del viaje no puede ser anterior al día actual.")
-    }else {
+    data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
+
+    if (data.tripDate === "" || data.origin === "" || data.destination === "") {
+      toast.error(
+        "La busqueda debe tener por lo menos origen, destino y fecha"
+      );
+      return false;
+    } else if (!isNumber(data.price) && data.price !== "") {
+      toast.error("Precio incorrecto");
+    } else if (!isNumber(data.availablePlaces) && data.availablePlaces !== "") {
+      toast.error("Asientos incorrectos");
+    } else if (!moment(data.tripDate, "DD-MM-YYYY").isValid()) {
+      toast.error("Fecha inválida");
+    } else if (moment(data.tripDate) < moment(today)) {
+      toast.error("La fecha del viaje no puede ser anterior al día actual");
+    } else {
       return true;
     }
   }
-  
+
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date)
+    data.tripDate = transformDate(date);
 
-    if(formValidate(data)) {
-        //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
+    if (formValidate(data)) {
+      //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
 
-      const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + 
-      "/trips?origin=" + data.origin + "&destination=" + data.destination +
-      "&tripDate=" + data.tripDate + "&price=" + data.price +
-      "&availablePlaces=" + data.availablePlaces;
+      const viajesGetEndPoint =
+        configData.AWS_REST_ENDPOINT +
+        "/trips?origin=" +
+        data.origin +
+        "&destination=" +
+        data.destination +
+        "&tripDate=" +
+        data.tripDate +
+        "&price=" +
+        data.price +
+        "&availablePlaces=" +
+        data.availablePlaces;
 
-      console.log(viajesGetEndPoint)
+      console.log(viajesGetEndPoint);
 
       try {
         const response = await trackPromise(axios.get(viajesGetEndPoint));
-        console.log(response.data)
-        if(response.data.message ===
-          "No hay viajes que cumplan con las condiciones seleccionadas.") {
-            setViajes()
-            alert("No hay viajes que cumplan con las condiciones seleccionadas.")
-          } else {
-            setViajes(response.data)
-          }
-
-      } catch(error) {
+        console.log(response.data);
+        if (
+          response.data.message ===
+          "No hay viajes que cumplan con las condiciones seleccionadas."
+        ) {
+          setViajes();
+          alert("No hay viajes que cumplan con las condiciones seleccionadas.");
+        } else {
+          setViajes(response.data);
+        }
+      } catch (error) {
         console.error(error);
       }
     }
@@ -138,156 +140,112 @@ export default function ListadoDeViajes() {
     const month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
-    if (/^\d$/.test(dateObj.getUTCDate()))  {
+    if (/^\d$/.test(dateObj.getUTCDate())) {
       day = "0" + dateObj.getUTCDate();
     }
-    return (day + "-" + month + "-" + year);
+    return day + "-" + month + "-" + year;
   }
 
-  render()
+  render();
   return (
-    <main>
-      <div>
-        <form className="form-inline" onSubmit={handleSubmit(onSubmit, onError)}>
-          
-          <div className = "field1">
-            <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
-            <div>
-              <label>ORIGEN: </label>
-              <br/>
-              <input {...register("origin")} placeholder="Origen" ref={originRef}/>
+    <>
+      <main>
+        <div>
+          <form
+            className="form-inline"
+            onSubmit={handleSubmit(onSubmit, onError)}
+          >
+            <div className="field1">
+              <Autocomplete
+                options={{ componentRestrictions: { country: "uy" } }}
+              >
+                <div>
+                  <label>ORIGEN: </label>
+                  <br />
+                  <input
+                    {...register("origin")}
+                    placeholder="Seleccione un origen"
+                    ref={originRef}
+                  />
+                </div>
+              </Autocomplete>
+              <Autocomplete
+                options={{ componentRestrictions: { country: "uy" } }}
+              >
+                <div>
+                  <label>DESTINO: </label>
+                  <br />
+                  <input
+                    {...register("destination")}
+                    placeholder="Seleccione un destino"
+                    ref={destiantionRef}
+                  />
+                </div>
+              </Autocomplete>
+              <div>
+                <label>FECHA: </label>
+                <br />
+                <input
+                  {...register("tripDate")}
+                  type="date"
+                  ref={dateRef}
+                  min="01-01-2020"
+                />
+              </div>
+              <div>
+                <label>ASIENTOS: </label>
+                <br />
+                <input
+                  {...register("availablePlaces")}
+                  placeholder="Lugares disponibles"
+                  type="number"
+                />
+              </div>
+              <div>
+                <label>PRECIO: </label>
+                <br />
+                <input
+                  {...register("price")}
+                  placeholder="En pesos uruguayos"
+                  type="number"
+                />
+              </div>
+              <button className="btn-submit" type="submit">
+                Buscar
+              </button>
             </div>
-              </Autocomplete> 
-              <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
-            <div>
-              <label>DESTINO: </label>
-              <br/>
-              <input {...register("destination")} placeholder="Destino" ref={destiantionRef}/>
-            </div>
-            </Autocomplete> 
-            <div>
-            <label>FECHA: </label>
-            <br/>
-            <input {...register("tripDate")} type="date" ref={dateRef} min="01-01-2020"/>
-            </div>
-            <div>
-              <label>ASIENTOS: </label>
-              <br/>
-              <input {...register("availablePlaces")} placeholder="Lugares Disponibles"/>
-            </div>
-            <div>
-              <label>PRECIO: </label>
-              <br/>
-              <input {...register("price")} placeholder="Precio (En Pesos Uruguayos)"/>
-            </div>
-            <button className="btn-submit" type="submit">Buscar</button>
-          </div>
-        </form>
-      </div>
-      <br /><br />
-      <ol className="gradient-list">
-      <LoadingIndicator/>
-    {viajes && viajes.map(user =>
-                  <li>
-                    <div className='destination'>
-                      <div>                        
-                        ORIGEN: {user.origin.toUpperCase()}
-                      </div>
-                      <div>
-                        FECHA: {user.tripDate}
-                      </div>
-                    </div>
-                    <div className='destination'>
-                      <div>                      
-                        DESTINO: {user.destination.toUpperCase()}
-                      </div>
-                      <div>
-                        {user.arrival_time}
-                      </div>
-                    </div>
-                    <div className='social-media-wrap'>
-                      <div className='rating'>
-                      <MdOutlineAirlineSeatReclineNormal />{user.availablePlaces}
-                      </div>
-                      <div className='price'>
-                        {user.price}<BsCurrencyDollar />                     
-                      </div>
-                    </div>               
-                  </li>
-                )}
-      </ol>
-    </main>
+          </form>
+        </div>
+        <br />
+        <br />
+        <ol className="gradient-list">
+          <LoadingIndicator />
+          {viajes &&
+            viajes.map((user) => (
+              <li>
+                <div className="destination">
+                  <div>ORIGEN: {user.origin.toUpperCase()}</div>
+                  <div>FECHA: {user.tripDate}</div>
+                </div>
+                <div className="destination">
+                  <div>DESTINO: {user.destination.toUpperCase()}</div>
+                  <div>{user.arrival_time}</div>
+                </div>
+                <div className="social-media-wrap">
+                  <div className="rating">
+                    <MdOutlineAirlineSeatReclineNormal />
+                    {user.availablePlaces}
+                  </div>
+                  <div className="price">
+                    {user.price}
+                    <BsCurrencyDollar />
+                  </div>
+                </div>
+              </li>
+            ))}
+        </ol>
+      </main>
+      <ToastContainer position="top-center" />
+    </>
   );
 }
-
-/*
-        <form>
-          <div>
-            <label>ORIGEN: </label>
-            <input placeholder="Origen" name="going" />
-          </div>
-          <div>
-            <label>DESTINO: </label>
-            <input placeholder="Destino" name="going" />
-          </div>
-          <div>
-            <label>FECHA: </label>
-            <input placeholder="mm/dd/yyyy" id="input-end" />
-          </div>
-          <div>
-            <label>PRECIO: </label>
-            <input placeholder="En Pesos Uruguayos ($)" name="going" />
-          </div>
-          <div>
-            <label>ASIENTOS: </label>
-            <input placeholder="Destino" name="going" />
-          </div>
-          <button className="btn-submit" type="submit">search</button>
-        </form>
-
-function ListadoDeViajes() {
-  const [users, setUsers] = useState([
-    { id: 1, price: 123, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" },
-    { id: 2, price: 3333, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" },
-    { id: 3, price: 444, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" },
-    { id: 4, price: 22, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" },
-    { id: 5, price: 1111, rating: 5, from: 'Montevideo', to: 'Rivera', vehicle: "asd123", time: "12:20", arrival_time: "17:30" }
-]);
-  return (
-    <main>
-      <ol className="gradient-list">
-    {users && users.map(user =>
-                  <li>
-                    <div className='destination'>
-                      <div>                        
-                        {user.from}
-                      </div>
-                      <div>
-                        {user.time}
-                      </div>
-                    </div>
-                    <div className='destination'>
-                      <div>                      
-                        {user.to}
-                      </div>
-                      <div>
-                        {user.arrival_time}
-                      </div>
-                    </div>
-                    <div className='social-media-wrap'>
-                      <div className='rating'>
-                        {user.rating}<BsFillStarFill></BsFillStarFill>
-                      </div>
-                      <div className='price'>
-                        {user.price}<BsCurrencyDollar></BsCurrencyDollar>                        
-                      </div>
-                    </div>               
-                  </li>
-                )}
-      </ol>
-    </main>
-
-  );
-}
-
-export default ListadoDeViajes;*/
