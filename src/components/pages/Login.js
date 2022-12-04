@@ -6,13 +6,9 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
-import React, { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { trackPromise, usePromiseTracker } from "react-promise-tracker";
-import { Link, useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import configData from "../../configData.json";
-import { setUserSession } from "../service/AuthService";
 import "./Login.css";
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login";
 
