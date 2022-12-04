@@ -83,9 +83,9 @@ function TravelPreviewer() {
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
-  const lugaresRef = useRef();
-  const [lugares, setLugares] = useState("");
+
   const [precio, setPrecio] = useState();
+  const lugaresRef = useRef();
 
   function isNumber(str) {
     if (str.trim() === "") {
@@ -165,9 +165,9 @@ function TravelPreviewer() {
   }
 
   async function calculateRoute(e) {
-    e?.preventDefault();
+    e.preventDefault();
     if (originRef.current.value === "" || destiantionRef.current.value === "") {
-      e?.preventDefault();
+      e.preventDefault();
       return;
     }
     // eslint-disable-next-line no-undef
@@ -185,8 +185,7 @@ function TravelPreviewer() {
     setDestino(destiantionRef.current.value);
   }
 
-  function clearRoute(e) {
-    e?.preventDefault();
+  function clearRoute() {
     setDirectionsResponse(null);
     setDistance("");
     setDuration("");
@@ -194,22 +193,17 @@ function TravelPreviewer() {
     destiantionRef.current.value = "";
   }
 
-  function CalcularContribucion() {
+  function CalcularContribucion(e) {
+    e.preventDefault();
     let precio = 0
     let dist = 0
     let total = 0
 
-    console.log(lugaresRef.current.value)
     precio = lugaresRef.current.value
     precio++
-    console.log(precio)
     dist = parseInt(distance)
-    console.log(dist)
-
     total = (((dist/12))*nafta)/precio
-    Math.floor(precio);
-    console.log(total)
-    setPrecio(Math.floor(total))
+    setPrecio((Math.floor(total/10))*10)
     return total
     };
 
@@ -223,7 +217,6 @@ function TravelPreviewer() {
               <br/>
               <label>Origen</label>
               <Autocomplete
-              onPlaceChanged={calculateRoute}
                 options={{ componentRestrictions: { country: "uy" } }}
               >
                 <input {...register("origin")} type="text" ref={originRef} />
@@ -232,7 +225,6 @@ function TravelPreviewer() {
               <label>Destino</label>
               <br/>
               <Autocomplete
-              onPlaceChanged={calculateRoute}
                 options={{ componentRestrictions: { country: "uy" } }}
               >
                 <input
@@ -241,9 +233,14 @@ function TravelPreviewer() {
                   ref={destiantionRef}
                 />
               </Autocomplete>
-
-              <button
-              onClick={clearRoute}>Crear Viaje</button>
+              <br></br>
+              <Button
+                onClick={calculateRoute}
+                value={first}
+                onChange={(event) => setFirst(event.target.value)}
+              >
+                Ver Ruta
+              </Button>
               <br></br>
               <br></br>
               <label>
@@ -284,7 +281,7 @@ function TravelPreviewer() {
                 name="price"
                 placeholder="Contribución estimada"
               />
-              <span>sugerido: {precio}</span>
+              <span>Sugerida: $ {precio}</span>
 
               <br></br>
               <br></br>

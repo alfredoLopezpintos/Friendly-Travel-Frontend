@@ -63,7 +63,7 @@ export default function ListadoDeViajes() {
   }
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: configData.MAPS_KEY,
+    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
     libraries,
   });
 
