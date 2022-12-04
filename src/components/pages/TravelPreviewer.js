@@ -120,7 +120,7 @@ function TravelPreviewer() {
         });
         clearRoute();
         redirect();
-      } catch (error) {
+      } catch  (error) {
         console.error(error);
         toast.error("No se pudo crear el viaje");
       }

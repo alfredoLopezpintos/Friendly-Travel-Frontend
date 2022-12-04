@@ -11,7 +11,7 @@ export default function ChangePass() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
-  const redirect = (data, e) => redirect2(data, e);
+  const redirect = () => redirect2();
   const history = useHistory();
 
   function formValidate(data) {
@@ -48,7 +48,7 @@ export default function ChangePass() {
         const response = await axios.post(viajesGetEndpoint, data);
         console.log(response);
         redirect();
-      } catch (error) {
+      } catch  (error) {
         console.error(error);
         toast.error("La contraseña no cumple con los requisitos");
       }
@@ -128,3 +128,4 @@ export default function ChangePass() {
     </>
   );
 }
+
