@@ -5,9 +5,11 @@ import CardItem from './CardItem';
 function Cards() {
   return (
     <div className='cards'>
-      <h1>¡Tu próximo destino te espera!</h1>
+      <h1>Planea tus próximas vacaciones con Friendly Travel</h1>    
       <div className='cards__container'>
         <div className='cards__wrapper'>
+      <hr></hr>
+          <br></br><br></br>
           <ul className='cards__items'>
             <CardItem
               src={require("../assets/images/colonia.jpg")}

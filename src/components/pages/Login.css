@@ -26,6 +26,9 @@
 }
 
 .form input[type="email"],
+.form input[type="text"],
+.form input[type="number"],
+.form input[type="date"],
 .form input[type="password"] {
   width: 100%;
 }
@@ -49,7 +52,7 @@
 
 .big_logo i {
   font-size: 100px;
-  color: rgb(26, 23, 23) 100%);;
+  color: rgb(26, 23, 23) 100%;
 }
 
 .register input[type="email"],
@@ -88,8 +91,8 @@
 .form-box h5 {
   font-size: 35px;
   text-align: center;
-  color: #F55A00;
-  margin: 0 0 .5vh 0;
+  color: #f55a00;
+  margin: 0 0 0.5vh 0;
 }
 
 .form-box label {
@@ -103,8 +106,8 @@
 textarea {
   display: block;
   width: 100%;
-  padding: .5rem .8rem .5rem .8rem;
-  margin: .9vw 0;
+  padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+  margin: 0.9vw 0;
   border: 0;
   border-radius: 5px;
   font-size: 20px;
@@ -125,7 +128,6 @@ textarea {
   cursor: pointer;
   font-size: 20px;
   position: absolute;
-
 }
 
 .prevBtn {
