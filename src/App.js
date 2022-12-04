@@ -11,6 +11,7 @@ import TravelPreviewer from "./components/pages/TravelPreviewer";
 import Register from "./components/pages/RegistrarUsuario";
 import ChangePass from "./components/pages/ChangePass";
 import Policy from "./components/pages/Policy";
+import Vehicle from "./components/pages/RegistrarVehiculo";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/changePass" component={ChangePass} />
           <Route path="/map" component={TravelPreviewer} />
           <Route path="/policy" component={Policy} />
+          <Route path="/vehicle" component={Vehicle} />
         </Switch>
       </Router>
     </>

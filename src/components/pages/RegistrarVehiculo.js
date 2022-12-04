@@ -13,9 +13,10 @@ import es from "date-fns/locale/es";
 import { getUser } from "../service/AuthService";
 import { trackPromise } from "react-promise-tracker";
 import { LoadingIndicator } from "../Utilities";
+import YearPicker from "react-year-picker";
 registerLocale("es", es);
 
-export default function Register() {
+export default function RegistrarVehiculo() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
@@ -78,7 +79,7 @@ export default function Register() {
     //data.vehicle = "GAB1234";
     if(checkBox) {
       if (formValidate(data)) {
-        const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
+        const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
   
         try {
           await trackPromise(axios.post(viajesGetEndpoint, data));
@@ -100,29 +101,22 @@ export default function Register() {
     <div className="form-box">
       <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div>
-          <h1> Registrar usuario </h1>
-          <input {...register("name")} placeholder="Nombre" />
-          <input {...register("surname")} placeholder="Apellido" />
-          <input {...register("email")} placeholder="Email" />
+          <h1> Registrar vehiculo </h1>
+          <input {...register("manufacturer")} placeholder="Fabricante" />
+          <input {...register("model")} placeholder="Modelo" />
+          <input {...register("airbag")} placeholder="Bolsa de Aire" />
           <div>
-            <label> Fecha de nacimiento: </label>
-            <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
+            <label> Año: </label>
+            <YearPicker {...register("year")} />
           </div>
           <input
-            {...register("documentId")}
-            placeholder="Cédula de identidad sin puntos ni guiones. EJ: (42345678)"
+            {...register("airCond")}
+            placeholder="Aire Acondicionado"
           />
           <input
-            {...register("phoneNumber")}
-            placeholder="Número de teléfono. EJ: (+59891123432)"
-          />
-          <br />
-          <label id="checkBox" className="container">
-            Confirmo haber leído y estar de acuerdo con las
-            <a href="/policy"> políticas de uso de FriendlyTravel</a>
-            <input type="checkbox" onChange={handleCheckBoxChange} />
-            <span class="checkmark"></span>
-          </label>      
+            {...register("plate")}
+            placeholder="Placa"
+          />   
         </div>
         <div className="form__field">
           <input type="submit" value="Aceptar" />

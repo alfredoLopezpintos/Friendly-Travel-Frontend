@@ -181,3 +181,7 @@ textarea {
   background-color: rgb(245, 245, 78);
   transition: 1s background ease;
 }
+
+.year-picker {
+  width: 100% !important;
+}
