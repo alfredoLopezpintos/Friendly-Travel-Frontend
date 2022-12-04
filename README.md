@@ -1,3 +1,5 @@
+![image](http://34.133.144.217/buildStatus/icon?job=Friendly-Frontend)
+
 # Friendly-Travel-Frontend
 
 Welcome. Below you can find more informationn about the project.
