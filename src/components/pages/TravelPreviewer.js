@@ -17,7 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "../service/AuthService";
 
-const nafta = configData.PRECIO_NAFTA;
+const nafta = 74.88;
 
 
 const MapContainer = styled.div`
