@@ -62,7 +62,7 @@ function TravelPreviewer() {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: configData.MAPS_KEY,
+    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
     libraries,
   });
 
@@ -185,7 +185,8 @@ function TravelPreviewer() {
     setDestino(destiantionRef.current.value);
   }
 
-  function clearRoute() {
+  function clearRoute(e) {
+    e?.preventDefault();
     setDirectionsResponse(null);
     setDistance("");
     setDuration("");
@@ -193,12 +194,11 @@ function TravelPreviewer() {
     destiantionRef.current.value = "";
   }
 
-  function CalcularContribucion(e) {
-    e.preventDefault();
+  function CalcularContribucion() {
     let precio = 0
     let dist = 0
     let total = 0
-    //const contribucion = ((distance / 10) * nafta)
+
     console.log(lugaresRef.current.value)
     precio = lugaresRef.current.value
     precio++
@@ -241,6 +241,9 @@ function TravelPreviewer() {
                   ref={destiantionRef}
                 />
               </Autocomplete>
+
+              <button
+              onClick={clearRoute}>Crear Viaje</button>
               <br></br>
               <br></br>
               <label>
