@@ -1,35 +1,28 @@
-import React from "react";
-import "./RegistrarUsuario.css";
-import "./RegistrarUsuario.css";
-import { useForm } from "react-hook-form";
-import configData from "../../configData.json";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import es from "date-fns/locale/es";
 import moment from "moment";
+import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import configData from "../../configData.json";
+import "./Login.css";
+import { ToastContainer, toast } from "react-toastify";
+import "./RegistrarUsuario.css";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate2 } from "../Utilities";
-import es from "date-fns/locale/es";
 import { getUser } from "../service/AuthService";
 import { trackPromise } from "react-promise-tracker";
-import { LoadingIndicator } from "../Utilities";
-registerLocale("es", es);
+import { LoadingIndicator } from "../Utilities"
+registerLocale("es", es);;
 
 export default function Register() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
-  let checkBox = false;
   const history = useHistory();
-
-  const handleCheckBoxChange = event => {
-    if (event.target.checked) {
-      checkBox = true;
-    } else {
-      checkBox = false;
-    }
-  };
+  let checkBox = false;
 
   function formValidate(data) {
     if (
@@ -40,30 +33,30 @@ export default function Register() {
       data.documentId === "" ||
       data.phoneNumber === ""
     ) {
-      alert("Debe llenar todos los campos para poder crear el usuario.");
+      toast.error("Debe completar todos los campos");
       return false;
     } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
-      alert("Fecha inválida.");
+      toast.error("Fecha inválida");
       return false;
     } else if (moment().diff(data.birthDate, "years") <= 18) {
-      alert("El usuario debe ser mayor de edad.");
+      toast.error("El usuario debe ser mayor de edad");
       return false;
     } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
-      alert("El formato del correo electrónico no es válido.");
+      toast.error("El formato del correo electrónico no es válido");
       return false;
     } else if (
       !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gim.test(
         data.phoneNumber
       )
     ) {
-      alert("El formato del teléfono no es válido.");
+      toast.error("El formato del teléfono no es válido");
       return false;
     } else if (
       !isNumber(data.documentId) ||
       data.documentId.length > 8 ||
       data.documentId.length < 8
     ) {
-      alert("La cédula de identidad no es válida.");
+      toast.error("La cédula de identidad no es válida");
       return false;
     } else {
       return true;
@@ -76,59 +69,123 @@ export default function Register() {
 
     // A MANO POR AHORA
     //data.vehicle = "GAB1234";
+    console.log(data);
     if(checkBox) {
       if (formValidate(data)) {
         const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
-  
+
         try {
-          await trackPromise(axios.post(viajesGetEndpoint, data));
+          const response = trackPromise(await axios.post(viajesGetEndpoint, data));
+          console.log(response);
           redirect();
         } catch (error) {
           console.error(error);
+          toast.error("No se pudo crear el usuario");
         }
       }
     } else {
-      alert("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
+      toast.error("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
       " para poder registrarse.");
     }
   }
 
+  const handleCheckBoxChange = event => {
+    if (event.target.checked) {
+      checkBox = true;
+    } else {
+      checkBox = false;
+    }
+  };
+
   async function redirect2(data, e) {
-    history.push("/success");
+    history.push("/login");
+    toast.success("Usuario creado correctamente");
   }
+
   return (
-    <div className="form-box">
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div>
-          <h1> Registrar usuario </h1>
-          <input {...register("name")} placeholder="Nombre" />
-          <input {...register("surname")} placeholder="Apellido" />
-          <input {...register("email")} placeholder="Email" />
-          <div>
-            <label> Fecha de nacimiento: </label>
-            <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
+    <>
+      <div>
+        <div className="grid align__item">
+          <div className="register">
+            <div className="big_logo">
+              <i className="fab fa-typo3"></i>
+            </div>
+            <br />
+            <h2> Registrar usuario </h2>
+            <br />
+            <br />
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
+              <div>
+                <label>Nombre</label>
+                <div className="form__field">
+                  <input
+                    {...register("name")}
+                    placeholder="Ingrese su nombre"
+                    type="text"
+                  />
+                </div>
+
+                <label>Apellido</label>
+                <div className="form__field">
+                  <input
+                    {...register("surname")}
+                    placeholder="Ingrese su apellido"
+                    type="text"
+                  />
+                </div>
+
+                <label>Email</label>
+                <div className="form__field">
+                  <input
+                    {...register("email")}
+                    placeholder="Ingrese su email"
+                    type="email"
+                  />
+                </div>
+
+                <label>Fecha de nacimiento</label>
+                <div className="form__field">
+                  <input
+                    {...register("birthDate")}
+                    type="date"
+                    format="DD-MM-YYYY"
+                  />
+                </div>
+
+                <label>Cédula de identidad</label>
+                <div className="form__field">
+                  <input
+                    {...register("documentId")}
+                    placeholder="Sin puntos ni guiones, ej. 43215678"
+                    type="number"
+                  />
+                </div>
+
+                <label>Teléfono de contacto</label>
+                <div className="form__field">
+                  <input
+                    {...register("phoneNumber")}
+                    placeholder="Número de teléfono, ej. 59899111333"
+                    type="number"
+                  />
+                </div>
+                <br />
+                <label id="checkBox" className="container">
+                  Confirmo haber leído y estar de acuerdo con las
+                  <a href="/policy"> políticas de uso de FriendlyTravel</a>
+                  <input type="checkbox" onChange={handleCheckBoxChange} />
+                  <span class="checkmark"></span>
+                </label>
+                <div className="form__field">
+                  <input type="submit" value="Aceptar" />
+                </div>
+                <LoadingIndicator />
+              </div>
+            </form>
           </div>
-          <input
-            {...register("documentId")}
-            placeholder="Cédula de identidad sin puntos ni guiones. EJ: (42345678)"
-          />
-          <input
-            {...register("phoneNumber")}
-            placeholder="Número de teléfono. EJ: (+59891123432)"
-          />
-          <br />
-          <label id="checkBox" className="container">
-            Confirmo haber leído y estar de acuerdo con las
-            <a href="/policy"> políticas de uso de FriendlyTravel</a>
-            <input type="checkbox" onChange={handleCheckBoxChange} />
-            <span class="checkmark"></span>
-          </label>      
         </div>
-        <div className="form__field">
-          <input type="submit" value="Aceptar" />
-        </div>
-        <LoadingIndicator />
-      </form>
-    </div>
+      </div>
+      <ToastContainer position="top-center" />
+    </>
   );
 }

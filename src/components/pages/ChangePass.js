@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import configData from "../../configData.json";
-import { Button2 } from "../Button2";
+import { Button } from "../Button";
 import './Login.css';
 
 export default function ChangePass() {
@@ -110,16 +110,10 @@ export default function ChangePass() {
                   />
                 </div>
               </div>
-
               <br />
-
-              <Button2
-                className="btns"
-                buttonStyle="btn--outline"
-                buttonSize="btn--large"
-              >
-                ACEPTAR
-              </Button2>
+              <div className="form__field">
+                <input type="submit" value="Aceptar" />
+              </div>
             </form>
           </div>
         </div>

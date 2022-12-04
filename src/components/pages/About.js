@@ -1,10 +1,10 @@
 import React from "react";
 import CardItem2 from "../CardItem2";
 import TextItem from "../TextItem";
-import Footer2 from "../Footer2";
+import Footer from "../Footer";
 import "../Text.css";
 
-function Services() {
+function About() {
   return (
     <>
       <div className="text">
@@ -76,9 +76,9 @@ function Services() {
           </div>
         </div>
       </div>
-      <Footer2 />
+      <Footer />
     </>
   );
 }
 
-export default Services;
+export default About;

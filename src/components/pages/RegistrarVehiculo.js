@@ -14,6 +14,7 @@ import { getUser } from "../service/AuthService";
 import { trackPromise } from "react-promise-tracker";
 import { LoadingIndicator } from "../Utilities";
 import YearPicker from "react-year-picker";
+import { toast, ToastContainer } from "react-toastify";
 registerLocale("es", es);
 
 export default function RegistrarVehiculo() {
@@ -24,14 +25,6 @@ export default function RegistrarVehiculo() {
   let checkBox = false;
   const history = useHistory();
 
-  const handleCheckBoxChange = event => {
-    if (event.target.checked) {
-      checkBox = true;
-    } else {
-      checkBox = false;
-    }
-  };
-
   function formValidate(data) {
     if (
       data.email === "" ||
@@ -41,30 +34,30 @@ export default function RegistrarVehiculo() {
       data.documentId === "" ||
       data.phoneNumber === ""
     ) {
-      alert("Debe llenar todos los campos para poder crear el usuario.");
+      toast.error("Debe llenar todos los campos para poder crear el usuario.");
       return false;
     } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
-      alert("Fecha inválida.");
+      toast.error("Fecha inválida.");
       return false;
     } else if (moment().diff(data.birthDate, "years") <= 18) {
-      alert("El usuario debe ser mayor de edad.");
+      toast.error("El usuario debe ser mayor de edad.");
       return false;
     } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
-      alert("El formato del correo electrónico no es válido.");
+      toast.error("El formato del correo electrónico no es válido.");
       return false;
     } else if (
       !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gim.test(
         data.phoneNumber
       )
     ) {
-      alert("El formato del teléfono no es válido.");
+      toast.error("El formato del teléfono no es válido.");
       return false;
     } else if (
       !isNumber(data.documentId) ||
       data.documentId.length > 8 ||
       data.documentId.length < 8
     ) {
-      alert("La cédula de identidad no es válida.");
+      toast.error("La cédula de identidad no es válida.");
       return false;
     } else {
       return true;
@@ -89,40 +82,65 @@ export default function RegistrarVehiculo() {
         }
       }
     } else {
-      alert("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
+      toast.error("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
       " para poder registrarse.");
     }
   }
 
   async function redirect2(data, e) {
-    history.push("/success");
+    toast.success("Contraseña modificada correctamente");
+    history.push("/login");
   }
+
   return (
-    <div className="form-box">
+    <>
+    <div>
+        <div className="grid align__item">
+          <div className="register">
+            <div className="big_logo">
+              <i className="fab fa-typo3"></i>
+            </div>
+            <h1> Registrar vehiculo </h1>
+            <br />
       <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <div className="form">
+
+        <div className="form__field">
+          <input type="text" {...register("manufacturer")} placeholder="Fabricante" />
+        </div>
+        <div className="form__field">
+          <input type="text" {...register("model")} placeholder="Modelo" />
+        </div>
+        <div className="form__field">
+          <input type="text" {...register("airbag")} placeholder="Bolsa de Aire" />
+        </div>
         <div>
-          <h1> Registrar vehiculo </h1>
-          <input {...register("manufacturer")} placeholder="Fabricante" />
-          <input {...register("model")} placeholder="Modelo" />
-          <input {...register("airbag")} placeholder="Bolsa de Aire" />
-          <div>
-            <label> Año: </label>
-            <YearPicker {...register("year")} />
-          </div>
-          <input
-            {...register("airCond")}
-            placeholder="Aire Acondicionado"
-          />
-          <input
-            {...register("plate")}
-            placeholder="Placa"
-          />   
+          <label> Año: </label>
+          <YearPicker {...register("year")} />
+        </div>
+        <br />
+        <div className="form__field">
+        <input type="text"
+          {...register("airCond")}
+          placeholder="Aire Acondicionado"
+        />
+        </div>
+        <div className="form__field">
+        <input type="text"
+          {...register("plate")}
+          placeholder="Placa"
+        />
         </div>
         <div className="form__field">
           <input type="submit" value="Aceptar" />
         </div>
         <LoadingIndicator />
-      </form>
-    </div>
+        </div>
+        </form>
+          </div>
+        </div>
+      </div>
+    <ToastContainer position="top-center" />
+    </>
   );
 }

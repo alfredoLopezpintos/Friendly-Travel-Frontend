@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home";
-import Services from "./components/pages/Services";
+import About from "./components/pages/About";
 import Viajes from "./components/pages/Viajes";
 import Succesful from "./components/pages/Succesful";
 import Login from "./components/pages/Login";
@@ -26,7 +26,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/services" component={Services} />
+          <Route path="/about" component={About} />
           <Route path="/viajes" component={Viajes} />
           <Route path="/success" component={Succesful} />
           <Route path="/login" component={Login} />

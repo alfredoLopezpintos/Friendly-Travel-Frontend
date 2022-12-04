@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import configData from "../../configData.json";
-import Footer2 from "../Footer2";
+import Footer from "../Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "../service/AuthService";
@@ -313,7 +313,7 @@ function TravelPreviewer() {
         </GoogleMap>
       </MapContainer>
       <ToastContainer position="top-center" />
-      <Footer2 />
+      <Footer />
     </>
   );
 }

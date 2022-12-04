@@ -1,7 +1,7 @@
 import React from "react";
 import CardItem2 from "../CardItem2";
 import TextItem from "../TextItem";
-import Footer2 from "../Footer2";
+import Footer from "../Footer";
 import "../Text.css";
 
 function Carpool() {
@@ -69,7 +69,7 @@ function Carpool() {
           </div>
         </div>
       </div>
-      <Footer2 />
+      <Footer />
     </>
   );
 }
