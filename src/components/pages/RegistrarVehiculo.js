@@ -68,8 +68,6 @@ export default function RegistrarVehiculo() {
     data.birthDate = transformDate2(data.birthDate);
     data.user = getUser();
 
-    // A MANO POR AHORA
-    //data.vehicle = "GAB1234";
     if(checkBox) {
       if (formValidate(data)) {
         const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";

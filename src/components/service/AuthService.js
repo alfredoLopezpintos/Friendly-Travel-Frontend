@@ -21,4 +21,16 @@ module.exports = {
     window.localStorage.removeItem("email");
     window.localStorage.removeItem("token");
   },
+
+  setResponseService: function () {
+    window.localStorage.setItem("success", JSON.stringify(true))
+  },
+
+  getResponseService: function () {
+    window.localStorage.getItem("success")
+  },
+
+  resetResponseService: function () {
+    window.localStorage.removeItem("success")
+  }
 };

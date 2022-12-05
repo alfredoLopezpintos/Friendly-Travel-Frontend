@@ -9,6 +9,7 @@ import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate, LoadingIndicator } from "../Utilities";
 import { getUser } from "../service/AuthService";
 import { trackPromise } from "react-promise-tracker";
+import { setResponseService, resetResponseService } from "../service/AuthService";
 import "react-datepicker/dist/react-datepicker.css";
 
 import es from "date-fns/locale/es";
@@ -67,7 +68,9 @@ export default function RegistrarViaje() {
   }
 
   async function redirect2(data, e) {
+    setResponseService();
     history.push("/success");
+    resetResponseService();
   }
 
   return (
