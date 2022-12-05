@@ -18,24 +18,15 @@ import NotFound from "./components/pages/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthenticatedRoute from './AuthenticatedRoute';
-import { getToken, getResponseService } from "./components/service/AuthService";
+import { getToken } from "./components/service/AuthService";
 
 function App() {
-
-  let changePass;
-
-
-  if(getResponseService()===true) {
-    changePass = true;
-  } else (changePass = false)
 
   return (
     <>
       <Router>
         <Navbar />
-        <Switch>          
-          <AuthenticatedRoute authed={getResponseService()===true} path='/success' component={Succesful} />
-
+        <Switch>
           <Route path="/changePass" component={ChangePass} />
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />

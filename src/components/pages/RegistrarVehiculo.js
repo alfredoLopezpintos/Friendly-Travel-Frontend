@@ -10,11 +10,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate2 } from "../Utilities";
 import es from "date-fns/locale/es";
-import { getUser } from "../service/AuthService";
 import { trackPromise } from "react-promise-tracker";
 import { LoadingIndicator } from "../Utilities";
-import YearPicker from "react-year-picker";
 import { toast, ToastContainer } from "react-toastify";
+import { getToken } from "../service/AuthService";
 registerLocale("es", es);
 
 export default function RegistrarVehiculo() {
@@ -22,66 +21,48 @@ export default function RegistrarVehiculo() {
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
-  let checkBox = false;
   const history = useHistory();
 
   function formValidate(data) {
     if (
-      data.email === "" ||
-      data.name === "" ||
-      data.surname === "" ||
-      data.birthDate === "" ||
-      data.documentId === "" ||
-      data.phoneNumber === ""
+      data.manufacturer === "" ||
+      data.year === "" ||
+      data.model === "" ||
+      data.airbag === "" ||
+      data.airCond === "" ||
+      data.plate === ""
     ) {
       toast.error("Debe llenar todos los campos para poder crear el usuario.");
       return false;
-    } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
-      toast.error("Fecha inválida.");
+    } else if (data.year > (moment().year())+1) {
+      toast.error("El año del auto debe ser como maximo el año siguiente.");
       return false;
-    } else if (moment().diff(data.birthDate, "years") <= 18) {
-      toast.error("El usuario debe ser mayor de edad.");
-      return false;
-    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
-      toast.error("El formato del correo electrónico no es válido.");
-      return false;
-    } else if (
-      !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gim.test(
-        data.phoneNumber
-      )
-    ) {
-      toast.error("El formato del teléfono no es válido.");
-      return false;
-    } else if (
-      !isNumber(data.documentId) ||
-      data.documentId.length > 8 ||
-      data.documentId.length < 8
-    ) {
-      toast.error("La cédula de identidad no es válida.");
+    } else if (!isNumber(data.year)) {
+      toast.error("El año debe ser un numero");
       return false;
     } else {
       return true;
     }
   }
 
-  async function fetchViajes(data, e) {
-    data.birthDate = transformDate2(data.birthDate);
-    data.user = getUser();
+  const requestConfig = {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  };
 
-    if(checkBox) {
-      if (formValidate(data)) {
-        const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
-  
-        try {
-          await trackPromise(axios.post(viajesGetEndpoint, data));
-          redirect();
-        } catch (error) {
-          console.error(error);
-        }
+  async function fetchViajes(data, e) {
+    if (formValidate(data)) {
+      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
+      console.log(requestConfig)
+      console.log(data)
+
+      try {
+        await trackPromise(axios.post(viajesGetEndpoint, data, requestConfig));
+        redirect();
+      } catch (error) {
+        console.error(error);
       }
-    } else {
-      toast.error("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
-      " para poder registrarse.");
     }
   }
 
@@ -89,6 +70,22 @@ export default function RegistrarVehiculo() {
     toast.success("Contraseña modificada correctamente");
     history.push("/login");
   }
+
+  const handleCheckBoxChange = event => {
+    if (event.target.checked) {
+      <input value={true} {...register("airCond")} />      
+    } else {
+      <input value={false} {...register("airCond")} /> 
+    }
+  };
+
+  const handleCheckBoxChange2 = event => {
+    if (event.target.checked) {
+      <input value={true} {...register("airbag")} />      
+    } else {
+      <input value={false} {...register("airbag")} /> 
+    }
+  };
 
   return (
     <>
@@ -109,20 +106,22 @@ export default function RegistrarVehiculo() {
         <div className="form__field">
           <input type="text" {...register("model")} placeholder="Modelo" />
         </div>
+        <label id="checkBox" className="container">
+          Bolsa de Aire
+          <input type="checkbox" onChange={() => handleCheckBoxChange2()} 
+          {...register("airbag")} />
+          <span class="checkmark"></span>
+        </label>
         <div className="form__field">
-          <input type="text" {...register("airbag")} placeholder="Bolsa de Aire" />
-        </div>
-        <div>
-          <label> Año: </label>
-          <YearPicker {...register("year")} />
+          <input type="text" {...register("year")} placeholder="Año" />
         </div>
         <br />
-        <div className="form__field">
-        <input type="text"
-          {...register("airCond")}
-          placeholder="Aire Acondicionado"
-        />
-        </div>
+        <label id="checkBox" className="container">
+          Aire Acondicionado
+          <input type="checkbox" onChange={() => handleCheckBoxChange()}
+          {...register("airCond")} />
+          <span class="checkmark"></span>
+        </label>
         <div className="form__field">
         <input type="text"
           {...register("plate")}
