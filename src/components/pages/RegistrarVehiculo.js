@@ -67,8 +67,8 @@ export default function RegistrarVehiculo() {
   }
 
   async function redirect2(data, e) {
-    toast.success("Contraseña modificada correctamente");
-    history.push("/login");
+    toast.success("Vehiculo agregado correctamente");
+    history.push("/");
   }
 
   const handleCheckBoxChange = event => {

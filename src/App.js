@@ -30,8 +30,8 @@ function App() {
           <Route path="/changePass" component={ChangePass} />
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
-          <Route path="/viajes" component={Viajes} />          
-          <Route path="/login" component={Login} />          
+          <Route path="/viajes" component={Viajes} />
+          <AuthenticatedRoute authed={getToken()==null} path='/login' component={Login} />        
           <Route path="/policy" component={Policy} />
           <AuthenticatedRoute authed={getToken()!==null} path='/vehicle' component={Vehicle} />
           <Route path="/faqsPage" component={FaqsPage} />
