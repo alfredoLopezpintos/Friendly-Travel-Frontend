@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import configData from "../../configData.json";
-import { Button2 } from "../Button2";
 import Footer from "../Footer";
 import './Login.css';
 
@@ -46,6 +45,7 @@ export default function ChangePass() {
       configData.AWS_REST_ENDPOINT + "/login/new-password";
       
       try {
+        console.log(data)
         const response = await axios.post(viajesGetEndpoint, data);
         console.log(response);
         redirect();
@@ -96,7 +96,6 @@ export default function ChangePass() {
                 <label>Nueva contraseña</label>
                 <div className="form__field">
                   <input
-                    {...register("newPassword1")}
                     placeholder="••••••••••••"
                     type="password"
                   />
@@ -105,13 +104,12 @@ export default function ChangePass() {
                 <label>Confirme la nueva contraseña</label>
                 <div className="form__field">
                   <input
-                    {...register("newPassword2")}
+                    {...register("newPassword")}
                     placeholder="••••••••••••"
                     type="password"
                   />
                 </div>
               </div>
-
               <br />
               <div className="form__field">
                 <input type="submit" value="Aceptar" />

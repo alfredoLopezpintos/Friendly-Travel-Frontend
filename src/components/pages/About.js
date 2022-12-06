@@ -4,7 +4,7 @@ import TextItem from "../TextItem";
 import Footer from "../Footer";
 import "../Text.css";
 
-function Services() {
+function About() {
   return (
     <>
       <div className="text">
@@ -81,4 +81,4 @@ function Services() {
   );
 }
 
-export default Services;
+export default About;

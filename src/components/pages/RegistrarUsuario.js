@@ -1,36 +1,26 @@
-import React from "react";
-import "./Login.css";
-import { useForm } from "react-hook-form";
-import configData from "../../configData.json";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import es from "date-fns/locale/es";
 import moment from "moment";
+import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import configData from "../../configData.json";
+import "./Login.css";
+import { ToastContainer, toast } from "react-toastify";
+import "./RegistrarUsuario.css";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate2 } from "../Utilities";
-import es from "date-fns/locale/es";
-import Footer from "../Footer";
 import { getUser } from "../service/AuthService";
-import { trackPromise } from "react-promise-tracker";
-import { LoadingIndicator } from "../Utilities";
-import { ToastContainer, toast } from "react-toastify";
-registerLocale("es", es);
+registerLocale("es", es);;
 
 export default function Register() {
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
-  let checkBox = false;
   const history = useHistory();
-
-  const handleCheckBoxChange = event => {
-    if (event.target.checked) {
-      checkBox = true;
-    } else {
-      checkBox = false;
-    }
-  };
+  let checkBox = false;
 
     function borrarCampos(data){
       checkBox = false;
@@ -45,28 +35,26 @@ export default function Register() {
       data.documentId === "" ||
       data.phoneNumber === ""
     ) {
-      toast.error("Debe llenar todos los campos para poder crear el usuario.");
+      toast.error("Debe completar todos los campos");
       return false;
     } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
-      toast.error("Fecha inválida.");
+      toast.error("Fecha inválida");
       return false;
     } else if (moment().diff(data.birthDate, "years") <= 18) {
-      toast.error("El usuario debe ser mayor de edad.");
+      toast.error("El usuario debe ser mayor de edad");
       return false;
     } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
-      toast.error("El formato del correo electrónico no es válido.");
+      toast.error("El formato del correo electrónico no es válido");
       return false;
     } else if (
       !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gim.test(
         data.phoneNumber
       )
     ) {
-      toast.error("El formato del teléfono no es válido.");
+      toast.error("El formato del teléfono no es válido");
       return false;
-    } else if (
-      !validate_ci(data.documentId)
-    ) {
-      toast.error("La cédula de identidad no es válida.");
+    } else if (      validate_ci(data.documentId)    ) {
+      toast.error("La cédula de identidad no es válida");
       return false;
     } else {
       return true;
@@ -79,16 +67,17 @@ export default function Register() {
 
     // A MANO POR AHORA
     //data.vehicle = "GAB1234";
+    console.log(data);
     if(checkBox) {
       if (formValidate(data)) {
         const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
-        console.log(data)
+
         try {
-          await trackPromise(axios.post(viajesGetEndpoint, data));
-          console.log(data)
+          const response = await (axios.post(viajesGetEndpoint, data));
           redirect();
         } catch (error) {
           console.error(error);
+          toast.error("No se pudo crear el usuario");
         }
       }
     } else {
@@ -97,6 +86,14 @@ export default function Register() {
     }
   }
 
+  
+  const handleCheckBoxChange = event => {
+    if (event.target.checked) {
+      checkBox = true;
+    } else {
+      checkBox = false;
+    }
+  };
   function validation_digit(ci){
     var a = 0;
     var i = 0;
@@ -119,6 +116,7 @@ export default function Register() {
   }
   
   function validate_ci(ci){
+    console.log(ci)
     ci = clean_ci(ci);
     var dig = ci[ci.length - 1];
     ci = ci.replace(/[0-9]$/, '');
@@ -131,8 +129,9 @@ export default function Register() {
     history.push("/");
     borrarCampos(data)
   }
+
   return (
-<>
+    <>
       <div>
         <div className="grid align__item">
           <div className="register">
@@ -223,7 +222,7 @@ export default function Register() {
         </div>
       </div>
       <ToastContainer position="top-center" />
-      <Footer />
+
     </>
 );
 }

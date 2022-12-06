@@ -7,8 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import configData from "../../configData.json";
-import { Button2 } from "../Button2";
-import Footer from "../Footer";
+import { Button } from "../Button";
 import "./Login.css";
 import { ToastContainer, toast } from "react-toastify";
 registerLocale("es", es);
@@ -172,24 +171,20 @@ export default function Register() {
                 </div>
 
                 <br />
-                <div className="form__field">
-                <input type="submit" value="Aceptar" />
-              </div>
-              {/*   <Button2
+                <Button
                   className="btns"
                   buttonStyle="btn--outline"
                   buttonSize="btn--large"
                 >
                   {" "}
                   CREAR USUARIO
-                </Button2> */}
+                </Button>
               </div>
             </form>
           </div>
         </div>
       </div>
       <ToastContainer position="top-center" />
-      <Footer />
     </>
   );
 }

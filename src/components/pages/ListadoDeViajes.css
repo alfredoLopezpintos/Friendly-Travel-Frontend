@@ -1,3 +1,38 @@
+/* BUTTON */
+.contacto {
+  margin-bottom: 1rem;
+  margin-top: 30px;
+}
+
+.contacto a {
+  outline: 0;
+  padding: 0.5rem 1rem;
+}
+
+.contacto a {
+  border: 1px solid #242c37;
+  border-radius: 5px;
+  background-color: transparent;
+  margin-left: 440px;
+  margin-top: 30px;
+}
+
+.contacto a {
+  border: 1px solid #242c37;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  color: #242424;
+  text-decoration: none; /* no underline */
+}
+
+.contacto a:hover,
+.contacto a:hover {
+  transition: all 0.3s ease-out;
+  background: #242424;
+  color: #fff;
+  transition: 250ms;
+}
+
 /* DROPDOWN */
 
 /* Dropdown Button */

@@ -9,63 +9,38 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
-import { ThreeDots } from "react-loader-spinner";
-import { trackPromise, usePromiseTracker } from "react-promise-tracker";
+import { IoLogoWhatsapp } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
 import "../../App.css";
-import { Button } from "../../components/Button";
+import { transformDate, isNumber } from "../Utilities"
 import configData from "../../configData.json";
 import "./ListadoDeViajes.css";
-
 import Moment from "moment";
+import { getToken } from "../service/AuthService";
+
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
   const [viajes, setViajes] = React.useState([]);
   const { register, handleSubmit } = useForm();
   const [date, setDate] = useState(new Date());
-  //const [seat, setSeat] = useState(1);
-  const handleDateChange = (date) => setDate(date);
+  const handleContacto = (data) => fetchContacto(data);
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const [libraries] = useState(["places"]);
-
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
-
-  const LoadingIndicator = (props) => {
-    const { promiseInProgress } = usePromiseTracker();
-
-    return (
-      promiseInProgress && (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ThreeDots color="#2BAD60" height="100" width="100" />
-        </div>
-      )
-    );
-  };
-
-  function isNumber(str) {
-    if (str.trim() === "") {
-      return false;
-    }
-
-    return !isNaN(str);
-  }
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
     libraries,
   });
+  const requestConfig = {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  };
 
   if (!isLoaded) {
     return <>loading...</>;
@@ -97,12 +72,24 @@ export default function ListadoDeViajes() {
     }
   }
 
+  async function fetchContacto(data) {
+    const viajesGetEndPoint =
+        configData.AWS_REST_ENDPOINT +
+        "/trips/" + data;
+    console.log(viajesGetEndPoint, requestConfig)
+    try {
+      const response = await axios.get(viajesGetEndPoint, requestConfig);
+      console.log(response.data);
+      window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=Me%20gustaía%20unirme%20a%20tu%20viaje");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date);;
 
     if (formValidate(data)) {
-      //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"
-
       const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips?origin=" +
@@ -115,18 +102,14 @@ export default function ListadoDeViajes() {
         data.price +
         "&availablePlaces=" +
         data.availablePlaces;
-
-      console.log(viajesGetEndPoint);
-
       try {
-        const response = await trackPromise(axios.get(viajesGetEndPoint));
-        console.log(response.data);
+        const response = await axios.get(viajesGetEndPoint)
         if (
           response.data.message ===
           "No hay viajes que cumplan con las condiciones seleccionadas."
           ) {
-          toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           setViajes();
+          toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
         } else {
           setViajes(response.data);
         }
@@ -134,16 +117,6 @@ export default function ListadoDeViajes() {
         console.error(error);
       }
     }
-  }
-
-  function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    if (/^\d$/.test(dateObj.getUTCDate())) {
-      day = "0" + dateObj.getUTCDate();
-    }
-    return day + "-" + month + "-" + year;
   }
 
   render();
@@ -219,19 +192,10 @@ export default function ListadoDeViajes() {
         <br />
         <br />
         <ol className="gradient-list">
-          <LoadingIndicator />
           {viajes &&
             viajes.map((user) => (
               <li>
-                <div className="destination">
-                  <div>ORIGEN: {user.origin.toUpperCase()}</div>
-                  <div>FECHA: {user.tripDate}</div>
-                </div>
-                <div className="destination">
-                  <div>DESTINO: {user.destination.toUpperCase()}</div>
-                  <div>{user.arrival_time}</div>
-                </div>
-                <div className="social-media-wrap">
+                  <div className="social-media-wrap">
                   <div className="rating">
                     <MdOutlineAirlineSeatReclineNormal />
                     {user.availablePlaces}
@@ -241,6 +205,22 @@ export default function ListadoDeViajes() {
                     <BsCurrencyDollar />
                   </div>
                 </div>
+                <div className="destination">
+                  <div>ORIGEN: {user.origin.toUpperCase()}</div>
+                  <div>FECHA: {user.tripDate}</div>
+                </div>
+                <div className="destination">
+                  <div>DESTINO: {user.destination.toUpperCase()}</div>
+                  <div>{user.arrival_time}</div>
+                </div>
+                {getToken() !== null ? (
+                  <div className="contacto">
+                    <a onClick={() => handleContacto(user.tripId)}>
+                      <IoLogoWhatsapp />
+                    </a>
+                  </div>
+                ):(<br />)}
+                
               </li>
             ))}
         </ol>

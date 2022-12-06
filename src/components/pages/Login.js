@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
-import { ThreeDots } from "react-loader-spinner";
-import { trackPromise, usePromiseTracker } from "react-promise-tracker";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../Footer";
 import "./Login.css";
@@ -19,26 +17,6 @@ const Login = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
 
-  const LoadingIndicator = (props) => {
-    const { promiseInProgress } = usePromiseTracker();
-
-    return (
-      promiseInProgress && (
-        <div
-          style={{
-            width: "100%",
-            height: "100",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ThreeDots color="#2BAD60" height="100" width="100" />
-        </div>
-      )
-    );
-  };
-
   const submitHandler = (event) => {
     event.preventDefault();
     if (email.trim() === "" || password.trim() === "") {
@@ -46,28 +24,18 @@ const Login = (props) => {
       return;
     }
     setErrorMessage(null);
-    const requestConfig = {
-      headers: {
-        Authorization: "OkhIJdHFMomDeRVUXGfa1EXWiGBAWpdakg7ZRCFf",
-      },
-    };
     const requestBody = {
       email: email,
       password: password,
     };
 
-    //console.log(axios.post(loginAPIUrl, requestBody))
-
-    trackPromise(
-      axios
+    toast.promise(
+      (axios
         .post(loginAPIUrl, requestBody)
         .then((response) => {
-          //console.log(response.data)
-          //console.log(jwt_decode(response.data.object.idToken))
           if (response.data.message === "NEW_PASSWORD_REQUIRED") {
             history.push("/changePass");
           } else {
-            //setUserSession(response.data.email, response.data.token);
             setUserSession(
               jwt_decode(response.data.object.idToken).email,
               response.data.object.idToken
@@ -87,8 +55,22 @@ const Login = (props) => {
               "Lo sentimos, el servidor parece encontrarse en mantenimiento. Por favor intentelo de nuevo más tarde"
             );
           }
-        })
-    );
+        }))
+      ,
+      {
+        pending: {
+          render(){
+            return "Cargando"
+          },
+          icon: true,
+        },
+        error: {
+          render({data}){
+            return toast.error('Error')
+          }
+        }
+      }
+     );
   };
 
   return (
@@ -124,7 +106,6 @@ const Login = (props) => {
                 <input type="submit" value="Aceptar" />
               </div>
               {errorMessage && <p className="message">{errorMessage}</p>}
-              <LoadingIndicator />
               <br />
             </form>
             <p>
