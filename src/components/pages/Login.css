@@ -18,6 +18,7 @@
 
 .form__field {
   margin-bottom: 1rem;
+  background: white;
 }
 
 .form input {
@@ -42,6 +43,11 @@
 .register {
   text-align: center;
   padding: 4rem 2rem;
+  background: rgb(199,236,255);
+  background: linear-gradient(126deg, rgba(199,236,255,1) 0%, rgba(232,232,232,1) 57%, rgba(255,239,205,1) 100%);
+  border-radius: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .register input {
@@ -53,6 +59,7 @@
 .big_logo i {
   font-size: 100px;
   color: rgb(26, 23, 23) 100%;
+  
 }
 
 .register input[type="email"],

@@ -40,7 +40,7 @@ function App() {
           <AuthenticatedRoute authed={getToken()!==null} path='/map' component={TravelPreviewer} />
           <Route path="*" component={NotFound} />          
         </Switch>
-        <ToastContainer position="top-center" />
+        <ToastContainer position="top-center"/>
       </Router>
     </>
   );

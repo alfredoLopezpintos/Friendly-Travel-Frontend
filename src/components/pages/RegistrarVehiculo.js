@@ -12,6 +12,9 @@ import { isNumber, transformDate2 } from "../Utilities";
 import es from "date-fns/locale/es";
 import { toast, ToastContainer } from "react-toastify";
 import { getToken } from "../service/AuthService";
+import { getUser } from "../service/AuthService";
+import { trackPromise } from "react-promise-tracker";
+import { LoadingIndicator } from "../Utilities";
 registerLocale("es", es);
 
 export default function RegistrarVehiculo() {

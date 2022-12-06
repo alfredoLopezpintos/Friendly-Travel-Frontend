@@ -109,11 +109,10 @@ export default function Register() {
         <div className="grid align__item">
           <div className="register">
             <div className="big_logo">
-              <i className="fab fa-typo3"></i>
+              <img src={require("../../assets/images/logo2.png")} alt="travel logo" width={200}></img>
             </div>
             <br />
             <h2> Registrar usuario </h2>
-            <br />
             <br />
             <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
               <div>

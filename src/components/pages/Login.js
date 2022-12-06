@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
+import Footer from "../Footer";
 import "./Login.css";
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login";
 
@@ -41,6 +42,7 @@ const Login = (props) => {
             );
             props.history.push("/");
             window.location.reload(false);
+            toast.success("Bienvenido")
           }
         })
         .catch((error) => {
@@ -76,8 +78,8 @@ const Login = (props) => {
       <div>
         <div className="grid align__item">
           <div className="register">
-            <div className="big_logo">
-              <i className="fab fa-typo3"></i>
+          <div className="big_logo">
+              <img src={require("../../assets/images/logo2.png")} alt="travel logo" width={200}></img>
             </div>
             <br />
             <h2>Iniciar sesión</h2>
@@ -113,6 +115,7 @@ const Login = (props) => {
         </div>
       </div>
       <ToastContainer position="top-center" />
+      <Footer />
     </>
   );
 };

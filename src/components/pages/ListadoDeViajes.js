@@ -4,7 +4,7 @@ import axios from "axios";
 import es from "date-fns/locale/es";
 import moment from "moment";
 import React, { useRef, useState } from "react";
-import DatePickerComonent, { registerLocale } from "react-datepicker";
+import DatePickerComponent, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -33,7 +33,7 @@ export default function ListadoDeViajes() {
   const dateRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: configData.MAPS_KEY,
+    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
     libraries,
   });
   const requestConfig = {
@@ -107,7 +107,7 @@ export default function ListadoDeViajes() {
         if (
           response.data.message ===
           "No hay viajes que cumplan con las condiciones seleccionadas."
-        ) {
+          ) {
           setViajes();
           toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
         } else {

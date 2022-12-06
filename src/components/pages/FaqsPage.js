@@ -13,12 +13,12 @@ function FaqsPage() {
     },
     {
       question: "¿Es seguro utilizar Friendly Travel?",
-      answer: "COMPLETAR.",
+      answer: "Hemos trabajado fuertemente este tema y podemos afirmar que lo es. Solicitamos los datos y confirmamos los mismos de varias formas para evitar posibles falsedades.",
       open: false,
     },
     {
       question: "¿Qué necesito para utilizar Friendly Travel?",
-      answer: "COMPLETAR.",
+      answer: "Practicamente nada, una computadora con conexión a internet, un numero de teléfono celular y las ganas de sumarte a esta comunidad.",
       open: false,
     },
     {

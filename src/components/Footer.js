@@ -1,6 +1,5 @@
 import React from "react";
 import "./Footer.css";
-import { Button } from "./Button";
 import { Link } from "react-router-dom";
 
 function Footer() {
@@ -17,16 +16,23 @@ function Footer() {
           <div className="footer-link-items">
             <h2>Mapa del sitio</h2>
             <Link to="/faqsPage">Preguntas frecuentes</Link>
-            <Link to="/about">Quienes somos</Link>
-            <Link to="/">Acerca de Carpooling</Link>
-            <Link to="/">Términos y Condiciones</Link>
+            <Link to="/services">Quienes somos</Link>
+            <Link to="/carpool">Acerca de Carpooling</Link>
+            <Link to="/policy">Términos y Condiciones</Link>
           </div>
           <div className="footer-link-items">
+
+          <div className="big_logo">
+              <img src={require("../assets/images/logo2.png")} alt="travel logo" width={150}></img>
+            </div>            
+          </div>
+          
+          <div className="footer-link-items">
             <h2>Contactanos</h2>
-            <Link>friendly.travel.uy@gmail.com</Link>
-            <Link>diego.rosales@estudiantes.utec.edu.uy</Link>
-            <Link>rodrigo.serron@estudiantes.utec.edu.uy</Link>
-            <Link>alfredo.lopezpintos@estudiantes.utec.edu.uy</Link>
+            <small className="website-rights">friendly.travel.uy@gmail.com</small>
+            <small className="website-rights">diego.rosales@estudiantes.utec.edu.uy</small>
+            <small className="website-rights">rodrigo.serron@estudiantes.utec.edu.uy</small>
+            <small className="website-rights">alfredo.lopezpintos@estudiantes.utec.edu.uy</small>
           </div>
         </div>
       </div>
