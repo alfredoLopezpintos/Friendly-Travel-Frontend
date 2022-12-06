@@ -1,14 +1,15 @@
 /* BUTTON */
 .contacto {
   margin-bottom: 1rem;
+  margin-top: 30px;
 }
 
-.contacto input {
+.contacto a {
   outline: 0;
   padding: 0.5rem 1rem;
 }
 
-.contacto input {
+.contacto a {
   border: 1px solid #242c37;
   border-radius: 5px;
   background-color: transparent;
@@ -16,7 +17,7 @@
   margin-top: 30px;
 }
 
-.contacto input {
+.contacto a {
   border: 1px solid #242c37;
   transition: all 0.3s ease-out;
   cursor: pointer;
@@ -24,8 +25,8 @@
   text-decoration: none; /* no underline */
 }
 
-.contacto input:hover,
-.contacto input:hover {
+.contacto a:hover,
+.contacto a:hover {
   transition: all 0.3s ease-out;
   background: #242424;
   color: #fff;

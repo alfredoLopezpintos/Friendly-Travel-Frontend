@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
+import { IoLogoWhatsapp } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
 import "../../App.css";
 import { transformDate, isNumber } from "../Utilities"
@@ -16,6 +17,7 @@ import configData from "../../configData.json";
 import "./ListadoDeViajes.css";
 import Moment from "moment";
 import { getToken } from "../service/AuthService";
+
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -26,7 +28,6 @@ export default function ListadoDeViajes() {
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const [libraries] = useState(["places"]);
-
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
@@ -79,6 +80,7 @@ export default function ListadoDeViajes() {
     try {
       const response = await axios.get(viajesGetEndPoint, requestConfig);
       console.log(response.data);
+      window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=Me%20gustaía%20unirme%20a%20tu%20viaje");
     } catch (error) {
       console.error(error);
     }
@@ -213,7 +215,9 @@ export default function ListadoDeViajes() {
                 </div>
                 {getToken() !== null ? (
                   <div className="contacto">
-                    <input type="button" value="Contacto" onClick={() => handleContacto(user.tripId)} />
+                    <a onClick={() => handleContacto(user.tripId)}>
+                      <IoLogoWhatsapp />
+                    </a>
                   </div>
                 ):(<br />)}
                 
