@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FAQ from "../FAQ";
-import Footer2 from "../Footer2";
+import Footer from "../Footer";
 import "../Faqs.css";
 
 function FaqsPage() {
@@ -85,7 +85,7 @@ function FaqsPage() {
           ))}
         </div>
       </div>
-      <Footer2 />
+      <Footer />
     </>
   );
 }

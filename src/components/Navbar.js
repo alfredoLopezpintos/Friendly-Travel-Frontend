@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./Button";
 import { Link, useHistory } from "react-router-dom";
-import { getUser, getToken, resetUserSession } from "./service/AuthService";
+import { getToken, resetUserSession } from "./service/AuthService";
 import "./Navbar.css";
 
 function Navbar() {
@@ -19,13 +19,11 @@ function Navbar() {
   const logoutHandler = () => {
     resetUserSession();
     closeMobileMenu();
-    //props.history.push('login');
   };
 
   const logoutHandler2 = () => {
     resetUserSession();
     window.location.reload(false);
-    //closeMobileMenu();
   };
 
   const showButton = () => {

@@ -1,12 +1,14 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import React, { useState } from "react";
+import axios from "axios";
+import { setUserSession } from "../service/AuthService";
+import configData from "../../configData.json";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import "./Login.css";
+import jwt_decode from "jwt-decode";
 import { ThreeDots } from "react-loader-spinner";
 import { trackPromise, usePromiseTracker } from "react-promise-tracker";
-import { Link, useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import configData from "../../configData.json";
-import { setUserSession } from "../service/AuthService";
 import Footer from "../Footer";
 import "./Login.css";
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login";
@@ -72,6 +74,7 @@ const Login = (props) => {
             );
             props.history.push("/");
             window.location.reload(false);
+            toast.success("Bienvenido")
           }
         })
         .catch((error) => {

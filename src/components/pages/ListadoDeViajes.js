@@ -98,7 +98,7 @@ export default function ListadoDeViajes() {
   }
 
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
+    data.tripDate = transformDate(date);;
 
     if (formValidate(data)) {
       //const viajesGetEndPoint = configData.AWS_REST_ENDPOINT + "/trips?origin=minas&destination=artigas&tripDate=2022-12-24"

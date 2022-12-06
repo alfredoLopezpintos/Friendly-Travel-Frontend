@@ -1,5 +1,5 @@
 import "../Cards.css";
-import Footer2 from "../Footer2";
+import Footer from "../Footer";
 import CardItem from "../CardItem";
 
 export default function NotFound() {
@@ -18,7 +18,7 @@ export default function NotFound() {
           </div>
         </div>
       </div>
-      <Footer2 />
+      <Footer />
     </>
   );
 }

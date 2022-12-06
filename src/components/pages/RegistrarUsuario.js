@@ -1,0 +1,236 @@
+import React from "react";
+import "./Login.css";
+import { useForm } from "react-hook-form";
+import configData from "../../configData.json";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from "react-datepicker";
+import { isNumber, transformDate2 } from "../Utilities";
+import es from "date-fns/locale/es";
+import Footer from "../Footer";
+import { getUser } from "../service/AuthService";
+import { trackPromise } from "react-promise-tracker";
+import { LoadingIndicator } from "../Utilities";
+import { ToastContainer, toast } from "react-toastify";
+registerLocale("es", es);
+
+export default function Register() {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data, e) => fetchViajes(data, e);
+  const onError = (errors, e) => console.log(errors, e);
+  const redirect = (data, e) => redirect2(data, e);
+  let checkBox = false;
+  const history = useHistory();
+
+  const handleCheckBoxChange = event => {
+    if (event.target.checked) {
+      checkBox = true;
+    } else {
+      checkBox = false;
+    }
+  };
+
+    function borrarCampos(data){
+      checkBox = false;
+
+    }
+  function formValidate(data) {
+    if (
+      data.email === "" ||
+      data.name === "" ||
+      data.surname === "" ||
+      data.birthDate === "" ||
+      data.documentId === "" ||
+      data.phoneNumber === ""
+    ) {
+      toast.error("Debe llenar todos los campos para poder crear el usuario.");
+      return false;
+    } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
+      toast.error("Fecha inválida.");
+      return false;
+    } else if (moment().diff(data.birthDate, "years") <= 18) {
+      toast.error("El usuario debe ser mayor de edad.");
+      return false;
+    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
+      toast.error("El formato del correo electrónico no es válido.");
+      return false;
+    } else if (
+      !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gim.test(
+        data.phoneNumber
+      )
+    ) {
+      toast.error("El formato del teléfono no es válido.");
+      return false;
+    } else if (
+      !isNumber(data.documentId) ||
+      data.documentId.length > 8 ||
+      data.documentId.length < 8
+    ) {
+      toast.error("La cédula de identidad no es válida.");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async function fetchViajes(data, e) {
+    data.birthDate = transformDate2(data.birthDate);
+    data.user = getUser();
+
+    // A MANO POR AHORA
+    //data.vehicle = "GAB1234";
+    if(checkBox) {
+      if (formValidate(data)) {
+        const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
+        console.log(data)
+        try {
+          await trackPromise(axios.post(viajesGetEndpoint, data));
+          console.log(data)
+          redirect();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    } else {
+      toast.error("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
+      " para poder registrarse.");
+    }
+  }
+
+  async function redirect2(data, e) {
+    toast.success("Usuario creado correctamente.");
+    history.push("/");
+    borrarCampos(data)
+  }
+  return (
+<>
+      <div>
+        <div className="grid align__item">
+          <div className="register">
+            <div className="big_logo">
+              <img src={require("../../assets/images/logo2.png")} alt="travel logo" width={200}></img>
+            </div>
+            <br />
+            <h2> Registrar usuario </h2>
+            <br />
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
+              <div>
+                <label>Nombre</label>
+                <div className="form__field">
+                  <input
+                    {...register("name")}
+                    placeholder="Ingrese su nombre"
+                    type="text"
+                  />
+                </div>
+
+                <label>Apellido</label>
+                <div className="form__field">
+                  <input
+                    {...register("surname")}
+                    placeholder="Ingrese su apellido"
+                    type="text"
+                  />
+                </div>
+
+                <label>Email</label>
+                <div className="form__field">
+                  <input
+                    {...register("email")}
+                    placeholder="Ingrese su email"
+                    type="email"
+                  />
+                </div>
+
+                <label>Fecha de nacimiento</label>
+                <div className="form__field">
+                  <input
+                    {...register("birthDate")}
+                    type="date"
+                    format="DD-MM-YYYY"
+                  />
+                </div>
+
+                <label>Cédula de identidad</label>
+                <div className="form__field">
+                  <input
+                    {...register("documentId")}
+                    placeholder="Sin puntos ni guiones, ej. 43215678"
+                    type="number"
+                  />
+                </div>
+
+                <label>Teléfono de contacto</label>
+                <div className="form__field">
+                  <input
+                    {...register("phoneNumber")}
+                    placeholder="Número de teléfono, ej. 59899111333"
+                    type="number"
+                  />
+                </div>
+                <div className="form__field">
+                <label id="checkBox" className="container">
+        Confirmo haber leído y estar de acuerdo con las
+        <a href="/policy"> políticas de uso de FriendlyTravel</a>
+        <input type="checkbox" onChange={handleCheckBoxChange} />
+        <span class="checkmark"></span>
+      </label>      
+      </div>
+                <br />
+                <div className="form__field">
+                <input type="submit" value="Aceptar" />
+              </div>
+              {/*   <Button2
+                  className="btns"
+                  buttonStyle="btn--outline"
+                  buttonSize="btn--large"
+                >
+                  {" "}
+                  CREAR USUARIO
+                </Button2> */}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <ToastContainer position="top-center" />
+      <Footer />
+    </>
+);
+}
+
+{/* <div className="form-box">
+  <form onSubmit={handleSubmit(onSubmit, onError)}>
+    <div>
+      <h1> Registrar usuario </h1>
+      <input {...register("name")} placeholder="Nombre" />
+      <input {...register("surname")} placeholder="Apellido" />
+      <input {...register("email")} placeholder="Email" />
+      <div>
+        <label> Fecha de nacimiento: </label>
+        <input {...register("birthDate")} type="date" format="DD-MM-YYYY" />
+      </div>
+      <input
+        {...register("documentId")}
+        placeholder="Cédula de identidad sin puntos ni guiones. EJ: (42345678)"
+      />
+      <input
+        {...register("phoneNumber")}
+        placeholder="Número de teléfono. EJ: (+59891123432)"
+      />
+      <br />
+      <label id="checkBox" className="container">
+        Confirmo haber leído y estar de acuerdo con las
+        <a href="/policy"> políticas de uso de FriendlyTravel</a>
+        <input type="checkbox" onChange={handleCheckBoxChange} />
+        <span class="checkmark"></span>
+      </label>      
+    </div>
+    <div className="form__field">
+      <input type="submit" value="Aceptar" />
+    </div>
+    <LoadingIndicator />
+  </form>
+</div> */}

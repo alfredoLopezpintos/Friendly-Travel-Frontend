@@ -17,8 +17,8 @@ function Footer() {
             <h2>Mapa del sitio</h2>
             <Link to="/faqsPage">Preguntas frecuentes</Link>
             <Link to="/services">Quienes somos</Link>
-            <Link to="/">Acerca de Carpooling</Link>
-            <Link to="/">Términos y Condiciones</Link>
+            <Link to="/carpool">Acerca de Carpooling</Link>
+            <Link to="/policy">Términos y Condiciones</Link>
           </div>
           <div className="footer-link-items">
 
