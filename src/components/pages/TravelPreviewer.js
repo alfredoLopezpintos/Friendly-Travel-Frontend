@@ -4,6 +4,7 @@ import {
   GoogleMap,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import './Login.css';
 import axios from "axios";
 import Moment from "moment";
 import React, { useRef, useState } from "react";
@@ -37,7 +38,9 @@ const Modal = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   z-index: 999;
-`;
+  background: rgb(199,236,255);
+  background: linear-gradient(126deg, rgba(199,236,255,1) 0%, rgba(232,232,232,1) 57%, rgba(255,239,205,1) 100%);
+  `;
 
 const Button = styled.button`
   background: transparent;
@@ -45,7 +48,7 @@ const Button = styled.button`
   border: 2px solid black;
   color: black;
   padding: 0.25em 1em;
-
+  width: 100%;
   &:hover {
     background-color: gray;
     color: white;
@@ -73,7 +76,6 @@ function TravelPreviewer() {
   const [origen, setOrigen] = useState("");
   const [destino, setDestino] = useState("");
 
-  const [first, setFirst] = useState("");
   const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
@@ -86,6 +88,9 @@ function TravelPreviewer() {
   const lugaresRef = useRef();
   const [lugares, setLugares] = useState("");
   const [precio, setPrecio] = useState();
+  const [sugerido, setSugerido] = useState("");
+  const [dist, setDist] = useState("");
+  const [dur, setDur] = useState("");
 
   function isNumber(str) {
     if (str.trim() === "") {
@@ -101,12 +106,13 @@ function TravelPreviewer() {
   }
 
   async function fetchViajes(data, e) {
+    e?.preventDefault();
     // A MANO POR AHORA
     data.vehicle = "GAB1234";
     data.origin = origen;
     data.destination = destino;
     data.tripDate = dateRef.current.value;
-
+    data.availablePlaces = lugaresRef.current.value;
     if (formValidate(data)) {
       data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";
@@ -134,7 +140,8 @@ function TravelPreviewer() {
     return day + "-" + month + "-" + year;
   }
 
-  function formValidate(data) {
+  function formValidate(data, e) {
+    e?.preventDefault();
     const dateObj = new Date();
     const today = transformDate(dateObj);
 
@@ -164,10 +171,9 @@ function TravelPreviewer() {
     return <>loading...</>;
   }
 
-  async function calculateRoute(e) {
-    e?.preventDefault();
+  async function calculateRoute() {
+ 
     if (originRef.current.value === "" || destiantionRef.current.value === "") {
-      e?.preventDefault();
       return;
     }
     // eslint-disable-next-line no-undef
@@ -183,13 +189,16 @@ function TravelPreviewer() {
     setDuration(results.routes[0].legs[0].duration.text);
     setOrigen(originRef.current.value);
     setDestino(destiantionRef.current.value);
+    setDist("Distancia: " + results.routes[0].legs[0].distance.text);
+    setDur("Duración: " + results.routes[0].legs[0].duration.text);
   }
 
-  function clearRoute(e) {
-    e?.preventDefault();
+  function clearRoute() {
     setDirectionsResponse(null);
     setDistance("");
     setDuration("");
+    setDist("");
+    setDur("");
     originRef.current.value = "";
     destiantionRef.current.value = "";
   }
@@ -199,17 +208,15 @@ function TravelPreviewer() {
     let dist = 0
     let total = 0
 
-    console.log(lugaresRef.current.value)
     precio = lugaresRef.current.value
     precio++
-    console.log(precio)
     dist = parseInt(distance)
-    console.log(dist)
+    setLugares(lugaresRef.current.value)
 
     total = (((dist/12))*nafta)/precio
     Math.floor(precio);
-    console.log(total)
     setPrecio(Math.floor(total))
+    setSugerido("Sugerido $" + Math.floor(total))
     return total
     };
 
@@ -241,11 +248,7 @@ function TravelPreviewer() {
                   ref={destiantionRef}
                 />
               </Autocomplete>
-
-              <button
-              onClick={clearRoute}>Crear Viaje</button>
-              <br></br>
-              <br></br>
+              <br/>
               <label>
                 Fecha del viaje
                 <input
@@ -256,7 +259,7 @@ function TravelPreviewer() {
                 />
               </label>
               <br/>
-
+              <br/>
               <label>Lugares disponibles</label>
 
               <input
@@ -270,8 +273,8 @@ function TravelPreviewer() {
                 ref={lugaresRef}
                 onChange={CalcularContribucion}
               />
-
-              <br></br>
+              <br/>
+              <br/>
               <label>Precio</label>
               <br></br>
 
@@ -284,15 +287,15 @@ function TravelPreviewer() {
                 name="price"
                 placeholder="Contribución estimada"
               />
-              <span>sugerido: {precio}</span>
+              <span>{sugerido}</span>
 
               <br></br>
               <br></br>
               <Button>Crear Viaje</Button>
               <br/><br/>
-              <span>Distancia: {distance}</span>
+              <span>{dist}</span>
               <br/><br/>
-              <span>Duracion: {duration}</span>
+              <span>{dur}</span>
             </div>
           </form>
         </Modal>
