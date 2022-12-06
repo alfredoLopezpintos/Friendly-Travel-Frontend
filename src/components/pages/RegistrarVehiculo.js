@@ -10,10 +10,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate2 } from "../Utilities";
 import es from "date-fns/locale/es";
-import { getUser } from "../service/AuthService";
-import { trackPromise } from "react-promise-tracker";
-import { LoadingIndicator } from "../Utilities";
-import YearPicker from "react-year-picker";
+import { toast, ToastContainer } from "react-toastify";
+import { getToken } from "../service/AuthService";
 registerLocale("es", es);
 
 export default function RegistrarVehiculo() {
@@ -21,108 +19,121 @@ export default function RegistrarVehiculo() {
   const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const redirect = (data, e) => redirect2(data, e);
-  let checkBox = false;
   const history = useHistory();
-
-  const handleCheckBoxChange = event => {
-    if (event.target.checked) {
-      checkBox = true;
-    } else {
-      checkBox = false;
-    }
-  };
 
   function formValidate(data) {
     if (
-      data.email === "" ||
-      data.name === "" ||
-      data.surname === "" ||
-      data.birthDate === "" ||
-      data.documentId === "" ||
-      data.phoneNumber === ""
+      data.manufacturer === "" ||
+      data.year === "" ||
+      data.model === "" ||
+      data.airbag === "" ||
+      data.airCond === "" ||
+      data.plate === ""
     ) {
-      alert("Debe llenar todos los campos para poder crear el usuario.");
+      toast.error("Debe llenar todos los campos para poder crear el usuario.");
       return false;
-    } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
-      alert("Fecha inválida.");
+    } else if (data.year > (moment().year())+1) {
+      toast.error("El año del auto debe ser como maximo el año siguiente.");
       return false;
-    } else if (moment().diff(data.birthDate, "years") <= 18) {
-      alert("El usuario debe ser mayor de edad.");
-      return false;
-    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
-      alert("El formato del correo electrónico no es válido.");
-      return false;
-    } else if (
-      !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/gim.test(
-        data.phoneNumber
-      )
-    ) {
-      alert("El formato del teléfono no es válido.");
-      return false;
-    } else if (
-      !isNumber(data.documentId) ||
-      data.documentId.length > 8 ||
-      data.documentId.length < 8
-    ) {
-      alert("La cédula de identidad no es válida.");
+    } else if (!isNumber(data.year)) {
+      toast.error("El año debe ser un numero");
       return false;
     } else {
       return true;
     }
   }
 
-  async function fetchViajes(data, e) {
-    data.birthDate = transformDate2(data.birthDate);
-    data.user = getUser();
+  const requestConfig = {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  };
 
-    // A MANO POR AHORA
-    //data.vehicle = "GAB1234";
-    if(checkBox) {
-      if (formValidate(data)) {
-        const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
-  
-        try {
-          await trackPromise(axios.post(viajesGetEndpoint, data));
-          redirect();
-        } catch (error) {
-          console.error(error);
-        }
+  async function fetchViajes(data, e) {
+    if (formValidate(data)) {
+      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
+      console.log(requestConfig)
+      console.log(data)
+
+      try {
+        const response = await axios.post(viajesGetEndpoint, data, requestConfig);
+        redirect();
+      } catch (error) {
+        console.error(error);
       }
-    } else {
-      alert("Debe estar de acuerdo con la política de uso de FriendlyTravel" + 
-      " para poder registrarse.");
     }
   }
 
   async function redirect2(data, e) {
-    history.push("/success");
+    history.push("/");
   }
+
+  const handleCheckBoxChange = event => {
+    if (event.target.checked) {
+      <input value={true} {...register("airCond")} />      
+    } else {
+      <input value={false} {...register("airCond")} /> 
+    }
+  };
+
+  const handleCheckBoxChange2 = event => {
+    if (event.target.checked) {
+      <input value={true} {...register("airbag")} />      
+    } else {
+      <input value={false} {...register("airbag")} /> 
+    }
+  };
+
   return (
-    <div className="form-box">
+    <>
+    <div>
+        <div className="grid align__item">
+          <div className="register">
+            <div className="big_logo">
+              <i className="fab fa-typo3"></i>
+            </div>
+            <h1> Registrar vehiculo </h1>
+            <br />
       <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div>
-          <h1> Registrar vehiculo </h1>
-          <input {...register("manufacturer")} placeholder="Fabricante" />
-          <input {...register("model")} placeholder="Modelo" />
-          <input {...register("airbag")} placeholder="Bolsa de Aire" />
-          <div>
-            <label> Año: </label>
-            <YearPicker {...register("year")} />
-          </div>
-          <input
-            {...register("airCond")}
-            placeholder="Aire Acondicionado"
-          />
-          <input
-            {...register("plate")}
-            placeholder="Placa"
-          />   
+        <div className="form">
+
+        <div className="form__field">
+          <input type="text" {...register("manufacturer")} placeholder="Fabricante" />
+        </div>
+        <div className="form__field">
+          <input type="text" {...register("model")} placeholder="Modelo" />
+        </div>
+        <label id="checkBox" className="container">
+          Bolsa de Aire
+          <input type="checkbox" onChange={() => handleCheckBoxChange2()} 
+          {...register("airbag")} />
+          <span class="checkmark"></span>
+        </label>
+        <div className="form__field">
+          <input type="text" {...register("year")} placeholder="Año" />
+        </div>
+        <br />
+        <label id="checkBox" className="container">
+          Aire Acondicionado
+          <input type="checkbox" onChange={() => handleCheckBoxChange()}
+          {...register("airCond")} />
+          <span class="checkmark"></span>
+        </label>
+        <div className="form__field">
+        <input type="text"
+          {...register("plate")}
+          placeholder="Placa"
+        />
         </div>
         <div className="form__field">
           <input type="submit" value="Aceptar" />
         </div>
-        <LoadingIndicator />
-      </form>
-    </div>
+        </div>
+        </form>
+          </div>
+        </div>
+      </div>
+    <ToastContainer position="top-center" />
+    </>
   );
 }

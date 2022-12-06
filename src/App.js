@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home";
-import Services from "./components/pages/Services";
+import About from "./components/pages/About";
 import Viajes from "./components/pages/Viajes";
 import Succesful from "./components/pages/Succesful";
 import Login from "./components/pages/Login";
@@ -17,27 +17,28 @@ import Carpool from "./components/pages/Carpool";
 import NotFound from "./components/pages/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import AuthenticatedRoute from './AuthenticatedRoute';
+import { getToken } from "./components/service/AuthService";
 
 function App() {
+
   return (
     <>
       <Router>
         <Navbar />
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/viajes" component={Viajes} />
-          <Route path="/success" component={Succesful} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
           <Route path="/changePass" component={ChangePass} />
-          <Route path="/map" component={TravelPreviewer} />
+          <Route path="/" exact component={Home} />
+          <Route path="/about" component={About} />
+          <Route path="/viajes" component={Viajes} />
+          <AuthenticatedRoute authed={getToken()==null} path='/login' component={Login} />        
           <Route path="/policy" component={Policy} />
-          <Route path="/vehicle" component={Vehicle} />
+          <AuthenticatedRoute authed={getToken()!==null} path='/vehicle' component={Vehicle} />
           <Route path="/faqsPage" component={FaqsPage} />
           <Route path="/carpool" component={Carpool} />
-          <Route path="*" component={NotFound} />
+          <Route path="/register" component={Register} />
+          <AuthenticatedRoute authed={getToken()!==null} path='/map' component={TravelPreviewer} />
+          <Route path="*" component={NotFound} />          
         </Switch>
         <ToastContainer position="top-center" />
       </Router>

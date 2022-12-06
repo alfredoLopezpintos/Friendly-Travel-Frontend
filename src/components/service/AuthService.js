@@ -20,5 +20,5 @@ module.exports = {
   resetUserSession: function () {
     window.localStorage.removeItem("email");
     window.localStorage.removeItem("token");
-  },
+  }
 };

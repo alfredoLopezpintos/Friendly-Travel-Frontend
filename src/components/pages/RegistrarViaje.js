@@ -8,10 +8,11 @@ import moment from "moment";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate, LoadingIndicator } from "../Utilities";
 import { getUser } from "../service/AuthService";
-import { trackPromise } from "react-promise-tracker";
+import { setResponseService, resetResponseService } from "../service/AuthService";
 import "react-datepicker/dist/react-datepicker.css";
 
 import es from "date-fns/locale/es";
+import { toast } from "react-toastify";
 registerLocale("es", es);
 
 export default function RegistrarViaje() {
@@ -48,7 +49,6 @@ export default function RegistrarViaje() {
   }
 
   async function fetchViajes(data, e) {
-    //data.tripDate = transformDate(date);
     data.user = getUser();
 
     // A MANO POR AHORA    
@@ -58,7 +58,7 @@ export default function RegistrarViaje() {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";
 
       try {
-        trackPromise(await axios.post(viajesGetEndpoint, data));
+        const response = await axios.post(viajesGetEndpoint, data);
         redirect();
       } catch (error) {
         console.error(error);
@@ -67,7 +67,9 @@ export default function RegistrarViaje() {
   }
 
   async function redirect2(data, e) {
+    setResponseService();
     history.push("/success");
+    resetResponseService();
   }
 
   return (

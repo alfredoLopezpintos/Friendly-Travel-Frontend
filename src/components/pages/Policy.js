@@ -1,5 +1,5 @@
 import React from "react";
-import Footer2 from "../Footer2";
+import Footer from "../Footer";
 
 export default function Policy() {
   return (
@@ -50,7 +50,7 @@ export default function Policy() {
         
       </div>
       <br />
-      <Footer2 /> 
+      <Footer /> 
     </div>   
   );
 }
