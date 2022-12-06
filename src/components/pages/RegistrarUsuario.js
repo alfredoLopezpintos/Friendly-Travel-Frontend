@@ -64,9 +64,7 @@ export default function Register() {
       toast.error("El formato del teléfono no es válido.");
       return false;
     } else if (
-      !isNumber(data.documentId) ||
-      data.documentId.length > 8 ||
-      data.documentId.length < 8
+      !validate_ci(data.documentId)
     ) {
       toast.error("La cédula de identidad no es válida.");
       return false;
@@ -98,6 +96,35 @@ export default function Register() {
       " para poder registrarse.");
     }
   }
+
+  function validation_digit(ci){
+    var a = 0;
+    var i = 0;
+    if(ci.length <= 6){
+      for(i = ci.length; i < 7; i++){
+        ci = '0' + ci;
+      }
+    }
+    for(i = 0; i < 7; i++){
+      a += (parseInt("2987634"[i]) * parseInt(ci[i])) % 10;
+    }
+    if(a%10 === 0){
+      return 0;
+    }else{
+      return 10 - a % 10;
+    }
+  }
+  function clean_ci(ci){
+    return ci.replace(/\D/g, '');
+  }
+  
+  function validate_ci(ci){
+    ci = clean_ci(ci);
+    var dig = ci[ci.length - 1];
+    ci = ci.replace(/[0-9]$/, '');
+    return (dig === validation_digit(ci));
+  }
+  
 
   async function redirect2(data, e) {
     toast.success("Usuario creado correctamente.");
