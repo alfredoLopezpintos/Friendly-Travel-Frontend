@@ -39,10 +39,10 @@ const Login = (props) => {
             setUserSession(
               jwt_decode(response.data.object.idToken).email,
               response.data.object.idToken
-            );
-            props.history.push("/");
-            window.location.reload(false);
-            toast.success("Bienvenido")
+              );
+              props.history.push("/");
+              window.location.reload(false);
+              toast.success("Bienvenido")
           }
         })
         .catch((error) => {
