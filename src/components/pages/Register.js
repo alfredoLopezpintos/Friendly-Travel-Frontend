@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import configData from "../../configData.json";
 import { Button2 } from "../Button2";
+import Footer from "../Footer";
 import "./Login.css";
 import { ToastContainer, toast } from "react-toastify";
 registerLocale("es", es);
@@ -109,11 +110,10 @@ export default function Register() {
         <div className="grid align__item">
           <div className="register">
             <div className="big_logo">
-              <i className="fab fa-typo3"></i>
+              <img src={require("../../assets/images/logo2.png")} alt="travel logo" width={200}></img>
             </div>
             <br />
             <h2> Registrar usuario </h2>
-            <br />
             <br />
             <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
               <div>
@@ -172,20 +172,24 @@ export default function Register() {
                 </div>
 
                 <br />
-                <Button2
+                <div className="form__field">
+                <input type="submit" value="Aceptar" />
+              </div>
+              {/*   <Button2
                   className="btns"
                   buttonStyle="btn--outline"
                   buttonSize="btn--large"
                 >
                   {" "}
                   CREAR USUARIO
-                </Button2>
+                </Button2> */}
               </div>
             </form>
           </div>
         </div>
       </div>
       <ToastContainer position="top-center" />
+      <Footer />
     </>
   );
 }

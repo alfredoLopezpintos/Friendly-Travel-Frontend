@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import configData from "../../configData.json";
 import { Button2 } from "../Button2";
+import Footer from "../Footer";
 import './Login.css';
 
 export default function ChangePass() {
@@ -65,8 +66,8 @@ export default function ChangePass() {
       <div>
         <div className="grid align__item">
           <div className="register">
-            <div className="big_logo">
-              <i className="fab fa-typo3"></i>
+          <div className="big_logo">
+              <img src={require("../../assets/images/logo2.png")} alt="travel logo" width={200}></img>
             </div>
             <br />
 
@@ -112,19 +113,22 @@ export default function ChangePass() {
               </div>
 
               <br />
-
-              <Button2
+              <div className="form__field">
+                <input type="submit" value="Aceptar" />
+              </div>
+{/*               <Button2
                 className="btns"
                 buttonStyle="btn--outline"
                 buttonSize="btn--large"
               >
                 ACEPTAR
-              </Button2>
+              </Button2> */}
             </form>
           </div>
         </div>
       </div>
       <ToastContainer position="top-center" />
+      <Footer />
     </>
   );
 }
