@@ -12,8 +12,6 @@ import "./RegistrarUsuario.css";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate2 } from "../Utilities";
 import { getUser } from "../service/AuthService";
-import { trackPromise } from "react-promise-tracker";
-import { LoadingIndicator } from "../Utilities"
 registerLocale("es", es);;
 
 export default function Register() {
@@ -75,8 +73,7 @@ export default function Register() {
         const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
 
         try {
-          const response = trackPromise(await axios.post(viajesGetEndpoint, data));
-          console.log(response);
+          const response = await (axios.post(viajesGetEndpoint, data));
           redirect();
         } catch (error) {
           console.error(error);
@@ -179,7 +176,6 @@ export default function Register() {
                 <div className="form__field">
                   <input type="submit" value="Aceptar" />
                 </div>
-                <LoadingIndicator />
               </div>
             </form>
           </div>

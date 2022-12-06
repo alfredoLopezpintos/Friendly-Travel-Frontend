@@ -10,8 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import { isNumber, transformDate2 } from "../Utilities";
 import es from "date-fns/locale/es";
-import { trackPromise } from "react-promise-tracker";
-import { LoadingIndicator } from "../Utilities";
 import { toast, ToastContainer } from "react-toastify";
 import { getToken } from "../service/AuthService";
 registerLocale("es", es);
@@ -58,7 +56,7 @@ export default function RegistrarVehiculo() {
       console.log(data)
 
       try {
-        await trackPromise(axios.post(viajesGetEndpoint, data, requestConfig));
+        const response = await axios.post(viajesGetEndpoint, data, requestConfig);
         redirect();
       } catch (error) {
         console.error(error);
@@ -67,7 +65,6 @@ export default function RegistrarVehiculo() {
   }
 
   async function redirect2(data, e) {
-    toast.success("Vehiculo agregado correctamente");
     history.push("/");
   }
 
@@ -131,7 +128,6 @@ export default function RegistrarVehiculo() {
         <div className="form__field">
           <input type="submit" value="Aceptar" />
         </div>
-        <LoadingIndicator />
         </div>
         </form>
           </div>
