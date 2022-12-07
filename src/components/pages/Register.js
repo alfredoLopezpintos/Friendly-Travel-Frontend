@@ -41,7 +41,7 @@ export default function Register() {
     } else if (!moment(data.birthDate, "DD-MM-YYYY").isValid()) {
       toast.error("Fecha inválida");
       return false;
-    } else if (moment().diff(data.birthDate, "years") >= 18) {
+    } else if (moment().diff(data.birthDate, "years") <= 18) {
       toast.error("El usuario debe ser mayor de edad");
       return false;
     } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
