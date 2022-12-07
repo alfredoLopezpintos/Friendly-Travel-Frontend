@@ -76,12 +76,12 @@ export default function ListadoDeViajes() {
     const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips/" + data;
-    console.log(viajesGetEndPoint, requestConfig)
 
       toast.promise((axios.get(viajesGetEndPoint, requestConfig)
       .then((response) => {
-        //console.log(response.data);
-        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje");
+        window.open("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
+        "de%20la%20fecha%20" + response.data.tripDate + "%20desde%20" + response.data.origin +
+        "%20a%20" + response.data.destination);
       }        
       ).catch ((error) => {
         console.error(error);
@@ -105,7 +105,7 @@ export default function ListadoDeViajes() {
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date);
 
-    if ((data)) {
+    if (formValidate(data)) {
       const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips?origin=" +
