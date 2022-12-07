@@ -116,20 +116,34 @@ function TravelPreviewer() {
     if (formValidate(data)) {
       data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";
-      try {
-        await axios.post(viajesGetEndpoint, data, {
+
+        toast.promise(axios.post(viajesGetEndpoint, data, {
           headers: {
             Authorization: JSON.parse(getToken()),
             Accept: "application/json",
             "Content-Type": "application/json",
           },
+        }
+        ).then((response) => {
+          clearRoute();
+          redirect();
+        }).catch ((error) => {
+          console.error(error);
+        })
+        ,
+        {
+          pending: {
+            render(){
+              return "Cargando"
+            },
+            icon: true,
+          },
+          error: {
+            render({data}){
+              return toast.error('Error')
+            }
+          }
         });
-        clearRoute();
-        redirect();
-      } catch  (error) {
-        console.error(error);
-        toast.error("No se pudo crear el viaje");
-      }
     }
   }
 
@@ -178,19 +192,38 @@ function TravelPreviewer() {
     }
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
-    const results = await directionsService.route({
+    toast.promise(directionsService.route({
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
       // eslint-disable-next-line no-undef
       travelMode: google.maps.TravelMode.DRIVING,
+    })
+    .then((results) => {
+      setDirectionsResponse(results);
+      setDistance(results.routes[0].legs[0].distance.text);
+      setDuration(results.routes[0].legs[0].duration.text);
+      setOrigen(originRef.current.value);
+      setDestino(destiantionRef.current.value);
+      setDist("Distancia: " + results.routes[0].legs[0].distance.text);
+      setDur("Duración: " + results.routes[0].legs[0].duration.text);
+    })
+    .catch ((error) => {
+      console.error(error);
+    })
+    ,
+    {
+      pending: {
+        render(){
+          return "Cargando"
+        },
+        icon: true,
+      },
+      error: {
+        render({data}){
+          return toast.error('Error')
+        }
+      }
     });
-    setDirectionsResponse(results);
-    setDistance(results.routes[0].legs[0].distance.text);
-    setDuration(results.routes[0].legs[0].duration.text);
-    setOrigen(originRef.current.value);
-    setDestino(destiantionRef.current.value);
-    setDist("Distancia: " + results.routes[0].legs[0].distance.text);
-    setDur("Duración: " + results.routes[0].legs[0].duration.text);
   }
 
   function clearRoute() {
