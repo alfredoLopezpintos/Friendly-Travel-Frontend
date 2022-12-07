@@ -39,6 +39,12 @@ export default function Policy() {
         Este sitio web pudiera contener enlaces a otros sitios que pudieran ser de su interés. Una vez que usted dé clic en estos enlaces y abandone nuestra página, ya no tenemos control sobre al sitio al que es redirigido y por lo tanto no somos responsables de los términos o privacidad ni de la protección de sus datos en esos otros sitios terceros. Dichos sitios están sujetos a sus propias políticas de privacidad por lo cual es recomendable que los consulte para confirmar que usted está de acuerdo con estas.
         <br />
         <br />
+        <bold>Uso de nuestro servicio</bold>
+        <br />
+        <br />
+        Friendly-Travel no se hace responsable por el uso indebido que se le pueda dar. Esto incluye pero no se limita a las personas que se asocien de forma directa o indirecta a nuestros servicios. Nuestros servicios son exclusivamente para el contacto entre personas interesadas en viajar, por lo cual, Friendly-Travel no se hace responsable del manejo monetario ni de las personas con las que los usuarios puedan entrar en contacto por medio de la aplicación.  
+        <br />
+        <br />
         <bold>Control de su información personal</bold>
         <br />
         <br />
