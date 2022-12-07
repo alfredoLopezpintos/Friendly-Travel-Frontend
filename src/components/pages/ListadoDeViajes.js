@@ -80,8 +80,8 @@ export default function ListadoDeViajes() {
 
       toast.promise((axios.get(viajesGetEndPoint, requestConfig)
       .then((response) => {
-        console.log(response.data);
-        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=Me%20gustaía%20unirme%20a%20tu%20viaje");
+        //console.log(response.data);
+        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje");
       }        
       ).catch ((error) => {
         console.error(error);
