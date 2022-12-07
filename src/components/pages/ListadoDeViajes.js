@@ -80,7 +80,7 @@ export default function ListadoDeViajes() {
     try {
       const response = await axios.get(viajesGetEndPoint, requestConfig);
       console.log(response.data);
-      window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=Me%20gustaía%20unirme%20a%20tu%20viaje");
+      window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje");
     } catch (error) {
       console.error(error);
     }
@@ -197,26 +197,27 @@ export default function ListadoDeViajes() {
               <li>
                   <div className="social-media-wrap">
                   <div className="rating">
-                    <MdOutlineAirlineSeatReclineNormal />
-                    {user.availablePlaces}
+                  <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
                   </div>
                   <div className="price">
-                    {user.price}
                     <BsCurrencyDollar />
+                    {user.price}
                   </div>
+                  <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
                 </div>
                 <div className="destination">
-                  <div>ORIGEN: {user.origin.toUpperCase()}</div>
-                  <div>FECHA: {user.tripDate}</div>
+                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
+                  <br/>
                 </div>
                 <div className="destination">
-                  <div>DESTINO: {user.destination.toUpperCase()}</div>
+                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
                   <div>{user.arrival_time}</div>
+                  
                 </div>
                 {getToken() !== null ? (
                   <div className="contacto">
-                    <a onClick={() => handleContacto(user.tripId)}>
-                      <IoLogoWhatsapp />
+                    <a onClick={() => handleContacto(user.tripId)} > 
+                    <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
                     </a>
                   </div>
                 ):(<br />)}

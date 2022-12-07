@@ -4,31 +4,35 @@
   margin-top: 30px;
 }
 
+.contactoicon {
+  margin-bottom: 0rem;
+  margin-top: 0px;
+  margin-left: 460px;
+}
+
 .contacto a {
   outline: 0;
   padding: 0.5rem 1rem;
 }
 
 .contacto a {
-  border: 1px solid #242c37;
-  border-radius: 5px;
+
   background-color: transparent;
   margin-left: 440px;
   margin-top: 30px;
 }
 
 .contacto a {
-  border: 1px solid #242c37;
-  transition: all 0.3s ease-out;
+
   cursor: pointer;
   color: #242424;
   text-decoration: none; /* no underline */
+  display: inline;
 }
 
 .contacto a:hover,
 .contacto a:hover {
-  transition: all 0.3s ease-out;
-  background: #242424;
+
   color: #fff;
   transition: 250ms;
 }
@@ -192,6 +196,7 @@ body {
   color: #1d1f20;
   font-family: "Raleway", sans-serif;
 }
+
 main {
   display: block;
   margin: 0 auto;
@@ -212,6 +217,8 @@ ol.gradient-list > li {
   min-height: 3rem;
   padding: 1rem 1rem 1rem 3rem;
   position: relative;
+  background: rgb(199,236,255);
+  background: linear-gradient(126deg, rgba(199,236,255,1) 0%, rgba(232,232,232,1) 57%, rgba(255,239,205,1) 100%);
 }
 ol.gradient-list > li > div.destination {
   display: flex;
