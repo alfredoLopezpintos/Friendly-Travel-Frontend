@@ -77,19 +77,35 @@ export default function ListadoDeViajes() {
         configData.AWS_REST_ENDPOINT +
         "/trips/" + data;
     console.log(viajesGetEndPoint, requestConfig)
-    try {
-      const response = await axios.get(viajesGetEndPoint, requestConfig);
-      console.log(response.data);
-      window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=Me%20gustaía%20unirme%20a%20tu%20viaje");
-    } catch (error) {
-      console.error(error);
-    }
+
+      toast.promise((axios.get(viajesGetEndPoint, requestConfig)
+      .then((response) => {
+        console.log(response.data);
+        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=Me%20gustaía%20unirme%20a%20tu%20viaje");
+      }        
+      ).catch ((error) => {
+        console.error(error);
+      }))
+      ,
+      {
+        pending: {
+          render(){
+            return "Cargando"
+          },
+          icon: true,
+        },
+        error: {
+          render({data}){
+            return toast.error('Error')
+          }
+        }
+      });
   }
 
   async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);;
+    data.tripDate = transformDate(date);
 
-    if (formValidate(data)) {
+    if ((data)) {
       const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips?origin=" +
@@ -102,20 +118,35 @@ export default function ListadoDeViajes() {
         data.price +
         "&availablePlaces=" +
         data.availablePlaces;
-      try {
-        const response = await axios.get(viajesGetEndPoint)
-        if (
-          response.data.message ===
-          "No hay viajes que cumplan con las condiciones seleccionadas."
-          ) {
-          setViajes();
-          toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
-        } else {
-          setViajes(response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+
+        toast.promise(axios.get(viajesGetEndPoint)
+        .then((response) => {
+          if (
+            response.data.message ===
+            "No hay viajes que cumplan con las condiciones seleccionadas."
+            ) {
+            setViajes();
+            toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
+          } else {
+            setViajes(response.data);
+          }
+        }).catch ((error) => {
+          console.error(error);
+        })
+        ,
+        {
+          pending: {
+            render(){
+              return "Cargando"
+            },
+            icon: true,
+          },
+          error: {
+            render({data}){
+              toast.error(data.response.data.message);
+            }
+          }
+        });
     }
   }
 

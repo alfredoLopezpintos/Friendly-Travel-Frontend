@@ -84,15 +84,28 @@ export default function Register() {
     if (formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/users";
 
-      try {
-        const response = await axios.post(viajesGetEndpoint, data);
-        console.log(response);
+        toast.promise(axios.post(viajesGetEndpoint, data)
+        .then((response) => {
+          redirect();
+        }).catch ((error) => {
+          console.error(error);
+        })
+        ,
+        {
+          pending: {
+            render(){
+              return "Cargando"
+            },
+            icon: true,
+          },
+          error: {
+            render({data}){
+              toast.error(data.response.data.message);
+            }
+          }
+        });
         redirect();
-      } catch (error) {
-        console.error(error);
-        toast.error("No se pudo crear el usuario");
       }
-    }
   }
 
   async function redirect2(data, e) {

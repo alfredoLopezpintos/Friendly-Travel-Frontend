@@ -58,13 +58,27 @@ export default function RegistrarVehiculo() {
       console.log(requestConfig)
       console.log(data)
 
-      try {
-        const response = await axios.post(viajesGetEndpoint, data, requestConfig);
-        redirect();
-      } catch (error) {
-        console.error(error);
+        toast.promise(axios.post(viajesGetEndpoint, data, requestConfig)
+        .then((response) => {
+          redirect();
+        }).catch ((error) => {
+          console.error(error);
+        })
+        ,
+        {
+          pending: {
+            render(){
+              return "Cargando"
+            },
+            icon: true,
+          },
+          error: {
+            render({data}){
+              toast.error(data.response.data.message);
+            }
+          }
+        });
       }
-    }
   }
 
   async function redirect2(data, e) {

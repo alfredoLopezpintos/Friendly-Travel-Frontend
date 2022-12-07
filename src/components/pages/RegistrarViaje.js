@@ -57,12 +57,26 @@ export default function RegistrarViaje() {
     if (formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";
 
-      try {
-        const response = await axios.post(viajesGetEndpoint, data);
-        redirect();
-      } catch (error) {
-        console.error(error);
-      }
+        toast.promise(axios.post(viajesGetEndpoint, data)
+        .then((response) => {
+          redirect();
+        }).catch ((error) => {
+          console.error(error);
+        })
+        ,
+        {
+          pending: {
+            render(){
+              return "Cargando"
+            },
+            icon: true,
+          },
+          error: {
+            render({data}){
+              toast.error(data.response.data.message);
+            }
+          }
+        });
     }
   }
 

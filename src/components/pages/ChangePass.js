@@ -44,15 +44,31 @@ export default function ChangePass() {
       const viajesGetEndpoint =
       configData.AWS_REST_ENDPOINT + "/login/new-password";
       
-      try {
-        console.log(data)
-        const response = await axios.post(viajesGetEndpoint, data);
+      console.log(data)
+      const response = 
+      toast.promise(axios.post(viajesGetEndpoint, data)
+      .then((response) => {
         console.log(response);
         redirect();
-      } catch  (error) {
+      }).catch((error) => {
         console.error(error);
         toast.error("La contraseña no cumple con los requisitos");
+      })
+      ,
+      {
+        pending: {
+          render(){
+            return "Cargando"
+          },
+          icon: true,
+        },
+        error: {
+          render({data}){
+            return toast.error('Error')
+          }
+        }
       }
+      );
     }
   }
   
