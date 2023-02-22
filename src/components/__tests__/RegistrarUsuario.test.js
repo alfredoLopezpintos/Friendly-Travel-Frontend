@@ -1,5 +1,5 @@
 import React from "react";
-import RegistrarUsuario, { borrarCampos } from "../pages/RegistrarUsuario";
+import {RegistrarUsuario} from "../pages/RegistrarUsuario";
 import {
   fireEvent,
   render,
@@ -9,10 +9,16 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-jest.mock('../pages/RegistrarUsuario', () => ({
-  ...jest.requireActual('../pages/RegistrarUsuario'),
-  borrarCampos: jest.fn(),
+jest.mock("axios", () => ({
+  axiosInterceptor: jest.fn(),
 }));
+
+
+
+// jest.mock('../pages/RegistrarUsuario', () => ({
+//   ...jest.RegistrarUsuario,
+//   borrarCampos: jest.fn(),
+// }));
 
 describe("Testing borrarCampos function", () => {
   test("It should clear the form fields", () => {
@@ -22,7 +28,8 @@ describe("Testing borrarCampos function", () => {
       message: "Hello, world!",
     };
 
-    borrarCampos(form);
+    RegistrarUsuario.borrarCampos(form);
+  
 
     expect(form).toEqual({
       name: "",
