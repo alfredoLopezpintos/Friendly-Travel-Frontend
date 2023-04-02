@@ -43,8 +43,6 @@
 .register {
   text-align: center;
   padding: 4rem 2rem;
-  background: rgb(199,236,255);
-  background: linear-gradient(126deg, rgba(199,236,255,1) 0%, rgba(232,232,232,1) 57%, rgba(255,239,205,1) 100%);
   border-radius: 1em;
   margin-top: 1em;
   margin-bottom: 1em;
