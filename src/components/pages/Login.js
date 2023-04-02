@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { setUserSession } from "../service/AuthService";
 import configData from "../../configData.json";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Footer from "../Footer";
-import "./Login.css";
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login";
 
 const Login = (props) => {
@@ -41,8 +39,12 @@ const Login = (props) => {
               response.data.object.idToken
             );
             props.history.push("/");
-            window.location.reload(false);
-            toast.success("Bienvenido")
+            toast.success("Bienvenido", {
+              autoClose: 1000,
+              onClose: () => {
+                window.location.reload(false);
+              }
+            });
           }
         })
         .catch((error) => {
@@ -73,6 +75,15 @@ const Login = (props) => {
      );
   };
 
+  function handleEmailChange(event) {
+    setEmail(event.target.value);
+    if (!event.target.validity.valid) {
+      setErrorMessage('Por favor ingrese un email válido');
+    } else {
+      setErrorMessage('');
+    }
+  }
+
   return (
     <>
       <div>
@@ -84,17 +95,23 @@ const Login = (props) => {
             <br />
             <h2>Iniciar sesión</h2>
             <br />
-            <form onSubmit={submitHandler} className="form">
-              <div className="form__field">
+            <form onSubmit={submitHandler} className="form" data-testid="login-form">
+              <div className="form__field" data-testid="email-input">
                 <input
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={handleEmailChange}
                   type="email"
                   placeholder="info@mailaddress.com"
+                  onInvalid={(event) => {
+                    event.target.setCustomValidity('Por favor ingrese un email válido');
+                  }}
+                  onInput={(event) => {
+                    event.target.setCustomValidity('');
+                  }}
                 />
               </div>
 
-              <div className="form__field">
+              <div className="form__field" data-testid="password-input">
                 <input
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
@@ -102,19 +119,18 @@ const Login = (props) => {
                   placeholder="••••••••••••"
                 />
               </div>
-              <div className="form__field">
+              <div className="form__field" data-testid="submit-button">
                 <input type="submit" value="Aceptar" />
               </div>
               {errorMessage && <p className="message">{errorMessage}</p>}
               <br />
             </form>
             <p>
-              ¿Aún no tienes cuenta? <Link to="/register">Registrate aquí</Link>
+              ¿Aún no tienes cuenta? <Link to="/register">Regístrate aquí</Link>
             </p>
           </div>
         </div>
       </div>
-      <ToastContainer position="top-center" />
       <Footer />
     </>
   );
