@@ -65,7 +65,7 @@ function TravelPreviewer() {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
+    googleMapsApiKey: configData.MAPS_KEY,
     libraries,
   });
 
