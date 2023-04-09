@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegistrarUsuario renders RegistrarUsuario component 1`] = `
+<form
+  class="form"
+  data-testid="form"
+>
+  <div>
+    <label>
+      Nombre
+    </label>
+    <div
+      class="form__field"
+    >
+      <input
+        name="name"
+        placeholder="Ingrese su nombre"
+        type="text"
+      />
+    </div>
+    <label>
+      Apellido
+    </label>
+    <div
+      class="form__field"
+    >
+      <input
+        name="surname"
+        placeholder="Ingrese su apellido"
+        type="text"
+      />
+    </div>
+    <label>
+      Email
+    </label>
+    <div
+      class="form__field"
+    >
+      <input
+        name="email"
+        placeholder="Ingrese su email"
+        type="email"
+      />
+    </div>
+    <label>
+      Fecha de nacimiento
+    </label>
+    <div
+      class="form__field"
+      data-testid="birthDate"
+    >
+      <input
+        format="dd-MM-yyyy"
+        name="birthDate"
+        type="date"
+      />
+    </div>
+    <label>
+      Cédula de identidad
+    </label>
+    <div
+      class="form__field"
+    >
+      <input
+        name="documentId"
+        placeholder="Sin puntos ni guiones, ej. 43215678"
+        type="number"
+      />
+    </div>
+    <label>
+      Teléfono de contacto
+    </label>
+    <div
+      class="form__field"
+    >
+      <input
+        name="phoneNumber"
+        placeholder="Número de teléfono, ej. 099111333"
+        type="number"
+      />
+    </div>
+    <div
+      class="form__field"
+    >
+      <label
+        class="container"
+        id="checkBox"
+      >
+        Confirmo haber leído y estar de acuerdo con las
+        <a
+          href="/policy"
+        >
+           políticas de uso de FriendlyTravel
+        </a>
+        <input
+          type="checkbox"
+        />
+        <span
+          class="checkmark"
+        />
+      </label>
+    </div>
+    <br />
+    <div
+      class="form__field"
+    >
+      <input
+        type="submit"
+        value="Aceptar"
+      />
+    </div>
+  </div>
+</form>
+`;

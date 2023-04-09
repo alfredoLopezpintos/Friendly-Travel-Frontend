@@ -5,7 +5,13 @@
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
-    }
+    },
+    "collectCoverageFrom": [
+      "<rootDir>/src/components/*.js",
+      "<rootDir>/src/{!(__tests__),}/**",
+      "!<rootDir>/src/{(assets),}/**",
+      "!<rootDir>/src/configData.json"
+    ]
   },
   "dependencies": {
     "@emailjs/browser": "^3.10.0",
@@ -36,6 +42,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "testcov": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject",
     "deploy": "aws s3 sync build/ s3://friendly-bucket"
   },
