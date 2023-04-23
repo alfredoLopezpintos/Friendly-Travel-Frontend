@@ -262,7 +262,7 @@ export default function RegistrarUsuario() {
                     type="number"
                   />
                 </div>
-                <label for="ci-photo">Foto frontal de la C.I.</label>
+                <label htmlFor="ci-photo">Foto frontal de la C.I.</label>
                 {!image ? (
                   <div>
                     <div className="form__field">

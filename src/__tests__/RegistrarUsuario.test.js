@@ -8,7 +8,7 @@ jest.mock('axios');
 
 describe('RegistrarUsuario', () => {
   beforeEach(() => {
-    render(<MemoryRouter><RegistrarUsuario /></MemoryRouter>);
+    render(<RegistrarUsuario />);
   });
 
   test('renders RegistrarUsuario component', () => {
