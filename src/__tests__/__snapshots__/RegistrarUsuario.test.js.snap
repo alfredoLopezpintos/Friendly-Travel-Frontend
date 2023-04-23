@@ -79,6 +79,22 @@ exports[`RegistrarUsuario renders RegistrarUsuario component 1`] = `
         type="number"
       />
     </div>
+    <label
+      for="ci-photo"
+    >
+      Foto frontal de la C.I.
+    </label>
+    <div>
+      <div
+        class="form__field"
+      >
+        <input
+          accept="image/*"
+          id="ci-photo"
+          type="file"
+        />
+      </div>
+    </div>
     <div
       class="form__field"
     >

@@ -1,11 +1,10 @@
 import axios from "axios";
 import es from "date-fns/locale/es";
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import configData from "../../configData.json";
 import "./Login.css";
 import { toast } from "react-toastify";
 import "./RegistrarUsuario.css";
@@ -16,6 +15,7 @@ import {
   isValidEmail,
   isValidPhoneNumber
 } from "../../utils/ValidationFunctions";
+import { URLS } from "../../utils/urls";
 registerLocale("es", es);
 
 export default function RegistrarUsuario() {
@@ -24,6 +24,68 @@ export default function RegistrarUsuario() {
   const onError = (errors, e) => console.log(errors, e);
   const history = useHistory();
   let checkBox = false;
+
+  const [image, setImage] = useState("");
+  const [uploadURL, setUploadURL] = useState("");
+  const MAX_IMAGE_SIZE = 10000000;
+
+  function onFileChange(e) {
+    let files = e.target.files || e.dataTransfer.files;
+    if (!files.length) return;
+    createImage(files[0]);
+  }
+
+  function createImage(file) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      const imageData = e.target.result;
+      if (!imageData.includes("data:image/")) {
+        return alert("Tipo de archivo incorrecto, solo se aceptan imágenes");
+      }
+      if (e.target.result.length > MAX_IMAGE_SIZE) {
+        return alert("La imagen es muy grande. Máximo 10 MB");
+      }
+      setImage(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function removeImage(e) {
+    console.log("Remove clicked");
+    setImage("");
+  }
+
+  async function uploadImage(email) {
+    try {
+      // Get the presigned URL
+      const response = await axios({
+        method: "GET",
+        url: URLS.GET_PRESIGNED_URL,
+        params: {
+          email: email
+        }
+      });
+
+      // Image to binary
+      let binary = atob(image.split(",")[1]);
+      let array = [];
+      for (var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+      }
+      let blobData = new Blob([new Uint8Array(array)], { type: "image/*" });
+      console.log("Uploading to: ", response.data.object.uploadUrl);
+      const result = await fetch(response.data.object.uploadUrl, {
+        method: response.data.object.uploadMethod,
+        body: blobData,
+      });
+      console.log("Result: ", result);
+      // Final URL for the user doesn't need the query string params
+      setUploadURL(response.data.object.uploadURL);
+    } catch (error) {
+      // Handle the error
+      console.error('Error:', error);
+    }
+  }
 
   function borrarCampos(data) {
     checkBox = false;
@@ -36,7 +98,8 @@ export default function RegistrarUsuario() {
       data.surname === "" ||
       data.birthDate === "" ||
       data.documentId === "" ||
-      data.phoneNumber === ""
+      data.phoneNumber === "" ||
+      !image
     ) {
       toast.error("Debe completar todos los campos");
       return false;
@@ -66,21 +129,34 @@ export default function RegistrarUsuario() {
     }
   }
 
-  async function postData(data, e) {
+  function uploadImageAndRegisterUser(data) {
+    data.birthDate = transformDate2(data.birthDate);
+
+    return new Promise((resolve, reject) => {
+      uploadImage(data.email)
+        .then(() => {
+          axios
+            .post(URLS.POST_USER_URL, {
+              ...data
+            })
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  function postData(data, e) {
     console.log(data);
     if (formValidate(data)) {
-      data.birthDate = transformDate2(data.birthDate);
-      const postUserEndpoint = configData.AWS_REST_ENDPOINT + "/users";
-
       toast.promise(
-        axios
-          .post(postUserEndpoint, data)
-          .then((response) => {
-            redirect();
-          })
-          .catch((error) => {
-            console.error(error);
-          }),
+        uploadImageAndRegisterUser(data),
         {
           pending: {
             render() {
@@ -90,11 +166,15 @@ export default function RegistrarUsuario() {
           },
           error: {
             render({ data }) {
-              toast.error(data.response.data.message);
+              return (data.response.data.message);
             },
           },
         }
-      );
+      ).then(() => {
+        redirect();
+      }).catch((error) => {
+        console.error(error);
+      });
     }
   }
 
@@ -182,6 +262,27 @@ export default function RegistrarUsuario() {
                     type="number"
                   />
                 </div>
+                <label for="ci-photo">Foto frontal de la C.I.</label>
+                {!image ? (
+                  <div>
+                    <div className="form__field">
+                      <input
+                        type="file"
+                        onChange={onFileChange}
+                        accept="image/*"
+                        id="ci-photo" />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div><img src={image} alt="Uploaded file" className="uploaded-image" /></div>
+                    {!uploadURL && (
+                      <div>
+                        <button onClick={removeImage}>Quitar archivo</button>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="form__field">
                   <label id="checkBox" className="container">
                     Confirmo haber leído y estar de acuerdo con las
