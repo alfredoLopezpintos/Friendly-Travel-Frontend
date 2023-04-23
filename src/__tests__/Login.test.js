@@ -4,11 +4,11 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import axios from 'axios';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
-import Login from '../pages/Login';
+import Login from '../components/pages/Login';
 
 jest.mock('axios');
 jest.mock('jwt-decode');
-jest.mock('../service/AuthService');
+jest.mock('../components/service/AuthService');
 
 describe('Login', () => {
   afterEach(() => {
