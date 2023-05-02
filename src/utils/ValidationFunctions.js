@@ -45,3 +45,42 @@ export const isValidDocument = (cedula) => {
 
     return true;
 }
+
+// Funcion para validar la matricula
+export const checkPlate = (plate) => {
+    const formattedPlate = plate.replace(/\s+/g, ''); // Remove all spaces
+    if (!/^[A-Za-z0-9 ]+$/i.test(formattedPlate)) {
+        return { valid: false, message: "Ingrese una matrícula válida" };
+    } else if (formattedPlate.length !== 6 && formattedPlate.length !== 7) {
+        return { valid: false, message: "La matrícula debe contener 6 o 7 caracteres" };
+    } else {
+        return { valid: true, message: '' }
+    }
+}
+
+// Funcion para validar el año del vehículo
+export const checkVehicleYear = (year) => {
+    if (!/^\d+$/.test(year)) {
+        return { valid: false, message: "Ingrese un año válido" };
+    } else {
+        const yearInt = parseInt(year);
+        if (yearInt < 1950 || yearInt > new Date().getFullYear() + 1) {
+            return { valid: false, message: `Por favor ingrese un año entre 1950 y ${new Date().getFullYear() + 1}` }
+        } else {
+            return { valid: true, message: '' }
+        }
+    }
+}
+
+export function checkSeats(value) {
+    if (/^\d+$/.test(value)) {
+      const number = parseInt(value, 10);
+      if (number >= 1 && number <= 4) {
+        return { valid: true, message: '' };
+      } else {
+        return { valid: false, message: 'El número de asientos debe ser entre 1 y 4' };
+      }
+    } else {
+      return { valid: false, message: 'Ingrese un número válido' };
+    }
+  }

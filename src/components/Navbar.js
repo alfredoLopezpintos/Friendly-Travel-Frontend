@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "./Button";
 import { Link, useHistory } from "react-router-dom";
 import { getToken, resetUserSession } from "./service/AuthService";
+import ModalRegistrarVehiculo from "./ModalRegistrarVehiculo";
 import "./Navbar.css";
 
 function Navbar() {
@@ -34,6 +35,15 @@ function Navbar() {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   useEffect(() => {
     showButton();
   }, []);
@@ -57,6 +67,8 @@ function Navbar() {
                 <Link to="/map" className="nav-links" onClick={closeMobileMenu}>
                   Agregar Viaje
                 </Link>
+                <button onClick={handleOpenModal}>MODAL</button>
+                <ModalRegistrarVehiculo displayModal={showModal} toggleModal={handleCloseModal} />
               </li>) : (<></>)}
             <li className="nav-item">
               <Link
