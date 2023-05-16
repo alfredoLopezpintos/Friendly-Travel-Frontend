@@ -10,12 +10,14 @@ import { toast } from "react-toastify";
 import "./RegistrarUsuario.css";
 import { registerLocale } from "react-datepicker";
 import { transformDate2 } from "../Utilities";
+import { Button } from "@material-ui/core";
 import {
   isValidDocument,
   isValidEmail,
   isValidPhoneNumber
 } from "../../utils/ValidationFunctions";
 import { URLS } from "../../utils/urls";
+import { colors } from "@material-ui/core";
 registerLocale("es", es);
 
 export default function RegistrarUsuario() {
@@ -265,12 +267,23 @@ export default function RegistrarUsuario() {
                 <label htmlFor="ci-photo">Foto frontal de la C.I.</label>
                 {!image ? (
                   <div>
-                    <div className="form__field">
+                    <div>
                       <input
                         type="file"
-                        onChange={onFileChange}
+                        id="ci-photo"
                         accept="image/*"
-                        id="ci-photo" />
+                        style={{ display: "none" }}
+                        onChange={onFileChange}
+                      />
+                      <label htmlFor="ci-photo">
+                        <Button
+                          variant="outlined"
+                          component="span"
+                          fullWidth={true}
+                          style={{ marginBottom: "10px", boxShadow: "none" }}>
+                          Subir foto
+                        </Button>
+                      </label>
                     </div>
                   </div>
                 ) : (
@@ -278,7 +291,12 @@ export default function RegistrarUsuario() {
                     <div><img src={image} alt="Uploaded file" className="uploaded-image" /></div>
                     {!uploadURL && (
                       <div>
-                        <button onClick={removeImage}>Quitar archivo</button>
+                        <Button
+                        variant="outlined"
+                        component="span"
+                        fullWidth={true}
+                        style={{ marginBottom: "10px", boxShadow: "none" }}
+                        onClick={removeImage}>Quitar foto</Button>
                       </div>
                     )}
                   </div>
