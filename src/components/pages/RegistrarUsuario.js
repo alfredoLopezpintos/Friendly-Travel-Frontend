@@ -18,7 +18,6 @@ import {
   isValidPhoneNumber
 } from "../../utils/ValidationFunctions";
 import { URLS } from "../../utils/urls";
-import { colors } from "@material-ui/core";
 registerLocale("es", es);
 
 export default function RegistrarUsuario() {
@@ -26,12 +25,8 @@ export default function RegistrarUsuario() {
   const onSubmit = (data, e) => postData(data, e);
   const onError = (errors, e) => console.log(errors, e);
   const history = useHistory();
-  let checkBox = false;
+  const [isChecked, setIsChecked] = useState(false);
   const { image, onFileChange, removeImage, uploadImage } = useImageUploader();
-
-  function borrarCampos(data) {
-    checkBox = false;
-  }
 
   function formValidate(data) {
     if (
@@ -60,7 +55,7 @@ export default function RegistrarUsuario() {
       return false;
     } else if (!isValidDocument(data.documentId)) {
       return false;
-    } else if (!checkBox) {
+    } else if (!isChecked) {
       toast.error(
         "Debe estar de acuerdo con la política de uso de FriendlyTravel" +
         " para poder registrarse."
@@ -121,17 +116,12 @@ export default function RegistrarUsuario() {
   }
 
   const handleCheckBoxChange = (event) => {
-    if (event.target.checked) {
-      checkBox = true;
-    } else {
-      checkBox = false;
-    }
+    setIsChecked(event.target.checked);
   };
 
   async function redirect(data, e) {
     toast.success("Usuario creado correctamente.");
     history.push("/");
-    borrarCampos(data);
   }
 
   return (
@@ -229,7 +219,6 @@ export default function RegistrarUsuario() {
                 ) : (
                   <div>
                     <div><img src={image} alt="Uploaded file" className="uploaded-image" /></div>
-                    {!image && (
                       <div>
                         <Button
                         variant="outlined"
@@ -238,7 +227,6 @@ export default function RegistrarUsuario() {
                         style={{ marginBottom: "10px", boxShadow: "none" }}
                         onClick={removeImage}>Quitar foto</Button>
                       </div>
-                    )}
                   </div>
                 )}
                 <div className="form__field">
