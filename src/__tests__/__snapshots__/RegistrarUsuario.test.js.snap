@@ -85,14 +85,33 @@ exports[`RegistrarUsuario renders RegistrarUsuario component 1`] = `
       Foto frontal de la C.I.
     </label>
     <div>
-      <div
-        class="form__field"
-      >
+      <div>
         <input
           accept="image/*"
           id="ci-photo"
+          style="display: none;"
           type="file"
         />
+        <label
+          for="ci-photo"
+        >
+          <span
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-fullWidth"
+            role="button"
+            style="margin-bottom: 10px; box-shadow: none;"
+            tabindex="0"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Subir foto
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </span>
+        </label>
       </div>
     </div>
     <div
