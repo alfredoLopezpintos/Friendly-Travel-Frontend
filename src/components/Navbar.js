@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./Button";
+import DropDown from "./DropDown";
 import { Link, useHistory } from "react-router-dom";
 import { getToken, resetUserSession } from "./service/AuthService";
 import ModalRegistrarVehiculo from "./ModalRegistrarVehiculo";
@@ -8,6 +9,7 @@ import "./Navbar.css";
 function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [dropdown, setDropdown] = useState(false);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -50,32 +52,40 @@ function Navbar() {
 
   window.addEventListener("resize", showButton);
 
+  const onMouseEnter = () => {
+    if (window.innerWidth < 960) {
+      setDropdown(false);
+    } else {
+      setDropdown(true);
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (window.innerWidth < 960) {
+      setDropdown(false);
+    } else {
+      setDropdown(false);
+    }
+  };
+
   return (
     <>
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
             FRIENDLY TRAVEL &nbsp;
-            <img src={require("../assets/images/logo.png")} alt="travel logo" width={50}></img>
+            <img
+              src={require("../assets/images/logo.png")}
+              alt="travel logo"
+              width={50}
+            ></img>
           </Link>
           <div className="menu-icon" onClick={handleClick}>
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
-            {getToken() !== null ? (
-              <li className="nav-item">
-                <Link to="/map" className="nav-links" onClick={closeMobileMenu}>
-                  Agregar Viaje
-                </Link>
-                <button onClick={handleOpenModal}>MODAL</button>
-                <ModalRegistrarVehiculo displayModal={showModal} toggleModal={handleCloseModal} />
-              </li>) : (<></>)}
             <li className="nav-item">
-              <Link
-                to="/about"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
+              <Link to="/about" className="nav-links" onClick={closeMobileMenu}>
                 Sobre nosotros
               </Link>
             </li>
@@ -98,25 +108,25 @@ function Navbar() {
               </Link>
             </li>
 
-            <li onClick={handleHistory}>
-              {getToken() === null ? (
-                <Link
-                  to="/login"
-                  className="nav-links-mobile"
-                  onClick={closeMobileMenu}
-                >
-                  Iniciar sesión
+            {getToken() === null ? (
+              <li className="nav-item"></li>
+            ) : (
+              <li
+                className="nav-item"
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+              >
+                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+                  <img
+                    src={require("../assets/images/user.png")}
+                    alt="travel logo"
+                    width={50}
+                  ></img>{" "}
+                  &nbsp; &nbsp; <i className="fas fa-caret-down" />
                 </Link>
-              ) : (
-                <Link
-                  to="/"
-                  className="nav-links-mobile"
-                  onClick={logoutHandler}
-                >
-                  Cerrar sesión
-                </Link>
-              )}
-            </li>
+                {dropdown && <DropDown />}
+              </li>
+            )}
           </ul>
           {button &&
             (getToken() === null ? (
@@ -124,9 +134,7 @@ function Navbar() {
                 Iniciar sesión
               </Button>
             ) : (
-              <Button onClick={logoutHandler2} buttonStyle="btn--outline">
-                Cerrar sesión
-              </Button>
+              <></>
             ))}
         </div>
       </nav>

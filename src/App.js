@@ -17,11 +17,10 @@ import Carpool from "./components/pages/Carpool";
 import NotFound from "./components/pages/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AuthenticatedRoute from './AuthenticatedRoute';
+import AuthenticatedRoute from "./AuthenticatedRoute";
 import { getToken } from "./components/service/AuthService";
 
 function App() {
-
   return (
     <>
       <Router>
@@ -31,16 +30,28 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
           <Route path="/viajes" component={Viajes} />
-          <AuthenticatedRoute authed={getToken()==null} path='/login' component={Login} />        
+          <AuthenticatedRoute
+            authed={getToken() == null}
+            path="/login"
+            component={Login}
+          />
           <Route path="/policy" component={Policy} />
-          <AuthenticatedRoute authed={getToken()!==null} path='/vehicle' component={Vehicle} />
+          <AuthenticatedRoute
+            authed={getToken() !== null}
+            path="/vehicle"
+            component={Vehicle}
+          />
           <Route path="/faqsPage" component={FaqsPage} />
           <Route path="/carpool" component={Carpool} />
           <Route path="/register" component={Register} />
-          <AuthenticatedRoute authed={getToken()!==null} path='/map' component={TravelPreviewer} />
-          <Route path="*" component={NotFound} />          
+          <AuthenticatedRoute
+            authed={getToken() !== null}
+            path="/map"
+            component={TravelPreviewer}
+          />
+          <Route path="*" component={NotFound} />
         </Switch>
-        <ToastContainer position="top-center"/>
+        <ToastContainer position="top-center" />
       </Router>
     </>
   );
