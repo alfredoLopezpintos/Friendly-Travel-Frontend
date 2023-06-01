@@ -19,6 +19,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import { getToken } from "./components/service/AuthService";
+import { Statistics } from "./components/pages/Statistics";
+import { ChangeData } from "./components/pages/ChangeData";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path="/changePass" component={ChangePass} />
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/statistics" component={Statistics} />
+          <Route path="/changeData" component={ChangeData} />
           <Route path="/viajes" component={Viajes} />
           <AuthenticatedRoute
             authed={getToken() == null}
