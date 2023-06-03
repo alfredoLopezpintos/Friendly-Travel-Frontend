@@ -4,7 +4,7 @@ export const MenuItems = [
     path: "/map",
     cName: "dropdown-link",
   },
-  {
+  /*{
     title: "Agregar Vehiculo",
     path: "/vehicle",
     cName: "dropdown-link",
@@ -13,15 +13,15 @@ export const MenuItems = [
     title: "Cambiar Contraseña",
     path: "/changePass",
     cName: "dropdown-link",
-  },
+  },*/
   {
     title: "Modificar Datos",
-    path: "/design",
+    path: "/changeData",
     cName: "dropdown-link",
   },
   {
     title: "Estadisticas",
-    path: "/development",
+    path: "/statistics",
     cName: "dropdown-link",
   },
 ];
