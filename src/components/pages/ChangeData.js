@@ -1,11 +1,9 @@
 import "../Cards.css";
 import Footer from "../Footer";
 import CardItem from "../CardItem";
-import React, { useState, useEffect } from "react";
 import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo'
 
 export function ChangeData() {
-
   return (
     <>
       <div className="cards">
@@ -21,7 +19,6 @@ export function ChangeData() {
           </div>
         </div>
       </div>
-      
       <ModalRegistrarVehiculo  />
       <Footer />
     </>

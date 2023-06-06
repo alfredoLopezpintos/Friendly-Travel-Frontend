@@ -3,7 +3,6 @@ import { Button } from "./Button";
 import DropDown from "./DropDown";
 import { Link, useHistory } from "react-router-dom";
 import { getToken, resetUserSession } from "./service/AuthService";
-import ModalRegistrarVehiculo from "./ModalRegistrarVehiculo";
 import "./Navbar.css";
 
 function Navbar() {
@@ -28,29 +27,6 @@ function Navbar() {
     resetUserSession();
     window.location.reload(false);
   };
-
-  const showButton = () => {
-    if (window.innerWidth <= 1185) {
-      setButton(false);
-    } else {
-      setButton(true);
-    }
-  };
-
-  const [showModal, setShowModal] = useState(false);
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  useEffect(() => {
-    showButton();
-  }, []);
-
-  window.addEventListener("resize", showButton);
 
   const onMouseEnter = () => {
     if (window.innerWidth < 960) {
