@@ -1,6 +1,7 @@
 import "../Cards.css";
 import Footer from "../Footer";
 import CardItem from "../CardItem";
+import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo'
 
 export function ChangeData() {
   return (
@@ -18,6 +19,7 @@ export function ChangeData() {
           </div>
         </div>
       </div>
+      <ModalRegistrarVehiculo  />
       <Footer />
     </>
   );

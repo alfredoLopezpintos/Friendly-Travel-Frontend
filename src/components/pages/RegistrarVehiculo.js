@@ -114,37 +114,37 @@ export default function RegistrarVehiculo() {
       <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div className="form">
 
-        <div className="form__field">
-          <input type="text" {...register("manufacturer")} placeholder="Fabricante" />
-        </div>
-        <div className="form__field">
-          <input type="text" {...register("model")} placeholder="Modelo" />
-        </div>
-        <label id="checkBox" className="container">
-          Bolsa de Aire
-          <input type="checkbox" onChange={() => handleCheckBoxChange2()} 
-          {...register("airbag")} />
-          <span class="checkmark"></span>
-        </label>
-        <div className="form__field">
-          <input type="text" {...register("year")} placeholder="Año" />
-        </div>
-        <br />
-        <label id="checkBox" className="container">
-          Aire Acondicionado
-          <input type="checkbox" onChange={() => handleCheckBoxChange()}
-          {...register("airCond")} />
-          <span class="checkmark"></span>
-        </label>
-        <div className="form__field">
-        <input type="text"
-          {...register("plate")}
-          placeholder="Placa"
-        />
-        </div>
-        <div className="form__field">
-          <input type="submit" value="Aceptar" />
-        </div>
+          <div className="form__field">
+            <input type="text" {...register("manufacturer")} placeholder="Fabricante" />
+          </div>
+          <div className="form__field">
+            <input type="text" {...register("model")} placeholder="Modelo" />
+          </div>
+          <label id="checkBox" className="container">
+            Bolsa de Aire
+            <input type="checkbox" onChange={() => handleCheckBoxChange2()} 
+            {...register("airbag")} />
+            <span class="checkmark"></span>
+          </label>
+          <div className="form__field">
+            <input type="text" {...register("year")} placeholder="Año" />
+          </div>
+          <br />
+          <label id="checkBox" className="container">
+            Aire Acondicionado
+            <input type="checkbox" onChange={() => handleCheckBoxChange()}
+            {...register("airCond")} />
+            <span class="checkmark"></span>
+          </label>
+          <div className="form__field">
+          <input type="text"
+            {...register("plate")}
+            placeholder="Placa"
+          />
+          </div>
+          <div className="form__field">
+            <input type="submit" value="Aceptar" />
+          </div>
         </div>
         </form>
           </div>

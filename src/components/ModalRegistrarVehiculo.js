@@ -19,7 +19,7 @@ import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFun
 import { getToken } from "./service/AuthService";
 import { useImageUploader } from "./service/ImageUploader";
 
-export default function ModalRegistrarVehiculo({ displayModal, toggleModal }) {
+export default function ModalRegistrarVehiculo() {
     const [manufacturer, setManufacturer] = useState('');
     const [model, setModel] = useState('');
     const [year, setYear] = useState('');
@@ -34,6 +34,15 @@ export default function ModalRegistrarVehiculo({ displayModal, toggleModal }) {
     const { image, onFileChange, removeImage, uploadImage } = useImageUploader();
     const [imageError, setImageError] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const [displayModal, setDisplayModal] = useState(false);
+    const handleClickOpen = () => {
+        setDisplayModal(true);
+      };
+    
+      const handleClose = () => {
+        setDisplayModal(false);
+      };
 
     const requestConfig = {
         headers: {
@@ -138,13 +147,14 @@ export default function ModalRegistrarVehiculo({ displayModal, toggleModal }) {
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
         if (result === 'Vehículo agregado correctamente.') {
-            toggleModal();
+            handleClose();
         }
     };
 
     return (
         <>
-            <Dialog open={displayModal} onClose={toggleModal} data-testid="form">
+            <button onClick={handleClickOpen} >Agregar Vehículo</button>
+            <Dialog open={displayModal} onClose={handleClose} data-testid="form">
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>Agregar vehículo</DialogTitle>
                     <DialogContent>
@@ -249,7 +259,7 @@ export default function ModalRegistrarVehiculo({ displayModal, toggleModal }) {
                         </Grid>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={toggleModal} color="primary">
+                        <Button onClick={handleClose} color="primary">
                             Cancelar
                         </Button>
                         <Button type="submit" color="primary" disabled={isSubmitting}>
