@@ -13,11 +13,13 @@ import {
     Grid,
     Snackbar,
     FormHelperText,
-    Typography
+    Typography,
+    ListItemText
 } from "@material-ui/core";
 import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFunctions";
 import { getToken } from "./service/AuthService";
 import { useImageUploader } from "./service/ImageUploader";
+import { Button as Button2 } from "../components/Button";
 
 export default function ModalRegistrarVehiculo() {
     const [manufacturer, setManufacturer] = useState('');
@@ -153,7 +155,12 @@ export default function ModalRegistrarVehiculo() {
 
     return (
         <>
-            <button onClick={handleClickOpen} >Agregar Vehículo</button>
+            <Button2 className="btns"
+              buttonStyle="btn--test"
+              buttonSize="btn--large"
+              onClick={handleClickOpen}>
+              Agregar Vehículo
+            </Button2>
             <Dialog open={displayModal} onClose={handleClose} data-testid="form">
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>Agregar vehículo</DialogTitle>
