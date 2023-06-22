@@ -59,8 +59,7 @@ exports[`Login Renders correctly 1`] = `
           <br />
         </form>
         <p>
-          ¿Aún no tienes cuenta?
-           
+          ¿Aún no tienes cuenta? 
           <a
             href="/register"
           >
