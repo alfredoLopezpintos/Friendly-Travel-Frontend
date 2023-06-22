@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { setUserSession } from "../service/AuthService";
-import configData from "../../configData.json";
 import { useHistory, Link, Redirect } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import Footer from "../Footer";
-
-const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login";
+import { URLS } from "../../utils/urls";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +31,7 @@ const Login = () => {
 
     toast.promise(
       axios
-        .post(loginAPIUrl, requestBody)
+        .post(URLS.LOGIN_URL, requestBody)
         .then((response) => {
           if (response.data.message === expectedResponse) {
             setEndpointResponse(response.data); // Set endpointResponse to the entire response.data object
