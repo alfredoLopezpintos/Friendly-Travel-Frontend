@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import Viajes from "./components/pages/Viajes";
-import Succesful from "./components/pages/Succesful";
 import Login from "./components/pages/Login";
 import TravelPreviewer from "./components/pages/TravelPreviewer";
 import Register from "./components/pages/RegistrarUsuario";
@@ -21,6 +20,7 @@ import AuthenticatedRoute from "./AuthenticatedRoute";
 import { getToken } from "./components/service/AuthService";
 import { Statistics } from "./components/pages/Statistics";
 import { ChangeData } from "./components/pages/ChangeData";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -28,7 +28,12 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <Route path="/changePass" component={ChangePass} />
+          <ProtectedRoute
+            path="/changePass"
+            component={ChangePass}
+            expectedResponse="NEW_PASSWORD_REQUIRED"
+            redirect="/login"
+          />
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
           <Route path="/statistics" component={Statistics} />

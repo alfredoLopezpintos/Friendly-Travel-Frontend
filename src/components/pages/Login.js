@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import axios from "axios";
 import { setUserSession } from "../service/AuthService";
 import configData from "../../configData.json";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory, Link, Redirect } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import Footer from "../Footer";
+
 const loginAPIUrl = configData.AWS_REST_ENDPOINT + "/login";
 
-const Login = (props) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
+  const expectedResponse = "NEW_PASSWORD_REQUIRED";
+  const [endpointResponse, setEndpointResponse] = useState(null);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -28,27 +32,31 @@ const Login = (props) => {
     };
 
     toast.promise(
-      (axios
+      axios
         .post(loginAPIUrl, requestBody)
         .then((response) => {
-          if (response.data.message === "NEW_PASSWORD_REQUIRED") {
-            history.push("/changePass");
+          if (response.data.message === expectedResponse) {
+            setEndpointResponse(response.data); // Set endpointResponse to the entire response.data object
+            setShouldRedirect(true); // Set shouldRedirect to true
           } else {
             setUserSession(
               jwt_decode(response.data.object.idToken).email,
               response.data.object.idToken
             );
-            props.history.push("/");
+            history.push("/");
             toast.success("Bienvenido", {
               autoClose: 1000,
               onClose: () => {
                 window.location.reload(false);
-              }
+              },
             });
           }
         })
         .catch((error) => {
-          if (error.response.status === 401 || error.response.status === 403) {
+          if (
+            error.response.status === 401 ||
+            error.response.status === 403
+          ) {
             setErrorMessage(error.response.data.message);
           } else if (error.response.status === 400) {
             toast.error("Usuario y/o contraseña incorrectos");
@@ -57,30 +65,29 @@ const Login = (props) => {
               "Lo sentimos, el servidor parece encontrarse en mantenimiento. Por favor intentelo de nuevo más tarde"
             );
           }
-        }))
-      ,
+        }),
       {
         pending: {
-          render(){
-            return "Cargando"
+          render() {
+            return "Cargando";
           },
           icon: true,
         },
         error: {
-          render({data}){
-            return toast.error('Error')
-          }
-        }
+          render({ data }) {
+            return toast.error("Error");
+          },
+        },
       }
-     );
+    );
   };
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
     if (!event.target.validity.valid) {
-      setErrorMessage('Por favor ingrese un email válido');
+      setErrorMessage("Por favor ingrese un email válido");
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
     }
   }
 
@@ -89,13 +96,21 @@ const Login = (props) => {
       <div>
         <div className="grid align__item">
           <div className="register">
-          <div className="big_logo">
-              <img src={require("../../assets/images/logo2.png")} alt="travel logo" width={200}></img>
+            <div className="big_logo">
+              <img
+                src={require("../../assets/images/logo2.png")}
+                alt="travel logo"
+                width={200}
+              ></img>
             </div>
             <br />
             <h2>Iniciar sesión</h2>
             <br />
-            <form onSubmit={submitHandler} className="form" data-testid="login-form">
+            <form
+              onSubmit={submitHandler}
+              className="form"
+              data-testid="login-form"
+            >
               <div className="form__field" data-testid="email-input">
                 <input
                   value={email}
@@ -103,10 +118,12 @@ const Login = (props) => {
                   type="email"
                   placeholder="info@mailaddress.com"
                   onInvalid={(event) => {
-                    event.target.setCustomValidity('Por favor ingrese un email válido');
+                    event.target.setCustomValidity(
+                      "Por favor ingrese un email válido"
+                    );
                   }}
                   onInput={(event) => {
-                    event.target.setCustomValidity('');
+                    event.target.setCustomValidity("");
                   }}
                 />
               </div>
@@ -126,12 +143,22 @@ const Login = (props) => {
               <br />
             </form>
             <p>
-              ¿Aún no tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+              ¿Aún no tienes cuenta?{" "}
+              <Link to="/register">Regístrate aquí</Link>
             </p>
           </div>
         </div>
       </div>
       <Footer />
+
+      {shouldRedirect && (
+        <Redirect
+          to={{
+            pathname: "/changePass",
+            state: { endpointResponse },
+          }}
+        />
+      )}
     </>
   );
 };
