@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModalRegistrarVehiculo component should render successfully 1`] = `
+exports[`ModalRegistrarVehiculo component should match snapshot 1`] = `
 <div
   class="MuiDialog-root"
   data-testid="form"
