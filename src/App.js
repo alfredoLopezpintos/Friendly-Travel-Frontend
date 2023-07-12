@@ -32,7 +32,11 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
           <Route path="/statistics" component={Statistics} />
-          <Route path="/changeData" component={ChangeData} />
+          <AuthenticatedRoute
+            authed={getToken() !== null}
+            path="/changeData" 
+            component={ChangeData}
+          />
           <Route path="/viajes" component={Viajes} />
           <AuthenticatedRoute
             authed={getToken() == null}

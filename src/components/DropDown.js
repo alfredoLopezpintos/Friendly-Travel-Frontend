@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MenuItems } from "./MenuItems";
 import "./DropDown.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getToken, resetUserSession } from "./service/AuthService";
 
 function Dropdown() {
