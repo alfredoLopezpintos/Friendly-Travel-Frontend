@@ -49,3 +49,20 @@
   margin-right: auto !important;
   width: 640px !important;
 }
+
+@media screen and (max-width: 768px) {
+  .boxTest {
+    margin-inline: 0px !important;
+    width: 400px !important;
+  }
+}
+
+@media screen and (max-width: 631px) {
+  h1 {
+    font-size: 25px;
+  }
+  .boxTest {
+    margin-inline: 0px !important;
+    width: 250px !important;
+  }
+}
