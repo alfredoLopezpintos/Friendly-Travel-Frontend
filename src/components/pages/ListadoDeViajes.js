@@ -33,7 +33,7 @@ export default function ListadoDeViajes() {
   const dateRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
+    googleMapsApiKey: 'AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs',
     libraries,
   });
   const requestConfig = {
