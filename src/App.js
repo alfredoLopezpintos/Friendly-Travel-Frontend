@@ -28,11 +28,9 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <ProtectedRoute
+          <Route
             path="/changePass"
             component={ChangePass}
-            expectedResponse="NEW_PASSWORD_REQUIRED"
-            redirect="/login"
           />
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
