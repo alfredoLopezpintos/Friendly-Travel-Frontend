@@ -5,7 +5,7 @@ export const MenuItems = [
     cName: "dropdown-link",
   },
   {
-    title: "Modificar Datos",
+    title: "Opciones",
     path: "/changeData",
     cName: "dropdown-link",
   },

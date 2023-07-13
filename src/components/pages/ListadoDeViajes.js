@@ -4,12 +4,10 @@ import axios from "axios";
 import es from "date-fns/locale/es";
 import moment from "moment";
 import React, { useRef, useState } from "react";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { BsCurrencyDollar } from "react-icons/bs";
-import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
-import { IoLogoWhatsapp } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
 import "../../App.css";
 import { transformDate, isNumber } from "../Utilities"
@@ -33,7 +31,7 @@ export default function ListadoDeViajes() {
   const dateRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
+    googleMapsApiKey: 'AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs',
     libraries,
   });
   const requestConfig = {
