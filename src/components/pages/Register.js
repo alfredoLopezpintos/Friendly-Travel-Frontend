@@ -2,7 +2,7 @@ import axios from "axios";
 import es from "date-fns/locale/es";
 import moment from "moment";
 import React, { useState } from "react";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";

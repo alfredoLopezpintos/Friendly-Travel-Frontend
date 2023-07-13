@@ -13,8 +13,7 @@ import {
     Grid,
     Snackbar,
     FormHelperText,
-    Typography,
-    ListItemText
+    Typography
 } from "@material-ui/core";
 import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFunctions";
 import { getToken } from "./service/AuthService";

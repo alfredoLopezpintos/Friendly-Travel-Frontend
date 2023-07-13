@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { MenuItems } from "./MenuItems";
 import "./DropDown.css";
-import { Link, useHistory } from "react-router-dom";
-import { getToken, resetUserSession } from "./service/AuthService";
+import { Link } from "react-router-dom";
+import { resetUserSession } from "./service/AuthService";
 
 function Dropdown() {
   const [click, setClick] = useState(false);
-  const closeMobileMenu = () => setClick(false);
   const handleClick = () => setClick(!click);
 
   const logoutHandler2 = () => {

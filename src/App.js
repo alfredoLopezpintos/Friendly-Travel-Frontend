@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import Viajes from "./components/pages/Viajes";
-import Succesful from "./components/pages/Succesful";
 import Login from "./components/pages/Login";
 import TravelPreviewer from "./components/pages/TravelPreviewer";
 import Register from "./components/pages/RegistrarUsuario";

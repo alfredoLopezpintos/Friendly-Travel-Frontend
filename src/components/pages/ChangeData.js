@@ -1,15 +1,8 @@
 import "../Cards.css";
 import Footer from "../Footer";
-import CardItem from "../CardItem";
 import { useHistory } from "react-router-dom";
 import "./ChangeData.css"
 import { Button } from "../Button";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Divider
-} from "@material-ui/core";
 import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo'
 
 export function ChangeData() {
