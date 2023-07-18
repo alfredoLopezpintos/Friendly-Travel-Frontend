@@ -30,6 +30,15 @@ export default function ListadoDeViajes() {
   const destiantionRef = useRef();
   const dateRef = useRef();
 
+  function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        let chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+}
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs',
     libraries,
@@ -71,33 +80,23 @@ export default function ListadoDeViajes() {
   }
 
   async function fetchContacto(data) {
+
     const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips/" + data;
 
-      toast.promise((axios.get(viajesGetEndPoint, requestConfig)
-      .then((response) => {
-        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
+      toast.promise(axios.get(viajesGetEndPoint, requestConfig)
+        .then((response) => {
+          console.log(viajesGetEndPoint)
+          window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
         "de%20la%20fecha%20" + response.data.tripDate + "%20desde%20" + response.data.origin +
         "%20a%20" + response.data.destination);
-      }        
-      ).catch ((error) => {
-        console.error(error);
-      }))
-      ,
-      {
-        pending: {
-          render(){
-            return "Cargando"
-          },
-          icon: true,
-        },
-        error: {
-          render({data}){
-            return toast.error('Error')
-          }
-        }
-      });
+        }        
+        ).catch(() => {
+          console.log("ERROR")
+        }));
+
+
   }
 
   async function fetchViajes(data, e) {
@@ -221,8 +220,10 @@ export default function ListadoDeViajes() {
         <br />
         <br />
         <ol className="gradient-list">
-          {viajes &&
-            viajes.map((user) => (
+          { console.log(sliceIntoChunks(viajes,2)[1]) }
+          { viajes &&
+            (((sliceIntoChunks(viajes,2)[0]) !== undefined) ? (sliceIntoChunks(viajes,2)[0]) : []) //.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())) //Ordena los viajes por fecha de más reciente a más lejano
+            .map((user) => (
               <li>
                   <div className="social-media-wrap">
                   <div className="rating">
@@ -252,7 +253,16 @@ export default function ListadoDeViajes() {
                 ):(<br />)}
                 
               </li>
-            ))}
+            ))
+          }
+          { ((sliceIntoChunks(viajes,2)[0]) !== undefined) &&
+          (<><br />
+          <div className="load-more-container">
+            <button className="btn-load-more">
+                Cargar más viajes
+            </button>
+          </div></>) }
+            
         </ol>
       </main>
       <ToastContainer position="top-center" />

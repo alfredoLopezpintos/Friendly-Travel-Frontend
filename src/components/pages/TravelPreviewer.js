@@ -108,7 +108,7 @@ function TravelPreviewer() {
   async function fetchViajes(data, e) {
     e?.preventDefault();
     // A MANO POR AHORA
-    data.vehicle = "GAB1234";
+    data.vehicle = "Sch8260";
     data.origin = origen;
     data.destination = destino;
     data.tripDate = dateRef.current.value;

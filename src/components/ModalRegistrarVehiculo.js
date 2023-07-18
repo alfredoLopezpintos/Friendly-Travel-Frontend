@@ -92,6 +92,10 @@ export default function ModalRegistrarVehiculo() {
                 const imageKey = await uploadImage(plate);
                 requestBody.imageKey = imageKey;
 
+                console.log(URLS.POST_VEHICLE_URL)
+                console.log(JSON.stringify(requestBody))
+                console.log(requestConfig)
+
                 const responseAddVehicle = await axios.post(
                     URLS.POST_VEHICLE_URL,
                     JSON.stringify(requestBody),
