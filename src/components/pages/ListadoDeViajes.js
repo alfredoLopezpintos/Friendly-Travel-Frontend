@@ -30,6 +30,11 @@ export default function ListadoDeViajes() {
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
+  const [prevViajes, setPrevViajes] = React.useState([])
+  const [pageNumber, setPageNumber] = React.useState(0)
+  const [cardsNumber, setCardsNumber] = React.useState(5)
+  const [visible, setVisible] = React.useState(false)
+  const observer = useRef()
 
   function sliceIntoChunks(arr, chunkSize) {
     const res = [];
@@ -40,12 +45,6 @@ export default function ListadoDeViajes() {
     return res;
   }
 
-  const [prevViajes, setPrevViajes] = React.useState([])
-  const [pageNumber, setPageNumber] = React.useState(0)
-  const [cardsNumber, setCardsNumber] = React.useState(5)
-  const [visible, setVisible] = React.useState(false)
-
-  const observer = useRef()
   const lastCardElement = useCallback(node => {
     if(observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
@@ -67,8 +66,6 @@ export default function ListadoDeViajes() {
     setPageNumber(0)
     setCardsNumber(5)    
   }
-
-  // ---
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs',
