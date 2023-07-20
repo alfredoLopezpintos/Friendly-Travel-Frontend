@@ -118,28 +118,11 @@
   transition: 250ms;
 }
 
-.load-more-container {
+.load-more-message-container {
   position: absolute;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-}
-
-.btn-load-more {
-  max-height: 40px;
-  margin-top: 25px;
-  padding: 10px 20px;
-  background-color: rgb(255, 255, 255);
-  border: 2px solid rgb(0, 0, 0);
-  color: rgb(0, 0, 0);
-  border-radius: 5px;
-}
-
-.btn-load-more:hover {
-  background-color: rgba(0, 0, 0, 0.548);
-  color: white;
-  transition: all 0.3s ease-out;
-  transition: 250ms;
 }
 
 /* Style the form - display items horizontally */

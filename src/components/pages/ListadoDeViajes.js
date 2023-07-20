@@ -15,6 +15,7 @@ import configData from "../../configData.json";
 import "./ListadoDeViajes.css";
 import Moment from "moment";
 import { getToken } from "../service/AuthService";
+import TextItem from "../TextItem";
 
 registerLocale("es", es);
 
@@ -42,6 +43,7 @@ export default function ListadoDeViajes() {
   const [prevViajes, setPrevViajes] = React.useState([])
   const [pageNumber, setPageNumber] = React.useState(0)
   const [cardsNumber, setCardsNumber] = React.useState(5)
+  const [visible, setVisible] = React.useState(false)
 
   const observer = useRef()
   const lastCardElement = useCallback(node => {
@@ -51,17 +53,19 @@ export default function ListadoDeViajes() {
         setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])])
         setPageNumber(pageNumber + 1)
         setCardsNumber(cardsNumber + 5)
-        console.log("CARGA " + (pageNumber+1))
+        //console.log("CARGA " + (pageNumber+1))
+      } else {
+        setVisible(true)
       }      
     })
     if (node) observer.current.observe(node)
-    //console.log(node)
   })
 
   const handlePrevViajes = () => {
+    //setVisible(false)
     setPrevViajes([])
     setPageNumber(0)
-    setCardsNumber(5)
+    setCardsNumber(5)    
   }
 
   // ---
@@ -150,6 +154,7 @@ export default function ListadoDeViajes() {
             "No hay viajes que cumplan con las condiciones seleccionadas."
             ) {
             setViajes();
+            //setVisible(false)
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
             setViajes(response.data);
@@ -311,8 +316,10 @@ export default function ListadoDeViajes() {
                )
             ))
           }
-            
         </ol>
+        <div className="load-more-message-container">
+          { visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></> }
+        </div>
       </main>
       <ToastContainer position="top-center" />
     </>
