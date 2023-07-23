@@ -1,41 +1,36 @@
+import React, { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
-import { render } from "@testing-library/react";
 import axios from "axios";
+import { registerLocale } from "react-datepicker";
+import { BsCurrencyDollar } from "react-icons/bs";
+import { toast } from "react-toastify";
+import "react-datepicker/dist/react-datepicker.css";
+import "../../App.css";
+import "./ListadoDeViajes.css";
+import { transformDate, isNumber } from "../Utilities";
+import { getToken } from "../service/AuthService";
+import configData from "../../configData.json";
+import { URLS } from "../../utils/urls";
 import es from "date-fns/locale/es";
 import moment from "moment";
-import React, { useRef, useState } from "react";
-import DatePickerComponent, { registerLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useForm } from "react-hook-form";
-import { BsCurrencyDollar } from "react-icons/bs";
-import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
-import { IoLogoWhatsapp } from "react-icons/io";
-import { toast, ToastContainer } from "react-toastify";
-import "../../App.css";
-import { transformDate, isNumber } from "../Utilities"
-import configData from "../../configData.json";
-import "./ListadoDeViajes.css";
-import Moment from "moment";
-import { getToken } from "../service/AuthService";
 
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
-  const [viajes, setViajes] = React.useState([]);
+  const [viajes, setViajes] = useState([]);
   const { register, handleSubmit } = useForm();
-  const [date, setDate] = useState(new Date());
-  const handleContacto = (data) => fetchContacto(data);
-  const onSubmit = (data, e) => fetchViajes(data, e);
+  const [date] = useState(new Date());
   const onError = (errors, e) => console.log(errors, e);
-  const [libraries] = useState(["places"]);
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyByxrtMSshoEaBd7YBhp87zfGF3ih5fSPE',
-    libraries,
+    googleMapsApiKey: configData.MAPS_KEY,
+    libraries: ["places"],
   });
+
   const requestConfig = {
     headers: {
       Authorization: JSON.parse(getToken()),
@@ -43,7 +38,7 @@ export default function ListadoDeViajes() {
   };
 
   if (!isLoaded) {
-    return <>loading...</>;
+    return <>Cargando...</>;
   }
 
   function formValidate(data) {
@@ -52,12 +47,10 @@ export default function ListadoDeViajes() {
     data.tripDate = dateRef.current.value;
     data.destination = destiantionRef.current.value;
     data.origin = originRef.current.value;
-    data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
+    data.tripDate = moment(data.tripDate).format("DD-MM-YYYY");
 
     if (data.tripDate === "" || data.origin === "" || data.destination === "") {
-      toast.error(
-        "La busqueda debe tener por lo menos origen, destino y fecha"
-      );
+      toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
       return false;
     } else if (!isNumber(data.price) && data.price !== "") {
       toast.error("Precio incorrecto");
@@ -72,30 +65,37 @@ export default function ListadoDeViajes() {
     }
   }
 
-  async function fetchContacto(data) {
+  async function handleContacto(data) {
     const viajesGetEndPoint =
-        configData.AWS_REST_ENDPOINT +
-        "/trips/" + data;
+      URLS.GET_TRIPS_URL + "/" + data;
 
-      toast.promise((axios.get(viajesGetEndPoint, requestConfig)
+    toast.promise((axios.get(viajesGetEndPoint, requestConfig)
       .then((response) => {
-        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
-        "de%20la%20fecha%20" + response.data.tripDate + "%20desde%20" + response.data.origin +
-        "%20a%20" + response.data.destination);
-      }        
-      ).catch ((error) => {
+        window.location.replace(
+          "https://wa.me/"
+          + response.data.phoneNumber
+          + "?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"
+          + "de%20la%20fecha%20"
+          + response.data.tripDate
+          + "%20desde%20"
+          + response.data.origin
+          + "%20a%20"
+          + response.data.destination
+        );
+      }
+      ).catch((error) => {
         console.error(error);
       }))
       ,
       {
         pending: {
-          render(){
+          render() {
             return "Cargando"
           },
           icon: true,
         },
         error: {
-          render({data}){
+          render({ data }) {
             return toast.error('Error')
           }
         }
@@ -107,42 +107,37 @@ export default function ListadoDeViajes() {
 
     if (formValidate(data)) {
       const viajesGetEndPoint =
-        configData.AWS_REST_ENDPOINT +
-        "/trips?origin=" +
+        URLS.GET_TRIPS_URL +
+        "?origin=" +
         data.origin +
         "&destination=" +
         data.destination +
         "&tripDate=" +
         data.tripDate +
-        "&price=" +
-        data.price +
-        "&availablePlaces=" +
-        data.availablePlaces;
+        (data.price !== "" ? "&price=" + data.price : "") +
+        (data.availablePlaces !== "" ? "&availablePlaces=" + data.availablePlaces : "");
 
-        toast.promise(axios.get(viajesGetEndPoint)
+      toast.promise(axios.get(viajesGetEndPoint)
         .then((response) => {
-          if (
-            response.data.message ===
-            "No hay viajes que cumplan con las condiciones seleccionadas."
-            ) {
+          if (response.data.message === "No hay viajes que cumplan con las condiciones seleccionadas.") {
             setViajes();
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
             setViajes(response.data);
           }
-        }).catch ((error) => {
+        }).catch((error) => {
           console.error(error);
         })
         ,
         {
           pending: {
-            render(){
+            render() {
               return "Cargando"
             },
             icon: true,
           },
           error: {
-            render({data}){
+            render({ data }) {
               toast.error(data.response.data.message);
             }
           }
@@ -150,14 +145,13 @@ export default function ListadoDeViajes() {
     }
   }
 
-  render();
   return (
     <>
       <main>
         <div>
           <form
             className="form-inline"
-            onSubmit={handleSubmit(onSubmit, onError)}
+            onSubmit={handleSubmit(fetchViajes, onError)}
           >
             <div className="field1">
               <Autocomplete
@@ -226,9 +220,9 @@ export default function ListadoDeViajes() {
           {viajes &&
             viajes.map((user) => (
               <li>
-                  <div className="social-media-wrap">
+                <div className="social-media-wrap">
                   <div className="rating">
-                  <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
+                    <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
                   </div>
                   <div className="price">
                     <BsCurrencyDollar />
@@ -237,27 +231,24 @@ export default function ListadoDeViajes() {
                   <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
                 </div>
                 <div className="destination">
-                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
-                  <br/>
+                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br />{user.origin}</div>
+                  <br />
                 </div>
                 <div className="destination">
-                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
+                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
                   <div>{user.arrival_time}</div>
-                  
                 </div>
                 {getToken() !== null ? (
                   <div className="contacto">
-                    <a onClick={() => handleContacto(user.tripId)} > 
-                    <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
+                    <a onClick={() => handleContacto(user.tripId)} >
+                      <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
                     </a>
                   </div>
-                ):(<br />)}
-                
+                ) : (<br />)}
               </li>
             ))}
         </ol>
       </main>
-      <ToastContainer position="top-center" />
     </>
   );
 }
