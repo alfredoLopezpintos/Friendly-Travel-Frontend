@@ -95,6 +95,20 @@
   background-color: #ddd;
 }
 
+/* FILTROS EXTRA */
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 100px;
+
+  margin-left: 100px;
+  max-width: 40rem;
+  padding: 1rem;
+}
+
+
+
 /* BUSCAR VIAJE */
 
 .field1 {

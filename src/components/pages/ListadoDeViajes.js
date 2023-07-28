@@ -14,6 +14,7 @@ import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
 import es from "date-fns/locale/es";
 import moment from "moment";
+import ListItemButton from '@mui/material/ListItemButton';
 
 registerLocale("es", es);
 
@@ -213,10 +214,19 @@ export default function ListadoDeViajes() {
               </button>
             </div>
           </form>
-        </div>
+        </div>        
         <br />
-        <br />
-        <ol className="gradient-list">
+        <br />      
+      </main>
+
+      <div className="wrapper">
+          <ol className="gradient-list">
+            <h2>Ordenar por:</h2>
+            <ListItemButton component="a" href="#simple-list">
+              <ListItemText primary="Spam" />
+            </ListItemButton>
+          </ol>
+          <ol className="gradient-list">
           {viajes &&
             viajes.map((user) => (
               <li>
@@ -248,7 +258,7 @@ export default function ListadoDeViajes() {
               </li>
             ))}
         </ol>
-      </main>
+      </div>
     </>
   );
 }
