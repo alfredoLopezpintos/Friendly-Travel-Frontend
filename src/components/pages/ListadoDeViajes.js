@@ -52,7 +52,6 @@ export default function ListadoDeViajes() {
         setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])])
         setPageNumber(pageNumber + 1)
         setCardsNumber(cardsNumber + 5)
-        //console.log("CARGA " + (pageNumber+1))
       } else {
         setVisible(true)
       }      
@@ -61,7 +60,6 @@ export default function ListadoDeViajes() {
   })
 
   const handlePrevViajes = () => {
-    //setVisible(false)
     setPrevViajes([])
     setPageNumber(0)
     setCardsNumber(5)    
@@ -165,7 +163,6 @@ export default function ListadoDeViajes() {
             "No hay viajes que cumplan con las condiciones seleccionadas."
             ) {
             setViajes();
-            //setVisible(false)
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
             setViajes(response.data);
