@@ -118,6 +118,13 @@
   transition: 250ms;
 }
 
+.load-more-message-container {
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 /* Style the form - display items horizontally */
 .form-inline {
   height: 80px;
