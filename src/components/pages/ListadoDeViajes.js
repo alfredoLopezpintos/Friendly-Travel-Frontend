@@ -14,7 +14,21 @@ import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
 import es from "date-fns/locale/es";
 import moment from "moment";
+
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+// ICONS
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PaidIcon from '@mui/icons-material/Paid';
+import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
+
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Checkbox from '@mui/material/Checkbox';
 
 registerLocale("es", es);
 
@@ -26,6 +40,22 @@ export default function ListadoDeViajes() {
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
+
+  // -- FILTERS --
+  const [checked, setChecked] = React.useState([1]);
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: configData.MAPS_KEY,
@@ -221,10 +251,90 @@ export default function ListadoDeViajes() {
 
       <div className="wrapper">
           <ol className="gradient-list">
-            <h2>Ordenar por:</h2>
-            <ListItemButton component="a" href="#simple-list">
-              <ListItemText primary="Spam" />
-            </ListItemButton>
+            
+
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <nav aria-label="main mailbox folders">
+                <h2>Ordenar por:</h2>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <PaidIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Inbox" />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <PaidIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Drafts" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </nav>
+              <Divider />
+              <nav aria-label="secondary mailbox folders">
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemText primary="Trash" />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton component="a" href="#simple-list">
+                      <ListItemText primary="Spam" />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </nav>
+            </Box>
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <nav aria-label="main mailbox folders">
+                <List>
+                  {[5, 6, 7].map((value) => {
+                    const labelId = `checkbox-list-secondary-label-${value}`;
+                    return (
+                      <ListItem
+                        key={value}
+                        onClick={handleToggle(value)}
+                        secondaryAction={
+                          <Checkbox
+                            edge="end"
+                            onChange={handleToggle(value)}
+                            checked={checked.indexOf(value) !== -1}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton>
+                          <ListItemIcon>
+                            {
+                            (value === 5) ? <AccessTimeIcon />: 
+                            (value === 6) ? <PaidIcon />:
+                            (value === 7) ? <DepartureBoardIcon />:
+                            <></>
+                            }
+                          </ListItemIcon>
+                          {
+                            (value === 5) ? <ListItemText primary="Salida más temprana" />:
+                            (value === 6) ? <ListItemText primary="Precio más bajo" />:
+                            (value === 7) ? <ListItemText primary="Viaje más corto" />:
+                            <></>
+                          }
+                          
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  })}
+                  </List>
+                  <Divider />
+            </nav>
+          </Box>
+
           </ol>
           <ol className="gradient-list">
           {viajes &&
