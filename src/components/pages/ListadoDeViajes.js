@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
+import moment from "moment";
+import React, { useRef, useState, useCallback } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
 import { registerLocale } from "react-datepicker";
 import { BsCurrencyDollar } from "react-icons/bs";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../App.css";
 import "./ListadoDeViajes.css";
@@ -13,7 +15,7 @@ import { getToken } from "../service/AuthService";
 import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
 import es from "date-fns/locale/es";
-import moment from "moment";
+import TextItem from "../TextItem";
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -40,6 +42,40 @@ export default function ListadoDeViajes() {
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
+  const [prevViajes, setPrevViajes] = React.useState([])
+  const [pageNumber, setPageNumber] = React.useState(0)
+  const [cardsNumber, setCardsNumber] = React.useState(5)
+  const [visible, setVisible] = React.useState(false)
+  const observer = useRef()
+
+  function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      let chunk = arr.slice(i, i + chunkSize);
+      res.push(chunk);
+    }
+    return res;
+  }
+
+  const lastCardElement = useCallback(node => {
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])]).length < viajes.length) {
+        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])])
+        setPageNumber(pageNumber + 1)
+        setCardsNumber(cardsNumber + 5)
+      } else {
+        setVisible(true)
+      }
+    })
+    if (node) observer.current.observe(node)
+  })
+
+  const handlePrevViajes = () => {
+    setPrevViajes([])
+    setPageNumber(0)
+    setCardsNumber(5)
+  }
 
   // -- FILTERS --
   const [checked, setChecked] = React.useState([1]);
@@ -131,6 +167,8 @@ export default function ListadoDeViajes() {
           }
         }
       });
+
+
   }
 
   async function fetchViajes(data, e) {
@@ -138,37 +176,42 @@ export default function ListadoDeViajes() {
 
     if (formValidate(data)) {
       const viajesGetEndPoint =
-        URLS.GET_TRIPS_URL +
-        "?origin=" +
+        configData.AWS_REST_ENDPOINT +
+        "/trips?origin=" +
         data.origin +
         "&destination=" +
         data.destination +
         "&tripDate=" +
         data.tripDate +
-        (data.price !== "" ? "&price=" + data.price : "") +
-        (data.availablePlaces !== "" ? "&availablePlaces=" + data.availablePlaces : "");
+        "&price=" +
+        data.price +
+        "&availablePlaces=" +
+        data.availablePlaces;
 
-      toast.promise(axios.get(viajesGetEndPoint)
+        toast.promise(axios.get(viajesGetEndPoint)
         .then((response) => {
-          if (response.data.message === "No hay viajes que cumplan con las condiciones seleccionadas.") {
+          if (
+            response.data.message ===
+            "No hay viajes que cumplan con las condiciones seleccionadas."
+            ) {
             setViajes();
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
             setViajes(response.data);
           }
-        }).catch((error) => {
+        }).catch ((error) => {
           console.error(error);
         })
         ,
         {
           pending: {
-            render() {
+            render(){
               return "Cargando"
             },
             icon: true,
           },
           error: {
-            render({ data }) {
+            render({data}){
               toast.error(data.response.data.message);
             }
           }
@@ -239,103 +282,135 @@ export default function ListadoDeViajes() {
                   type="number"
                 />
               </div>
-              <button className="btn-submit" type="submit">
+              <button className="btn-submit" type="submit" onClick={handlePrevViajes}>
                 Buscar
               </button>
             </div>
           </form>
-        </div>        
+        </div>
         <br />
         <br />
 
         <div>
-        <div className="wrapper">
-          <div className="gradient-list">
-            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              <nav aria-label="main mailbox folders">
-                <h2>Ordenar por:</h2>
-                <List>
-                  {[5, 6, 7].map((value) => {
-                    const labelId = `checkbox-list-secondary-label-${value}`;
-                    return (
-                      <ListItem
-                        key={value}
-                        onClick={handleToggle(value)}
-                        secondaryAction={
-                          <Checkbox
-                            edge="end"
-                            onChange={handleToggle(value)}
-                            checked={checked.indexOf(value) !== -1}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        }
-                        disablePadding
-                      >
-                        <ListItemButton>
-                          <ListItemIcon>
-                            {
-                            (value === 5) ? <AccessTimeIcon />: 
-                            (value === 6) ? <PaidIcon />:
-                            (value === 7) ? <DepartureBoardIcon />:
-                            <></>
-                            }
-                          </ListItemIcon>
-                          {
-                            (value === 5) ? <ListItemText primary="Salida más temprana" />:
-                            (value === 6) ? <ListItemText primary="Precio más bajo" />:
-                            (value === 7) ? <ListItemText primary="Viaje más corto" />:
-                            <></>
+          <div className="wrapper">
+            <div className="gradient-list">
+              <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                <nav aria-label="main mailbox folders">
+                  <h2>Ordenar por:</h2>
+                  <List>
+                    {[5, 6, 7].map((value) => {
+                      const labelId = `checkbox-list-secondary-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          onClick={handleToggle(value)}
+                          secondaryAction={
+                            <Checkbox
+                              edge="end"
+                              onChange={handleToggle(value)}
+                              checked={checked.indexOf(value) !== -1}
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
                           }
-                          
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  })}
-                </List>
-                <Divider />
-              </nav>
-            </Box>
+                          disablePadding
+                        >
+                          <ListItemButton>
+                            <ListItemIcon>
+                              {
+                                (value === 5) ? <AccessTimeIcon /> :
+                                  (value === 6) ? <PaidIcon /> :
+                                    (value === 7) ? <DepartureBoardIcon /> :
+                                      <></>
+                              }
+                            </ListItemIcon>
+                            {
+                              (value === 5) ? <ListItemText primary="Salida más temprana" /> :
+                                (value === 6) ? <ListItemText primary="Precio más bajo" /> :
+                                  (value === 7) ? <ListItemText primary="Viaje más corto" /> :
+                                    <></>
+                            }
+
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                  <Divider />
+                </nav>
+              </Box>
+            </div>
+            <ol className="gradient-list">
+              {viajes &&
+                (((sliceIntoChunks(viajes, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])] : []) //.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())) //Ordena los viajes por fecha de más reciente a más lejano
+                  .map((user, index) => (
+                    ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])].length === index + 1) ? (
+                      <li ref={lastCardElement}>
+                        <div className="social-media-wrap">
+                          <div className="rating">
+                            <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
+                          </div>
+                          <div className="price">
+                            <BsCurrencyDollar />
+                            {user.price}
+                          </div>
+                          <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
+                        </div>
+                        <div className="destination">
+                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br />{user.origin}</div>
+                          <br />
+                        </div>
+                        <div className="destination">
+                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
+                          <div>{user.arrival_time}</div>
+
+                        </div>
+                        {getToken() !== null ? (
+                          <div className="contacto">
+                            <a onClick={() => handleContacto(user.tripId)} >
+                              <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
+                            </a>
+                          </div>
+                        ) : (<br />)}
+                      </li>
+                    ) : (
+                      <li>
+                        <div className="social-media-wrap">
+                          <div className="rating">
+                            <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
+                          </div>
+                          <div className="price">
+                            <BsCurrencyDollar />
+                            {user.price}
+                          </div>
+                          <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
+                        </div>
+                        <div className="destination">
+                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br />{user.origin}</div>
+                          <br />
+                        </div>
+                        <div className="destination">
+                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
+                          <div>{user.arrival_time}</div>
+
+                        </div>
+                        {getToken() !== null ? (
+                          <div className="contacto">
+                            <a onClick={() => handleContacto(user.tripId)} >
+                              <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
+                            </a>
+                          </div>
+                        ) : (<br />)}
+                      </li>
+                    )
+                  ))
+              }
+            </ol>
+            <div className="load-more-message-container">
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+            </div>
           </div>
-          <ol className="gradient-list">
-          {viajes &&
-            viajes.map((user) => (
-              <li>
-                <div className="social-media-wrap">
-                  <div className="rating">
-                    <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
-                  </div>
-                  <div className="price">
-                    <BsCurrencyDollar />
-                    {user.price}
-                  </div>
-                  <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
-                </div>
-                <div className="destination">
-                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br />{user.origin}</div>
-                  <br />
-                </div>
-                <div className="destination">
-                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
-                  <div>{user.arrival_time}</div>
-                </div>
-                {getToken() !== null ? (
-                  <div className="contacto">
-                    <a onClick={() => handleContacto(user.tripId)} >
-                      <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
-                    </a>
-                  </div>
-                ) : (<br />)}
-              </li>
-            ))}
-        </ol>
-      </div>
         </div>
-
-        
-
       </main>
-
-      
     </>
   );
 }
