@@ -246,53 +246,14 @@ export default function ListadoDeViajes() {
           </form>
         </div>        
         <br />
-        <br />      
-      </main>
+        <br />
 
-      <div className="wrapper">
-          <ol className="gradient-list">
-            
-
+        <div>
+        <div className="wrapper">
+          <div className="gradient-list">
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
               <nav aria-label="main mailbox folders">
                 <h2>Ordenar por:</h2>
-                <List>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <PaidIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Inbox" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <PaidIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Drafts" />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-              </nav>
-              <Divider />
-              <nav aria-label="secondary mailbox folders">
-                <List>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemText primary="Trash" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton component="a" href="#simple-list">
-                      <ListItemText primary="Spam" />
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-              </nav>
-            </Box>
-            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              <nav aria-label="main mailbox folders">
                 <List>
                   {[5, 6, 7].map((value) => {
                     const labelId = `checkbox-list-secondary-label-${value}`;
@@ -330,12 +291,11 @@ export default function ListadoDeViajes() {
                       </ListItem>
                     );
                   })}
-                  </List>
-                  <Divider />
-            </nav>
-          </Box>
-
-          </ol>
+                </List>
+                <Divider />
+              </nav>
+            </Box>
+          </div>
           <ol className="gradient-list">
           {viajes &&
             viajes.map((user) => (
@@ -369,6 +329,13 @@ export default function ListadoDeViajes() {
             ))}
         </ol>
       </div>
+        </div>
+
+        
+
+      </main>
+
+      
     </>
   );
 }

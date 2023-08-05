@@ -99,11 +99,11 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.5fr 0.8fr;
   column-gap: 100px;
 
   margin-left: 100px;
-  max-width: 40rem;
+  /*max-width: 40rem;*/
   padding: 1rem;
 }
 
@@ -214,7 +214,6 @@ body {
 main {
   display: block;
   margin: 0 auto;
-  max-width: 40rem;
   padding: 1rem;
 }
 ol.gradient-list {
