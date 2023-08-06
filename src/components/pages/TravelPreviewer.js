@@ -60,6 +60,19 @@ const Button = styled.button`
   }
 `;
 
+const estilos = {
+  
+    boxSizing: `border-box`,
+    border: `1px solid transparent`,
+    width: `240px`,
+    height: `32px`,
+    padding: `0 12px`,
+    borderRadius: `3px`,
+    boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+    fontSize: `14px`,
+    outline: `none`,
+    textOverflow: `ellipses`,
+}
 function TravelPreviewer() {
   const [libraries] = useState(["places"]);
   const center = { lat: -32.522779, lng: -55.765835 };
@@ -101,7 +114,6 @@ function TravelPreviewer() {
   const [sugerido, setSugerido] = useState("");
   const [dist, setDist] = useState("");
   const [dur, setDur] = useState("");
-  
 
   function isNumber(str) {
     if (str.trim() === "") {
@@ -117,7 +129,6 @@ function TravelPreviewer() {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
- 
 
   async function traerVehiculos(data) {
     const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
@@ -132,9 +143,13 @@ function TravelPreviewer() {
           },
         })
         .then((response) => {
-          if (response.data.length) 
-            {setVehiculo(response.data);}
-          else {toast.warning("No tiene vehículos registrados. Dirigete a tu panel de usuario para agregar uno.");}
+          if (response.data.length) {
+            setVehiculo(response.data);
+          } else {
+            toast.warning(
+              "No tiene vehículos registrados. Dirigete a tu panel de usuario para agregar uno."
+            );
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -156,16 +171,16 @@ function TravelPreviewer() {
   }
 
   useEffect(() => {
-    traerVehiculos()
-  }, [])
+    traerVehiculos();
+  }, []);
 
   //useEffect(() => {
   //  console.log(vehiculo.map((e, i) => ({id: e.plate, value: e.plate})));
   //}, [vehiculo])
 
- // useEffect(() => {
- //   console.log(plate);
- // }, [plate])
+  // useEffect(() => {
+  //   console.log(plate);
+  // }, [plate])
 
   /////////////////////////////////////////////////////////////////////////////////
 
@@ -176,7 +191,9 @@ function TravelPreviewer() {
     data.destination = destino;
     data.tripDate = dateRef.current.value;
     data.availablePlaces = lugaresRef.current.value;
-    console.log(data)
+    data.distancia = distance;
+    data.duracion = duration;
+    console.log(data);
     if (formValidate(data)) {
       data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";
@@ -235,8 +252,8 @@ function TravelPreviewer() {
     ) {
       toast.error("Debe llenar todos los campos");
       return false;
-    } else if (!(data.vehicle)) {
-      toast.warning("Debe seleccionar un vehículo");  
+    } else if (!data.vehicle) {
+      toast.warning("Debe seleccionar un vehículo");
     } else if (!isNumber(data.price)) {
       toast.error("El precio debe ser un número");
     } else if (!isNumber(data.availablePlaces)) {
@@ -270,6 +287,7 @@ function TravelPreviewer() {
           travelMode: google.maps.TravelMode.DRIVING,
         })
         .then((results) => {
+          e?.preventDefault();
           setDirectionsResponse(results);
           setDistance(results.routes[0].legs[0].distance.text);
           setDuration(results.routes[0].legs[0].duration.text);
@@ -307,7 +325,7 @@ function TravelPreviewer() {
     destiantionRef.current.value = "";
   }
 
-  function CalcularContribucion() {
+  function calcularContribucion() {
     let precio = 0;
     let dist = 0;
     let total = 0;
@@ -332,15 +350,18 @@ function TravelPreviewer() {
             <div>
               <h3>¡Publica tu viaje aquí!</h3>
               <br />
-              <label>Origen</label>
               <Autocomplete
                 onPlaceChanged={calculateRoute}
                 options={{ componentRestrictions: { country: "uy" } }}
               >
-                <input {...register("origin")} type="text" ref={originRef} />
+                <input
+                  {...register("origin")}
+                  placeholder="Selecciona origen"
+                  type="text"
+                  ref={originRef}
+                  style={estilos}
+                />
               </Autocomplete>
-              <br />
-              <label>Destino</label>
               <br />
               <Autocomplete
                 onPlaceChanged={calculateRoute}
@@ -348,8 +369,10 @@ function TravelPreviewer() {
               >
                 <input
                   {...register("destination")}
+                  placeholder="Selecciona destino"
                   type="text"
                   ref={destiantionRef}
+                  style={estilos}
                 />
               </Autocomplete>
               <br />
@@ -360,24 +383,23 @@ function TravelPreviewer() {
                   type="date"
                   ref={dateRef}
                   min="01-01-2020"
+                  style={estilos}
                 />
               </label>
               <br />
               <br />
-              <label>
-                Selecciona VehÍculo
-                <Select
-                  options={vehiculo.map((e, i) => ({label: e.plate, value: e.plate}))}
-                  onChange={(values) => setPlate(values[0].value)}
-                  placeholder="Selecciona VehÍculo"
-                  closeOnSelect
-                  clearOnBlur
-                />
-              </label>
+              <Select
+                options={vehiculo.map((e, i) => ({
+                  label: e.plate,
+                  value: e.plate,
+                }))}
+                onChange={(values) => setPlate(values[0].value)}
+                noDataRenderer={() => "No tiene vehículos cargados"}
+                placeholder="Selecciona vehÍculo"
+                closeonselect
+                style={estilos}
+              />
               <br />
-
-              <label>Lugares disponibles</label>
-
               <input
                 {...register("availablePlaces")}
                 type="number"
@@ -385,14 +407,13 @@ function TravelPreviewer() {
                 max="4"
                 id="lugares"
                 name="availablePlaces"
-                placeholder="¿Cuántos lugares tienes?"
+                placeholder="Plazas disponibles"
                 ref={lugaresRef}
-                onChange={CalcularContribucion}
+                onChange={calcularContribucion}
+                style={estilos}
               />
               <br />
               <br />
-              <label>Precio</label>
-              <br></br>
 
               <input
                 {...register("price")}
@@ -401,13 +422,29 @@ function TravelPreviewer() {
                 max="1000"
                 id="precio"
                 name="price"
-                placeholder="Contribución estimada"
+                placeholder="Costo estimado"
+                style={estilos}
               />
               <span>{sugerido}</span>
 
               <br></br>
               <br></br>
-              <Button>Crear Viaje</Button>
+              <Button
+                style={{
+                  boxSizing: `border-box`,
+                  border: `1px solid black`,
+                  width: `240px`,
+                  height: `32px`,
+                  padding: `0 12px`,
+                  borderRadius: `3px`,
+                  boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                  fontSize: `14px`,
+                  outline: `none`,
+                  textOverflow: `ellipses`,
+                }}
+              >
+                Crear Viaje
+              </Button>
               <br />
               <br />
               <span>{dist}</span>
