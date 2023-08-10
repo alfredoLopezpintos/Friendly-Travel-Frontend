@@ -20,7 +20,6 @@ import AuthenticatedRoute from "./AuthenticatedRoute";
 import { getToken } from "./components/service/AuthService";
 import { Statistics } from "./components/pages/Statistics";
 import { ChangeData } from "./components/pages/ChangeData";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -28,11 +27,9 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <ProtectedRoute
+          <Route
             path="/changePass"
             component={ChangePass}
-            expectedResponse="NEW_PASSWORD_REQUIRED"
-            redirect="/login"
           />
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />

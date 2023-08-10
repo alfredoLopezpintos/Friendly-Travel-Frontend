@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import axios from "axios";
 import es from "date-fns/locale/es";
 import moment from "moment";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ import configData from "../../configData.json";
 import "./ListadoDeViajes.css";
 import Moment from "moment";
 import { getToken } from "../service/AuthService";
+import TextItem from "../TextItem";
 
 registerLocale("es", es);
 
@@ -29,6 +30,40 @@ export default function ListadoDeViajes() {
   const originRef = useRef();
   const destiantionRef = useRef();
   const dateRef = useRef();
+  const [prevViajes, setPrevViajes] = React.useState([])
+  const [pageNumber, setPageNumber] = React.useState(0)
+  const [cardsNumber, setCardsNumber] = React.useState(5)
+  const [visible, setVisible] = React.useState(false)
+  const observer = useRef()
+
+  function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        let chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+  }
+
+  const lastCardElement = useCallback(node => {
+    if(observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])]).length < viajes.length) {
+        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])])
+        setPageNumber(pageNumber + 1)
+        setCardsNumber(cardsNumber + 5)
+      } else {
+        setVisible(true)
+      }      
+    })
+    if (node) observer.current.observe(node)
+  })
+
+  const handlePrevViajes = () => {
+    setPrevViajes([])
+    setPageNumber(0)
+    setCardsNumber(5)    
+  }
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs',
@@ -71,16 +106,18 @@ export default function ListadoDeViajes() {
   }
 
   async function fetchContacto(data) {
+
     const viajesGetEndPoint =
         configData.AWS_REST_ENDPOINT +
         "/trips/" + data;
 
       toast.promise((axios.get(viajesGetEndPoint, requestConfig)
-      .then((response) => {
-        window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
+        .then((response) => {
+          console.log(viajesGetEndPoint)
+          window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
         "de%20la%20fecha%20" + response.data.tripDate + "%20desde%20" + response.data.origin +
         "%20a%20" + response.data.destination);
-      }        
+        }        
       ).catch ((error) => {
         console.error(error);
       }))
@@ -98,6 +135,8 @@ export default function ListadoDeViajes() {
           }
         }
       });
+
+
   }
 
   async function fetchViajes(data, e) {
@@ -212,7 +251,7 @@ export default function ListadoDeViajes() {
                   type="number"
                 />
               </div>
-              <button className="btn-submit" type="submit">
+              <button className="btn-submit" type="submit" onClick={handlePrevViajes}>
                 Buscar
               </button>
             </div>
@@ -221,9 +260,11 @@ export default function ListadoDeViajes() {
         <br />
         <br />
         <ol className="gradient-list">
-          {viajes &&
-            viajes.map((user) => (
-              <li>
+          { viajes &&
+            (((sliceIntoChunks(viajes, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])] : []) //.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())) //Ordena los viajes por fecha de más reciente a más lejano
+            .map((user, index) => (
+              ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])].length === index + 1) ? (
+                <li ref={lastCardElement}>
                   <div className="social-media-wrap">
                   <div className="rating">
                   <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
@@ -233,29 +274,63 @@ export default function ListadoDeViajes() {
                     {user.price}
                   </div>
                   <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
-                </div>
-                <div className="destination">
-                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
-                  <br/>
-                </div>
-                <div className="destination">
-                  <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
-                  <div>{user.arrival_time}</div>
-                  
-                </div>
-                {getToken() !== null ? (
-                  <div className="contacto">
-                    <a onClick={() => handleContacto(user.tripId)} > 
-                    <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
-                    </a>
                   </div>
-                ):(<br />)}
-                
-              </li>
-            ))}
+                  <div className="destination">
+                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
+                    <br/>
+                  </div>
+                  <div className="destination">
+                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
+                    <div>{user.arrival_time}</div>
+                    
+                  </div>
+                  {getToken() !== null ? (
+                    <div className="contacto">
+                      <a onClick={() => handleContacto(user.tripId)} > 
+                      <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
+                      </a>
+                    </div>
+                  ):(<br />)}
+                </li>
+               ) : (
+                <li>
+                  <div className="social-media-wrap">
+                  <div className="rating">
+                  <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
+                  </div>
+                  <div className="price">
+                    <BsCurrencyDollar />
+                    {user.price}
+                  </div>
+                  <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
+                  </div>
+                  <div className="destination">
+                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
+                    <br/>
+                  </div>
+                  <div className="destination">
+                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
+                    <div>{user.arrival_time}</div>
+                    
+                  </div>
+                  {getToken() !== null ? (
+                    <div className="contacto">
+                      <a onClick={() => handleContacto(user.tripId)} > 
+                      <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
+                      </a>
+                    </div>
+                  ):(<br />)}
+                </li>
+               )
+            ))
+          }
         </ol>
+        <div className="load-more-message-container">
+          { visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></> }
+        </div>
       </main>
       <ToastContainer position="top-center" />
     </>
   );
 }
+
