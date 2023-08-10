@@ -16,7 +16,6 @@ import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
 import es from "date-fns/locale/es";
 import TextItem from "../TextItem";
-
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -24,29 +23,39 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-// ICONS
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PaidIcon from '@mui/icons-material/Paid';
 import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
-
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
-
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
   const [viajes, setViajes] = useState([]);
-  const { register, handleSubmit } = useForm();
-  const [date] = useState(new Date());
-  const onError = (errors, e) => console.log(errors, e);
-  const originRef = useRef();
-  const destiantionRef = useRef();
-  const dateRef = useRef();
+  const [viajesSorted, setViajesSorted] = useState([]);
   const [prevViajes, setPrevViajes] = React.useState([])
   const [pageNumber, setPageNumber] = React.useState(0)
   const [cardsNumber, setCardsNumber] = React.useState(5)
-  const [visible, setVisible] = React.useState(false)
-  const observer = useRef()
+  const [visible, setVisible] = React.useState(false);
+  const [checked, setChecked] = React.useState([1]);
+  const [date] = useState(new Date());
+  const originRef = useRef();
+  const destiantionRef = useRef();
+  const dateRef = useRef();
+  const observer = useRef();
+  const onError = (errors, e) => console.log(errors, e);
+  const { register, handleSubmit } = useForm();
+
+  const requestConfig = {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  };
+
+  const handlePrevViajes = () => {
+    setPrevViajes([])
+    setPageNumber(0)
+    setCardsNumber(5)
+  }
 
   function sliceIntoChunks(arr, chunkSize) {
     const res = [];
@@ -55,57 +64,6 @@ export default function ListadoDeViajes() {
       res.push(chunk);
     }
     return res;
-  }
-
-  const lastCardElement = useCallback(node => {
-    if (observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])]).length < viajes.length) {
-        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])])
-        setPageNumber(pageNumber + 1)
-        setCardsNumber(cardsNumber + 5)
-      } else {
-        setVisible(true)
-      }
-    })
-    if (node) observer.current.observe(node)
-  })
-
-  const handlePrevViajes = () => {
-    setPrevViajes([])
-    setPageNumber(0)
-    setCardsNumber(5)
-  }
-
-  // -- FILTERS --
-  const [checked, setChecked] = React.useState([1]);
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: configData.MAPS_KEY,
-    libraries: ["places"],
-  });
-
-  const requestConfig = {
-    headers: {
-      Authorization: JSON.parse(getToken()),
-    },
-  };
-
-  if (!isLoaded) {
-    return <>Cargando...</>;
   }
 
   function formValidate(data) {
@@ -167,9 +125,28 @@ export default function ListadoDeViajes() {
           }
         }
       });
-
-
   }
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: configData.MAPS_KEY,
+    libraries: ["places"],
+  });
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+    filterTravel(value, currentIndex)
+  };
+
+  // ----------------------------------
 
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date);
@@ -195,9 +172,11 @@ export default function ListadoDeViajes() {
             "No hay viajes que cumplan con las condiciones seleccionadas."
             ) {
             setViajes();
+            setViajesSorted();
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
-            setViajes(response.data);
+            setViajes([...response.data]);
+            setViajesSorted([...response.data]);
           }
         }).catch ((error) => {
           console.error(error);
@@ -217,6 +196,38 @@ export default function ListadoDeViajes() {
           }
         });
     }
+  }
+
+  function filterTravel(value, currentIndex) {
+    if(value === 5) {
+      handlePrevViajes()
+      if(currentIndex === -1) {
+        const viajesSortedByDate = viajesSorted.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse()))
+        setViajesSorted([...viajesSortedByDate]);
+      } else if (currentIndex === 1) {
+        setViajesSorted([...viajes]);
+      }
+    }
+  }
+
+  const lastCardElement = useCallback(node => {
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])]).length < viajesSorted.length) {
+        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])])
+        setPageNumber(pageNumber + 1)
+        setCardsNumber(cardsNumber + 5)
+      } else {
+        setVisible(true)
+      }
+    })
+    if (node) observer.current.observe(node)
+  })
+
+  // ----------------------------------
+
+  if (!isLoaded) {
+    return <>Cargando...</>;
   }
 
   return (
@@ -290,7 +301,6 @@ export default function ListadoDeViajes() {
         </div>
         <br />
         <br />
-
         <div>
           <div className="wrapper">
             <div className="gradient-list">
@@ -341,9 +351,9 @@ export default function ListadoDeViajes() {
             </div>
             <ol className="gradient-list">
               {viajes &&
-                (((sliceIntoChunks(viajes, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])] : []) //.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())) //Ordena los viajes por fecha de más reciente a más lejano
+                ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
                   .map((user, index) => (
-                    ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])].length === index + 1) ? (
+                    ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
                       <li ref={lastCardElement}>
                         <div className="social-media-wrap">
                           <div className="rating">
@@ -362,7 +372,6 @@ export default function ListadoDeViajes() {
                         <div className="destination">
                           <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
                           <div>{user.arrival_time}</div>
-
                         </div>
                         {getToken() !== null ? (
                           <div className="contacto">
