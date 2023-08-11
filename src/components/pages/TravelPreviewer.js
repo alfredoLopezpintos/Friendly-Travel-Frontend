@@ -89,12 +89,8 @@ function TravelPreviewer() {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
-
-  /////////////////////////////////////////////
   const [vehiculo, setVehiculo] = useState([]);
   const [plate, setPlate] = useState();
-  /////////////////////////////////////////////
-
   const [origen, setOrigen] = useState("");
   const [destino, setDestino] = useState("");
 
@@ -126,8 +122,6 @@ function TravelPreviewer() {
     history.push("/");
     toast.success("Viaje creado correctamente!");
   }
-
-  ////////////////////////////////////////////////////////////////////////////////////////
 
   async function traerVehiculos(data) {
     const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
@@ -172,12 +166,6 @@ function TravelPreviewer() {
   useEffect(() => {
     traerVehiculos();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(plate);
-  // }, [plate])
-
-  /////////////////////////////////////////////////////////////////////////////////
 
   async function fetchViajes(data) {
     data.vehicle = plate;
@@ -226,11 +214,14 @@ function TravelPreviewer() {
   }
 
   function getDate() {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    return `${date}-${month}-${year}`;
+    var today = new Date();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+    var date = today.getDate();
+
+    if (month < 10) month = "0" + month;
+
+    return `${year}-${month}-${date}`;
   }
 
   function formValidate(data) {
