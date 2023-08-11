@@ -61,18 +61,17 @@ const Button = styled.button`
 `;
 
 const estilos = {
-  
-    boxSizing: `border-box`,
-    border: `1px solid transparent`,
-    width: `240px`,
-    height: `32px`,
-    padding: `0 12px`,
-    borderRadius: `3px`,
-    boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-    fontSize: `14px`,
-    outline: `none`,
-    textOverflow: `ellipses`,
-}
+  boxSizing: `border-box`,
+  border: `1px solid transparent`,
+  width: `240px`,
+  height: `32px`,
+  padding: `0 12px`,
+  borderRadius: `3px`,
+  boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+  fontSize: `14px`,
+  outline: `none`,
+  textOverflow: `ellipses`,
+};
 function TravelPreviewer() {
   const [libraries] = useState(["places"]);
   const center = { lat: -32.522779, lng: -55.765835 };
@@ -174,18 +173,13 @@ function TravelPreviewer() {
     traerVehiculos();
   }, []);
 
-  //useEffect(() => {
-  //  console.log(vehiculo.map((e, i) => ({id: e.plate, value: e.plate})));
-  //}, [vehiculo])
-
   // useEffect(() => {
   //   console.log(plate);
   // }, [plate])
 
   /////////////////////////////////////////////////////////////////////////////////
 
-  async function fetchViajes(data, e) {
-    e?.preventDefault();
+  async function fetchViajes(data) {
     data.vehicle = plate;
     data.origin = origen;
     data.destination = destino;
@@ -231,18 +225,16 @@ function TravelPreviewer() {
     }
   }
 
-  function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth();
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    return day + "-" + month + "-" + year;
+  function getDate() {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    return `${date}-${month}-${year}`;
   }
 
-  function formValidate(data, e) {
-    e?.preventDefault();
-    const dateObj = new Date();
-    const today = transformDate(dateObj);
-
+  function formValidate(data) {
+    const today = getDate();
     if (
       data.tripDate === "" ||
       data.origin === "" ||
