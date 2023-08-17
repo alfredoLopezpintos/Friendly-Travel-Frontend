@@ -25,8 +25,14 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PaidIcon from '@mui/icons-material/Paid';
-import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
+import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Checkbox from '@mui/material/Checkbox';
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -44,6 +50,18 @@ export default function ListadoDeViajes() {
   const observer = useRef();
   const onError = (errors, e) => console.log(errors, e);
   const { register, handleSubmit } = useForm();
+
+  const [value2, setValue] = React.useState(0);
+
+  const handleChange = (event) => {
+    setValue((event.target).value);
+    filterTravel((event.target).value)
+  };
+
+  const handleBuscar = () => {
+    handlePrevViajes()
+    setValue(0)
+  }
 
   const requestConfig = {
     headers: {
@@ -133,17 +151,24 @@ export default function ListadoDeViajes() {
   });
 
   const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    // nconst currentIndex = checked.indexOf(value);
+    setValue(value);
+    filterTravel(value)
+    // const newChecked = [...checked];
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+    // if (currentIndex === -1) {
+    //   newChecked.push(value);
+    // } else {
+    //   newChecked.splice(currentIndex, 1);
+    // }
 
-    setChecked(newChecked);
-    filterTravel(value, currentIndex)
+    // if (currentIndex === -1) {
+      
+    // }
+    
+
+    // setChecked(newChecked);
+    // filterTravel(value, currentIndex)
   };
 
   // ----------------------------------
@@ -198,15 +223,35 @@ export default function ListadoDeViajes() {
     }
   }
 
-  function filterTravel(value, currentIndex) {
-    if(value === 5) {
-      handlePrevViajes()
-      if(currentIndex === -1) {
-        const viajesSortedByDate = viajesSorted.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse()))
-        setViajesSorted([...viajesSortedByDate]);
-      } else if (currentIndex === 1) {
+  function filterTravel(value) {
+    setViajesSorted([...viajes]);
+    if((value == 5)) {
+      handlePrevViajes()      
+      const viajesSortedByDate = viajesSorted.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse()))
+      if([...viajes] !== [...viajesSortedByDate]) {
         setViajesSorted([...viajes]);
       }
+      setViajesSorted([...viajesSortedByDate]);
+    } else if (value == 6) {
+      handlePrevViajes()
+      const viajesSortedByPrice = viajesSorted.sort((a, b) => a.price - b.price)
+      if([...viajes] !== [...viajesSortedByPrice]) {
+        setViajesSorted([...viajes]);
+      }
+      setViajesSorted([...viajesSortedByPrice]);
+      // if(currentIndex === -1) {
+      //   const viajesSortedByDate = viajesSorted.sort((a, b) => a.price - b.price)
+      //   setViajesSorted([...viajesSortedByDate]);
+      // } else if (currentIndex === 1) {
+      //   setViajesSorted([...viajes]);
+      // }
+    } else if (value == 7) {
+      handlePrevViajes()
+      const viajesSortedBySeat = viajesSorted.sort((a, b) => b.availablePlaces - a.availablePlaces)
+      if([...viajes] !== [...viajesSortedBySeat]) {
+        setViajesSorted([...viajes]);
+      }
+      setViajesSorted([...viajesSortedBySeat]);
     }
   }
 
@@ -293,7 +338,7 @@ export default function ListadoDeViajes() {
                   type="number"
                 />
               </div>
-              <button className="btn-submit" type="submit" onClick={handlePrevViajes}>
+              <button className="btn-submit" type="submit" onClick={handleBuscar}>
                 Buscar
               </button>
             </div>
@@ -308,17 +353,17 @@ export default function ListadoDeViajes() {
                 <nav aria-label="main mailbox folders">
                   <h2>Ordenar por:</h2>
                   <List>
-                    {[5, 6, 7].map((value) => {
+                  <RadioGroup value={value2} onChange={handleChange}>
+                  {[5, 6, 7].map((value) => {
                       const labelId = `checkbox-list-secondary-label-${value}`;
                       return (
                         <ListItem
                           key={value}
                           onClick={handleToggle(value)}
                           secondaryAction={
-                            <Checkbox
+                            <Radio
+                              value={value}
                               edge="end"
-                              onChange={handleToggle(value)}
-                              checked={checked.indexOf(value) !== -1}
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
                           }
@@ -329,14 +374,14 @@ export default function ListadoDeViajes() {
                               {
                                 (value === 5) ? <AccessTimeIcon /> :
                                   (value === 6) ? <PaidIcon /> :
-                                    (value === 7) ? <DepartureBoardIcon /> :
+                                    (value === 7) ? <AirlineSeatReclineNormalIcon /> :
                                       <></>
                               }
                             </ListItemIcon>
                             {
                               (value === 5) ? <ListItemText primary="Salida más temprana" /> :
                                 (value === 6) ? <ListItemText primary="Precio más bajo" /> :
-                                  (value === 7) ? <ListItemText primary="Viaje más corto" /> :
+                                  (value === 7) ? <ListItemText primary="Mayor cantidad de asientos" /> :
                                     <></>
                             }
 
@@ -344,6 +389,7 @@ export default function ListadoDeViajes() {
                         </ListItem>
                       );
                     })}
+                  </RadioGroup> 
                   </List>
                   <Divider />
                 </nav>
