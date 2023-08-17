@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { registerLocale } from "react-datepicker";
 import { BsCurrencyDollar } from "react-icons/bs";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../App.css";
 import "./ListadoDeViajes.css";
@@ -26,13 +26,8 @@ import Divider from '@mui/material/Divider';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PaidIcon from '@mui/icons-material/Paid';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
-import Checkbox from '@mui/material/Checkbox';
-
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -42,7 +37,7 @@ export default function ListadoDeViajes() {
   const [pageNumber, setPageNumber] = React.useState(0)
   const [cardsNumber, setCardsNumber] = React.useState(5)
   const [visible, setVisible] = React.useState(false);
-  const [checked, setChecked] = React.useState([1]);
+  const [radioValue, setRadioValue] = React.useState(0);
   const [date] = useState(new Date());
   const originRef = useRef();
   const destiantionRef = useRef();
@@ -51,16 +46,14 @@ export default function ListadoDeViajes() {
   const onError = (errors, e) => console.log(errors, e);
   const { register, handleSubmit } = useForm();
 
-  const [value2, setValue] = React.useState(0);
-
   const handleChange = (event) => {
-    setValue((event.target).value);
+    setRadioValue((event.target).value);
     filterTravel((event.target).value)
   };
 
   const handleBuscar = () => {
     handlePrevViajes()
-    setValue(0)
+    setRadioValue(0)
   }
 
   const requestConfig = {
@@ -151,27 +144,9 @@ export default function ListadoDeViajes() {
   });
 
   const handleToggle = (value) => () => {
-    // nconst currentIndex = checked.indexOf(value);
-    setValue(value);
+    setRadioValue(value);
     filterTravel(value)
-    // const newChecked = [...checked];
-
-    // if (currentIndex === -1) {
-    //   newChecked.push(value);
-    // } else {
-    //   newChecked.splice(currentIndex, 1);
-    // }
-
-    // if (currentIndex === -1) {
-      
-    // }
-    
-
-    // setChecked(newChecked);
-    // filterTravel(value, currentIndex)
   };
-
-  // ----------------------------------
 
   async function fetchViajes(data, e) {
     data.tripDate = transformDate(date);
@@ -239,12 +214,6 @@ export default function ListadoDeViajes() {
         setViajesSorted([...viajes]);
       }
       setViajesSorted([...viajesSortedByPrice]);
-      // if(currentIndex === -1) {
-      //   const viajesSortedByDate = viajesSorted.sort((a, b) => a.price - b.price)
-      //   setViajesSorted([...viajesSortedByDate]);
-      // } else if (currentIndex === 1) {
-      //   setViajesSorted([...viajes]);
-      // }
     } else if (value == 7) {
       handlePrevViajes()
       const viajesSortedBySeat = viajesSorted.sort((a, b) => b.availablePlaces - a.availablePlaces)
@@ -268,8 +237,6 @@ export default function ListadoDeViajes() {
     })
     if (node) observer.current.observe(node)
   })
-
-  // ----------------------------------
 
   if (!isLoaded) {
     return <>Cargando...</>;
@@ -353,7 +320,7 @@ export default function ListadoDeViajes() {
                 <nav aria-label="main mailbox folders">
                   <h2>Ordenar por:</h2>
                   <List>
-                  <RadioGroup value={value2} onChange={handleChange}>
+                  <RadioGroup value={radioValue} onChange={handleChange}>
                   {[5, 6, 7].map((value) => {
                       const labelId = `checkbox-list-secondary-label-${value}`;
                       return (
