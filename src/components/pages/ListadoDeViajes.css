@@ -1,40 +1,30 @@
 /* BUTTON */
 .contacto {
   margin-bottom: 1rem;
-  margin-top: 30px;
+  margin-top: 1rem;
 }
 
 .contactoicon {
-  margin-bottom: 0rem;
-  margin-top: 0px;
-  margin-left: 460px;
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .contacto a {
   outline: 0;
   padding: 0.5rem 1rem;
-}
-
-.contacto a {
-
   background-color: transparent;
-  margin-left: 440px;
-  margin-top: 30px;
-}
-
-.contacto a {
-
   cursor: pointer;
   color: #242424;
-  text-decoration: none; /* no underline */
-  display: inline;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 250ms;
 }
 
-.contacto a:hover,
 .contacto a:hover {
-
   color: #fff;
-  transition: 250ms;
+  transition: color 250ms;
 }
 
 /* DROPDOWN */
@@ -96,48 +86,42 @@
 }
 
 /* FILTROS EXTRA */
-
 .wrapper {
   display: grid;
-  grid-template-columns: 0.5fr 0.8fr;
-  column-gap: 100px;
-
-  margin-left: 100px;
-  /*max-width: 40rem;*/
+  grid-template-columns: 1fr;
+  gap: 1rem;
   padding: 1rem;
 }
 
 
 
 /* BUSCAR VIAJE */
-
 .field1 {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .btn-submit {
   max-height: 40px;
-  margin-top: 25px;
+  margin-top: 1rem;
   padding: 10px 20px;
-  background-color: rgb(255, 255, 255);
-  border: 2px solid rgb(0, 0, 0);
-  color: rgb(0, 0, 0);
+  background-color: #fff;
+  border: 2px solid #000;
+  color: #000;
   border-radius: 5px;
+  transition: background-color 0.3s ease-out, color 0.3s ease-out;
 }
 
 .btn-submit:hover {
   background-color: rgba(0, 0, 0, 0.548);
   color: white;
-  transition: all 0.3s ease-out;
-  transition: 250ms;
 }
 
-/* Style the form - display items horizontally */
+/* Style the form - display items vertically on small screens */
 .form-inline {
-  height: 80px;
   display: flex;
-  justify-content: center;
-  flex-flow: row wrap;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -160,24 +144,23 @@
 
 /*.form-inline button*/
 
-/* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
-@media screen and (max-width: 1020px) {
-  .form-inline input {
-    margin: 10px 0;
+/* Media Queries for Responsive Design */
+
+/* For screens wider than 768px */
+@media screen and (min-width: 768px) {
+  .wrapper {
+    grid-template-columns: 0.5fr 0.8fr;
+    column-gap: 100px;
+    margin-left: 100px;
   }
 
-  .form-inline {
-    flex-direction: column;
-    margin-top: 200px;
-    /*align-items: stretch;*/
+  .contactoicon {
+    margin-left: 460px;
   }
 
-  .field1 {
-    display: block;
-  }
-
-  .inputDate {
-    width: 176px;
+  .contacto a {
+    margin-left: 440px;
+    margin-top: 30px;
   }
 }
 

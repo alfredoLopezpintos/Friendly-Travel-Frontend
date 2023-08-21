@@ -28,6 +28,9 @@ import PaidIcon from '@mui/icons-material/Paid';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import { SearchForm } from '@blablacar/ui-library/build/searchForm';
+import { AutoCompleteExample, AutocompleteItem, AutocompleteOnChange  } from '@blablacar/ui-library/build/autoComplete/AutoCompleteExample'
+import {AutoCompleteUy} from "../AutoCompleteUy";
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -153,24 +156,22 @@ export default function ListadoDeViajes() {
 
     if (formValidate(data)) {
       const viajesGetEndPoint =
-        configData.AWS_REST_ENDPOINT +
-        "/trips?origin=" +
+        URLS.GET_TRIPS_URL +
+        "?origin=" +
         data.origin +
         "&destination=" +
         data.destination +
         "&tripDate=" +
         data.tripDate +
-        "&price=" +
-        data.price +
-        "&availablePlaces=" +
-        data.availablePlaces;
+        (data.price !== "" ? "&price=" + data.price : "") +
+        (data.availablePlaces !== "" ? "&availablePlaces=" + data.availablePlaces : "");
 
-        toast.promise(axios.get(viajesGetEndPoint)
+      toast.promise(axios.get(viajesGetEndPoint)
         .then((response) => {
           if (
             response.data.message ===
             "No hay viajes que cumplan con las condiciones seleccionadas."
-            ) {
+          ) {
             setViajes();
             setViajesSorted();
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
@@ -178,19 +179,19 @@ export default function ListadoDeViajes() {
             setViajes([...response.data]);
             setViajesSorted([...response.data]);
           }
-        }).catch ((error) => {
+        }).catch((error) => {
           console.error(error);
         })
         ,
         {
           pending: {
-            render(){
+            render() {
               return "Cargando"
             },
             icon: true,
           },
           error: {
-            render({data}){
+            render({ data }) {
               toast.error(data.response.data.message);
             }
           }
@@ -200,24 +201,24 @@ export default function ListadoDeViajes() {
 
   function filterTravel(value) {
     setViajesSorted([...viajes]);
-    if((value == 5)) {
-      handlePrevViajes()      
+    if ((value == 5)) {
+      handlePrevViajes()
       const viajesSortedByDate = viajesSorted.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse()))
-      if([...viajes] !== [...viajesSortedByDate]) {
+      if ([...viajes] !== [...viajesSortedByDate]) {
         setViajesSorted([...viajes]);
       }
       setViajesSorted([...viajesSortedByDate]);
     } else if (value == 6) {
       handlePrevViajes()
       const viajesSortedByPrice = viajesSorted.sort((a, b) => a.price - b.price)
-      if([...viajes] !== [...viajesSortedByPrice]) {
+      if ([...viajes] !== [...viajesSortedByPrice]) {
         setViajesSorted([...viajes]);
       }
       setViajesSorted([...viajesSortedByPrice]);
     } else if (value == 7) {
       handlePrevViajes()
       const viajesSortedBySeat = viajesSorted.sort((a, b) => b.availablePlaces - a.availablePlaces)
-      if([...viajes] !== [...viajesSortedBySeat]) {
+      if ([...viajes] !== [...viajesSortedBySeat]) {
         setViajesSorted([...viajes]);
       }
       setViajesSorted([...viajesSortedBySeat]);
@@ -246,70 +247,33 @@ export default function ListadoDeViajes() {
     <>
       <main>
         <div>
-          <form
-            className="form-inline"
+        <SearchForm
             onSubmit={handleSubmit(fetchViajes, onError)}
-          >
-            <div className="field1">
-              <Autocomplete
-                options={{ componentRestrictions: { country: "uy" } }}
-              >
-                <div>
-                  <label>ORIGEN: </label>
-                  <br />
-                  <input
-                    {...register("origin")}
-                    placeholder="Seleccione un origen"
-                    ref={originRef}
-                  />
-                </div>
-              </Autocomplete>
-              <Autocomplete
-                options={{ componentRestrictions: { country: "uy" } }}
-              >
-                <div>
-                  <label>DESTINO: </label>
-                  <br />
-                  <input
-                    {...register("destination")}
-                    placeholder="Seleccione un destino"
-                    ref={destiantionRef}
-                  />
-                </div>
-              </Autocomplete>
-              <div>
-                <label>FECHA: </label>
-                <br />
-                <input
-                  {...register("tripDate")}
-                  type="date"
-                  ref={dateRef}
-                  min="01-01-2020"
-                />
-              </div>
-              <div>
-                <label>ASIENTOS: </label>
-                <br />
-                <input
-                  {...register("availablePlaces")}
-                  placeholder="Lugares disponibles"
-                  type="number"
-                />
-              </div>
-              <div>
-                <label>PRECIO: </label>
-                <br />
-                <input
-                  {...register("price")}
-                  placeholder="En pesos uruguayos"
-                  type="number"
-                />
-              </div>
-              <button className="btn-submit" type="submit" onClick={handleBuscar}>
-                Buscar
-              </button>
-            </div>
-          </form>
+            className="form-inline"
+            initialFrom=""
+            initialTo=""
+            disabledFrom={false}
+            disabledTo={false}
+            autocompleteFromPlaceholder="Desde"
+            autocompleteToPlaceholder="Hasta"
+            items
+            renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
+            renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
+            datepickerProps={{
+              defaultValue: new Date().toISOString(),
+              format: value => new Date(value).toLocaleDateString(),
+            }}
+            stepperProps={{
+              defaultValue: 1,
+              min: 1,
+              max: 8,
+              title: 'Elija la cantidad de asientos que desea reservar',
+              increaseLabel: 'Incrementar la cantidad de asientos en 1',
+              decreaseLabel: 'Decrementar la cantidad de asientos en 1',
+              format: value => `${value} asiento(s)`,
+              confirmLabel: 'Submit',
+            }}
+          />
         </div>
         <br />
         <br />
