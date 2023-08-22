@@ -50,23 +50,24 @@ const AutoCompleteUy = ({
       input: query,
       componentRestrictions: { country: 'uy' }, // 'uy' is the ISO code for Uruguay
       language: 'es', // Set the language to Spanish
+      types: ['street_address','administrative_area_level_3','locality'], // Restrict the results to cities
     };
   
     autocompleteService.getPlacePredictions(options, (predictions, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         const filteredPredictions = predictions.filter((prediction) => {
           // Check if types include "locality"
-          return prediction.types.includes("locality" || "sublocality" || "geocode");
+          return prediction
         });
   
         const mappedPredictions = filteredPredictions.map((prediction) => {
-          const city = prediction.structured_formatting.main_text;
-          const department = prediction.terms[prediction.terms.length - 2].value; // Get the second-to-last term
+          const main_text = prediction.structured_formatting.main_text;
+          const secondary_text = prediction.structured_formatting.secondary_text;
   
           return {
             id: prediction.place_id,
-            label: city,
-            labelInfo: department,
+            label: main_text,
+            labelInfo: secondary_text,
             place_id: prediction.place_id,
           };
         });
