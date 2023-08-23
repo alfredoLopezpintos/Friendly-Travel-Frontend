@@ -13,12 +13,6 @@ export function ChangeData() {
     history.push("/changePass");
   };
 
-  const style = {
-    width: '100%',
-    maxWidth: 360,
-    bgcolor: 'background.paper',
-  };
-
   return (
     <>
 
