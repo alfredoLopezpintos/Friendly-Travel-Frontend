@@ -19,6 +19,9 @@ import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFun
 import { getToken } from "./service/AuthService";
 import { toast, ToastContainer } from "react-toastify";
 import ModalInfo from '../components/ModalInfo';
+import {
+    isValidEmail
+  } from "../utils/ValidationFunctions";
 
 export default function ModalChangePass() {
     const [email, setEmail] = useState('');
@@ -26,6 +29,8 @@ export default function ModalChangePass() {
     const [result, setResult] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
 
     const [displayModal, setDisplayModal] = useState(false);
     const handleClickOpen = () => {
@@ -33,7 +38,7 @@ export default function ModalChangePass() {
       };
     
       const handleClose = () => {
-        // setDisplayModal(false);
+        setDisplayModal(false);
       };
 
     const requestConfig = {
@@ -44,8 +49,17 @@ export default function ModalChangePass() {
     };
 
     const handleSubmit = async (e) => {
+
+        if (email.trim() === "") {
+            toast.error("Correo no puede ser vacío");
+            return;
+          } else if(!isValidEmail(email)) {
+            toast.error("El formato del correo electrónico no es válido");
+            return;
+          }
+
         e.preventDefault();
-        // setIsFormSubmitted(true);
+        setIsFormSubmitted(true);
 
         if (email) {
             setIsSubmitting(true);
@@ -59,15 +73,23 @@ export default function ModalChangePass() {
                     JSON.stringify(requestBody),
                     requestConfig
                 );
-                setResult(responseAddVehicle.data.message);
+                // console.log(responseAddVehicle.data.message)
+                setErrorMessage(false)
+                if(responseAddVehicle.data.message === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') {
+                    setSuccess(true);
+                    setResult(responseAddVehicle.data.message);
+                }
                 // setSnackbarOpen(true);
-                // setIsSubmitting(false);
-                // setIsFormSubmitted(true);
-            } catch (error) {
-                console.error(error);
-                setResult(error.response.data.message);
                 setIsSubmitting(false);
-                setSnackbarOpen(true);
+                setIsFormSubmitted(true);
+            } catch (error) {
+                setErrorMessage(true)
+                // console.log(error.response.data.message)
+                setResult(error.response.data.message);
+                setSuccess(true);
+                // console.error(error);                
+                setIsSubmitting(false);
+                // setSnackbarOpen(true);
             }
         } else {
             setIsSubmitting(false);
@@ -88,7 +110,7 @@ export default function ModalChangePass() {
 
     return (
         <>
-            {result === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.' ? (<ModalInfo />) : 
+            {(success === true) ? (<ModalInfo setSuccess={setSuccess} handleClose={handleClose} message={result} errorMessage={errorMessage} />) : 
                 (
                 <div>
                 <a href="#0" onClick={handleClickOpen}>
@@ -111,7 +133,6 @@ export default function ModalChangePass() {
                                         helperText={isEmailEmpty && <FormHelperText>Campo requerido</FormHelperText>}
                                     />
                                 </Grid>
-                                <TextField type="file" />
                             </Grid>
                         </DialogContent>
                         <DialogActions>
@@ -119,7 +140,7 @@ export default function ModalChangePass() {
                                 Cancelar
                             </Button>
                             <Button type="submit" color="primary" disabled={isSubmitting}>
-                                {isSubmitting ? 'Cargando...' : 'Aceptar'}
+                                {isSubmitting ? 'Cargando...' : 'Enviar'}
                             </Button>
                         </DialogActions>
                     </form>

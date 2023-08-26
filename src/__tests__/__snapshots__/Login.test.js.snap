@@ -20,7 +20,7 @@ exports[`Login Renders correctly 1`] = `
         </div>
         <br />
         <h2>
-          Iniciar sesión
+          Iniciar sesión ?
         </h2>
         <br />
         <form

@@ -20,8 +20,9 @@ import { getToken } from "./service/AuthService";
 import { toast, ToastContainer } from "react-toastify";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseIcon from '@mui/icons-material/Close';
+import ErrorIcon from '@mui/icons-material/Error';
 
-export default function ModalInfo() {
+export default function ModalInfo({ setSuccess, handleClose, message, errorMessage }) {
     const [email, setEmail] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [result, setResult] = useState(null);
@@ -33,17 +34,10 @@ export default function ModalInfo() {
     const handleClickOpen = () => {
         setDisplayModal2(true);
       };
-
-    const handleOpen = () => {
-        setTimer(
-            setTimeout(() => {
-                setDisplayModal2(false);
-                console.log("AAA")
-            }, 500)
-        );
-    }
     
     const handleClose2 = () => {
+        setSuccess(false);
+        handleClose()
         setDisplayModal2(false);
     };
 
@@ -68,7 +62,7 @@ export default function ModalInfo() {
                             justifyContent: "center",
                             alignItems: "center",
                         }}>
-                            <CheckCircleIcon color="success" fontSize="large" />
+                            {(!errorMessage) ? (<CheckCircleIcon color="success" fontSize="large" />) : (<ErrorIcon color="error" fontSize="large" />)}
                         </div>
                         <h2 style={{
                             "padding": "10px",
@@ -76,9 +70,9 @@ export default function ModalInfo() {
                             "textAlign": "center",
                             "userSelect": "none"
                         }}>
-                            {"Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta."}
+                            {/* {"Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta."} */}
+                            {(message === 'Attempt limit exceeded, please try after some time.') ? ('Limite de intentos excedido. Por favor intenta de nuevo más tarde.') : (message)}
                         </h2>
-                        {handleOpen}
                     </Grid>
                 </DialogContent>
             </Dialog>
