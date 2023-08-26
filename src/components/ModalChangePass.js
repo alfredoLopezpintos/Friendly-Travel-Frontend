@@ -19,6 +19,7 @@ import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFun
 import { getToken } from "./service/AuthService";
 import { toast, ToastContainer } from "react-toastify";
 import ModalInfo from '../components/ModalInfo';
+import './ModalChangePass' 
 import {
     isValidEmail
   } from "../utils/ValidationFunctions";
@@ -113,9 +114,9 @@ export default function ModalChangePass() {
             {(success === true) ? (<ModalInfo setSuccess={setSuccess} handleClose={handleClose} message={result} errorMessage={errorMessage} />) : 
                 (
                 <div>
-                <a href="#0" onClick={handleClickOpen}>
+                <button onClick={handleClickOpen}>
                     Reestablece tu contraseña
-                </a>
+                </button>
                 <Dialog open={displayModal} onClose={handleClose} data-testid="form">
                     <form onSubmit={handleSubmit}>
                         <DialogTitle>Solicitud de cambio de contraseña</DialogTitle>
