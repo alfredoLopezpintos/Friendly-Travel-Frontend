@@ -84,8 +84,14 @@ function Navbar() {
               </Link>
             </li>
 
-            {getToken() === null ? (
-              <li className="nav-item"></li>
+            {(button && (getToken() === null))? (
+              <li className="nav-item">
+              <Link to="/login" 
+              className="nav-links"
+                onClick={closeMobileMenu}>
+                Iniciar sesión
+              </Link>
+              </li>
             ) : (
               <li
                 className="nav-item"
@@ -104,14 +110,6 @@ function Navbar() {
               </li>
             )}
           </ul>
-          {button &&
-            (getToken() === null ? (
-              <Button onClick={handleHistory} buttonStyle="btn--outline">
-                Iniciar sesión
-              </Button>
-            ) : (
-              <></>
-            ))}
         </div>
       </nav>
     </>

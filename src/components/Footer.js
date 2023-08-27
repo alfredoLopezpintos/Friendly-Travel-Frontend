@@ -6,7 +6,7 @@ function Footer() {
   return (
     <div className="footer-container">
       <section className="footer-subscription">
-        <p className="footer-subscription-heading">
+        <p className="footer-subscription-heading" style={{"userSelect": "none"}}>
           ¡Únete a la aventura y comienza a viajar con Friendly Travel!
         </p>
         <div className="input-areas"></div>
@@ -14,7 +14,7 @@ function Footer() {
       <div className="footer-links">
         <div className="footer-link-wrapper">
           <div className="footer-link-items">
-            <h2>Mapa del sitio</h2>
+            <h2 style={{"userSelect": "none"}}>Mapa del sitio</h2>
             <Link to="/faqsPage">Preguntas frecuentes</Link>
             <Link to="/services">Quienes somos</Link>
             <Link to="/carpool">Acerca de Carpooling</Link>
@@ -28,7 +28,7 @@ function Footer() {
           </div>
           
           <div className="footer-link-items">
-            <h2>Contactanos</h2>
+            <h2 style={{"userSelect": "none"}}>Contactanos</h2>
             <small className="website-rights">friendly.travel.uy@gmail.com</small>
             <small className="website-rights">diego.rosales@estudiantes.utec.edu.uy</small>
             <small className="website-rights">rodrigo.serron@estudiantes.utec.edu.uy</small>
@@ -39,12 +39,17 @@ function Footer() {
       <section className="social-media">
         <div className="social-media-wrap">
           <div className="footer-logo">
-            <Link to="/" className="social-logo">
-              FRIENDLY TRAVEL
-              <i className="fab fa-typo3" />
-            </Link>
+            <div className="social-logo-footer">
+            FRIENDLY TRAVEL &nbsp;
+            <img
+              src={require("../assets/images/logo.png")}
+              alt="travel logo"
+              width={50}
+              disable
+            ></img>
           </div>
-          <small className="website-rights">FRIENDLY TRAVEL © 2022</small>
+          </div>
+          <small className="website-copyright">FRIENDLY TRAVEL © 2023</small>
           <div className="social-icons">
             <Link
               className="social-icon-link facebook"

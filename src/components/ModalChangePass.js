@@ -87,38 +87,38 @@ export default function ModalChangePass() {
             {(success === true) ? (<ModalInfo setSuccess={setSuccess} handlePrevModalClose={handleClose} message={result} errorMessage={errorMessage} />) : 
                 (
                 <div>
-                <button onClick={handleClickOpen}>
-                    Reestablece tu contraseña
-                </button>
-                <Dialog open={displayModal} onClose={handleClose} data-testid="form">
-                    <form onSubmit={handleSubmit}>
-                        <DialogTitle>Solicitud de cambio de contraseña</DialogTitle>
-                        <DialogContent>
-                            <Grid container direction="column" alignItems="stretch" spacing={1}>
-                                <Grid item>
-                                    <TextField
-                                        data-testid="camporequerido"
-                                        label="Correo electrónico"
-                                        id="Marca"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        fullWidth
-                                        error={isEmailEmpty}
-                                        helperText={isEmailEmpty && <FormHelperText>Campo requerido</FormHelperText>}
-                                    />
+                    <button onClick={handleClickOpen}>
+                        Reestablece tu contraseña
+                    </button>
+                    <Dialog open={displayModal} onClose={handleClose} data-testid="form">
+                        <form onSubmit={handleSubmit}>
+                            <DialogTitle style={{"userSelect": "none"}}>Solicitud de cambio de contraseña</DialogTitle>
+                            <DialogContent>
+                                <Grid container direction="column" alignItems="stretch" spacing={1}>
+                                    <Grid item>
+                                        <TextField
+                                            data-testid="camporequerido"
+                                            label="Correo electrónico"
+                                            id="Marca"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            fullWidth
+                                            error={isEmailEmpty}
+                                            helperText={isEmailEmpty && <FormHelperText>Campo requerido</FormHelperText>}
+                                        />
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose} color="primary">
-                                Cancelar
-                            </Button>
-                            <Button type="submit" color="primary" disabled={isSubmitting}>
-                                {isSubmitting ? 'Cargando...' : 'Enviar'}
-                            </Button>
-                        </DialogActions>
-                    </form>
-                </Dialog>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose} color="primary">
+                                    Cancelar
+                                </Button>
+                                <Button type="submit" color="primary" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Cargando...' : 'Enviar'}
+                                </Button>
+                            </DialogActions>
+                        </form>
+                    </Dialog>
                 </div>)}
         </>
     )
