@@ -14,7 +14,6 @@ import {
 import { getToken } from "./service/AuthService";
 import { toast } from "react-toastify";
 import ModalInfo from '../components/ModalInfo';
-import './ModalChangePass' 
 import {
     isValidEmail
   } from "../utils/ValidationFunctions";
