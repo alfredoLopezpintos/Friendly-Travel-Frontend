@@ -45,47 +45,49 @@ export default function ModalChangePass() {
 
     const handleSubmit = async (e) => {
 
-        if (email.trim() === "") {
-            toast.error("Correo no puede ser vacío");
-            return;
-          } else if(!isValidEmail(email)) {
-            toast.error("El formato del correo electrónico no es válido");
-            return;
-          }
+        // if (email.trim() === "") {
+        //     toast.error("Correo no puede ser vacío");
+        //     return;
+        //   } else if(!isValidEmail(email)) {
+        //     toast.error("El formato del correo electrónico no es válido");
+        //     return;
+        //   }
 
         e.preventDefault();
-        setIsFormSubmitted(true);
+        // setIsFormSubmitted(true);
 
-        if (email) {
-            setIsSubmitting(true);
-            const requestBody = {
-                email
-            };
+        if (!(email.trim() === "")) {
 
-            try {
-                const responseAddVehicle = await axios.post(
-                    URLS.POST_REQUEST_FORGOT_PASS_URL,
-                    JSON.stringify(requestBody),
-                    requestConfig
-                );
-                setErrorMessage(false)
-                if(responseAddVehicle.data.message === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') {
-                    setSuccess(true);
-                    setResult(responseAddVehicle.data.message);
+            if(isValidEmail(email)) {
+                setIsSubmitting(true);
+                const requestBody = {
+                    email
+                };
+    
+                try {
+                    const responseAddVehicle = await axios.post(
+                        URLS.POST_REQUEST_FORGOT_PASS_URL,
+                        JSON.stringify(requestBody),
+                        requestConfig
+                    );
+                    setErrorMessage(false)
+                    if(responseAddVehicle.data.message === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') {
+                        setSuccess(true);
+                        setResult(responseAddVehicle.data.message);
+                    }
+                    setIsSubmitting(false);
+                    setIsFormSubmitted(true);
+                } catch (error) {
+                    setErrorMessage(true)
+                    setResult(error.response.data.message);
+                    setSuccess(true);           
+                    setIsSubmitting(false);
                 }
-                setIsSubmitting(false);
-                setIsFormSubmitted(true);
-            } catch (error) {
-                setErrorMessage(true)
-                setResult(error.response.data.message);
-                setSuccess(true);           
-                setIsSubmitting(false);
+            } else {
+                toast.error("El formato del correo electrónico no es válido");
             }
         } else {
-            setIsSubmitting(false);
-            setResult(
-                'Por favor complete todos los campos y asegúrese que todos tienen el formato correcto.'
-            );
+            toast.error("Correo no puede ser vacío");
         }
     };
 
