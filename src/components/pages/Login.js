@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import Footer from "../Footer";
 import { URLS } from "../../utils/urls";
+import ModalChangePass from '../../components/ModalChangePass';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -137,12 +138,16 @@ const Login = () => {
               <div className="form__field" data-testid="submit-button">
                 <input type="submit" value="Aceptar" />
               </div>
-              {errorMessage && <p className="message">{errorMessage}</p>}
+              {errorMessage && <span className="message">{errorMessage}</span>}
               <br />
             </form>
-            <p>
+            <span>
               ¿Aún no tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-            </p>
+            </span>
+            <br />
+            <span>
+              ¿Olvidaste tu contraseña? <br /> <ModalChangePass  />
+            </span>            
           </div>
         </div>
       </div>
