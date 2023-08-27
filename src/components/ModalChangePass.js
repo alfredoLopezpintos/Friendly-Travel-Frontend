@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { URLS } from "../utils/urls";
 import axios from "axios";
 import {
@@ -7,17 +7,12 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Checkbox,
-    FormControlLabel,
     Button,
     Grid,
-    Snackbar,
-    FormHelperText,
-    Typography
+    FormHelperText
 } from "@material-ui/core";
-import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFunctions";
 import { getToken } from "./service/AuthService";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import ModalInfo from '../components/ModalInfo';
 import './ModalChangePass' 
 import {
@@ -29,11 +24,10 @@ export default function ModalChangePass() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [result, setResult] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
-
     const [displayModal, setDisplayModal] = useState(false);
+
     const handleClickOpen = () => {
         setDisplayModal(true);
       };
@@ -70,27 +64,22 @@ export default function ModalChangePass() {
 
             try {
                 const responseAddVehicle = await axios.post(
-                    URLS.POST_REQUEST_CHANGE_PASS_URL,
+                    URLS.POST_REQUEST_FORGOT_PASS_URL,
                     JSON.stringify(requestBody),
                     requestConfig
                 );
-                // console.log(responseAddVehicle.data.message)
                 setErrorMessage(false)
                 if(responseAddVehicle.data.message === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') {
                     setSuccess(true);
                     setResult(responseAddVehicle.data.message);
                 }
-                // setSnackbarOpen(true);
                 setIsSubmitting(false);
                 setIsFormSubmitted(true);
             } catch (error) {
                 setErrorMessage(true)
-                // console.log(error.response.data.message)
                 setResult(error.response.data.message);
-                setSuccess(true);
-                // console.error(error);                
+                setSuccess(true);           
                 setIsSubmitting(false);
-                // setSnackbarOpen(true);
             }
         } else {
             setIsSubmitting(false);
@@ -102,16 +91,9 @@ export default function ModalChangePass() {
 
     const isEmailEmpty = isFormSubmitted && email === '';
 
-    const handleSnackbarClose = () => {
-        // setSnackbarOpen(false);
-        // if (result === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') {
-        //     handleClose();
-        // }
-    };
-
     return (
         <>
-            {(success === true) ? (<ModalInfo setSuccess={setSuccess} handleClose={handleClose} message={result} errorMessage={errorMessage} />) : 
+            {(success === true) ? (<ModalInfo setSuccess={setSuccess} handlePrevModalClose={handleClose} message={result} errorMessage={errorMessage} />) : 
                 (
                 <div>
                 <button onClick={handleClickOpen}>
@@ -145,16 +127,6 @@ export default function ModalChangePass() {
                             </Button>
                         </DialogActions>
                     </form>
-                    <Snackbar
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    open={snackbarOpen}
-                    autoHideDuration={5000}
-                    onClose={handleSnackbarClose}
-                    message={result}
-                    contentProps={{
-                        style: { backgroundColor: 'green' },
-                    }}
-                />
                 </Dialog>
                 </div>)}
         </>
