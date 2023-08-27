@@ -44,17 +44,7 @@ export default function ModalChangePass() {
     };
 
     const handleSubmit = async (e) => {
-
-        // if (email.trim() === "") {
-        //     toast.error("Correo no puede ser vacío");
-        //     return;
-        //   } else if(!isValidEmail(email)) {
-        //     toast.error("El formato del correo electrónico no es válido");
-        //     return;
-        //   }
-
         e.preventDefault();
-        // setIsFormSubmitted(true);
 
         if (!(email.trim() === "")) {
 
@@ -87,7 +77,7 @@ export default function ModalChangePass() {
                 toast.error("El formato del correo electrónico no es válido");
             }
         } else {
-            toast.error("Correo no puede ser vacío");
+            toast.error("Correo electrónico no puede estar vacío");
         }
     };
 
@@ -109,7 +99,7 @@ export default function ModalChangePass() {
                                 <Grid item>
                                     <TextField
                                         data-testid="camporequerido"
-                                        label="Correo Electrónico"
+                                        label="Correo electrónico"
                                         id="Marca"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
