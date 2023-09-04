@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "@blablacar/ui-library": "^67.0.0",
+    "@rodrisu/friendly-ui": "^1.0.26",
     "@emailjs/browser": "^3.10.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

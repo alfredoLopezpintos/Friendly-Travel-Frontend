@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Loader, LoaderLayoutMode } from '@blablacar/ui-library/build/loader';
-import { ItemStatus } from '@blablacar/ui-library/build/_internals/item';
+import { Loader, LoaderLayoutMode } from '@rodrisu/friendly-ui/build/loader';
+import { ItemStatus } from '@rodrisu/friendly-ui/build/_internals/item';
 import configData from "../configData.json";
 
-import { AutoComplete } from '@blablacar/ui-library/build/autoComplete';
+import { AutoComplete } from '@rodrisu/friendly-ui/build/autoComplete';
 
 const AutoCompleteUy = ({
   className,
@@ -49,7 +49,6 @@ const AutoCompleteUy = ({
     const options = {
       input: query,
       componentRestrictions: { country: 'uy' }, // 'uy' is the ISO code for Uruguay
-      language: 'es', // Set the language to Spanish
       types: ['street_address','administrative_area_level_3','locality'], // Restrict the results to cities
     };
   
@@ -68,7 +67,7 @@ const AutoCompleteUy = ({
             id: prediction.place_id,
             label: main_text,
             labelInfo: secondary_text,
-            place_id: prediction.place_id,
+            terms: prediction.terms,
           };
         });
         setItems(mappedPredictions);

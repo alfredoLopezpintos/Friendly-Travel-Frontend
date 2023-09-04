@@ -28,9 +28,10 @@ import PaidIcon from '@mui/icons-material/Paid';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import { SearchForm } from '@blablacar/ui-library/build/searchForm';
-import { AutoCompleteExample, AutocompleteItem, AutocompleteOnChange  } from '@blablacar/ui-library/build/autoComplete/AutoCompleteExample'
+import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
 import {AutoCompleteUy} from "../AutoCompleteUy";
+import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
+import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -48,6 +49,23 @@ export default function ListadoDeViajes() {
   const observer = useRef();
   const onError = (errors, e) => console.log(errors, e);
   const { register, handleSubmit } = useForm();
+
+  const handleFormSubmit = (formValues) => {
+    const origin = formValues.AUTOCOMPLETE_FROM
+    const destination = formValues.AUTOCOMPLETE_TO;
+    const date = formValues.DATEPICKER;
+    const seats = formValues.STEPPER;
+    const price = formValues.PRICE;
+
+    console.log('En el handleFormSubmit:');
+    console.log('Origin:', origin);
+    console.log('Destination:', destination);
+    console.log('Date:', date);
+    console.log('Asientos:', seats);
+    console.log('Precio:', price);
+
+    fetchViajes(origin, destination, date, price, seats);
+  };
 
   const handleChange = (event) => {
     setRadioValue((event.target).value);
@@ -80,24 +98,33 @@ export default function ListadoDeViajes() {
     return res;
   }
 
-  function formValidate(data) {
+  function formValidate(origin, destination, date, price, seats) {
     const dateObj = new Date();
     const today = transformDate(dateObj);
-    data.tripDate = dateRef.current.value;
-    data.destination = destiantionRef.current.value;
-    data.origin = originRef.current.value;
-    data.tripDate = moment(data.tripDate).format("DD-MM-YYYY");
+    date = moment(date).format("DD-MM-YYYY");
 
-    if (data.tripDate === "" || data.origin === "" || data.destination === "") {
+    console.log('En el form validate:');
+    console.log('Origin:', origin);
+    console.log('Destination:', destination);
+    console.log('Date:', date);
+    console.log('Asientos:', seats);
+    console.log('Preico:', price);
+
+    if (date === "" ||
+        origin === "" ||
+        destination === "" ||
+        date === undefined ||
+        origin === undefined ||
+        destination === undefined) {
       toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
       return false;
-    } else if (!isNumber(data.price) && data.price !== "") {
+    } else if (!isNumber(price) && price !== "" && price !== undefined) {
       toast.error("Precio incorrecto");
-    } else if (!isNumber(data.availablePlaces) && data.availablePlaces !== "") {
+    } else if (!isNumber(seats) && seats !== "") {
       toast.error("Asientos incorrectos");
-    } else if (!moment(data.tripDate, "DD-MM-YYYY").isValid()) {
+    } else if (!moment(date, "DD-MM-YYYY").isValid()) {
       toast.error("Fecha inválida");
-    } else if (moment(data.tripDate) < moment(today)) {
+    } else if (moment(date) < moment(today)) {
       toast.error("La fecha del viaje no puede ser anterior al día actual");
     } else {
       return true;
@@ -151,20 +178,22 @@ export default function ListadoDeViajes() {
     filterTravel(value)
   };
 
-  async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
+  async function fetchViajes(origin, destination, date, price, seats) {
+    const tripDate = transformDate(new Date(date));
 
-    if (formValidate(data)) {
+
+
+    if (formValidate(origin, destination, date, price, seats)) {
       const viajesGetEndPoint =
         URLS.GET_TRIPS_URL +
         "?origin=" +
-        data.origin +
+        origin +
         "&destination=" +
-        data.destination +
+        destination +
         "&tripDate=" +
-        data.tripDate +
-        (data.price !== "" ? "&price=" + data.price : "") +
-        (data.availablePlaces !== "" ? "&availablePlaces=" + data.availablePlaces : "");
+        tripDate +
+        (price !== "" ? "&price=" + price : "") +
+        (seats !== "" ? "&availablePlaces=" + seats : "");
 
       toast.promise(axios.get(viajesGetEndPoint)
         .then((response) => {
@@ -173,7 +202,6 @@ export default function ListadoDeViajes() {
             "No hay viajes que cumplan con las condiciones seleccionadas."
           ) {
             setViajes();
-            setViajesSorted();
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
             setViajes([...response.data]);
@@ -248,7 +276,7 @@ export default function ListadoDeViajes() {
       <main>
         <div>
         <SearchForm
-            onSubmit={handleSubmit(fetchViajes, onError)}
+            onSubmit={handleFormSubmit}
             className="form-inline"
             initialFrom=""
             initialTo=""
@@ -256,7 +284,15 @@ export default function ListadoDeViajes() {
             disabledTo={false}
             autocompleteFromPlaceholder="Desde"
             autocompleteToPlaceholder="Hasta"
-            items
+            renderDatePickerComponent={props => <DatePicker {...props}
+              numberOfMonths={2}  
+              orientation={DatePickerOrientation.HORIZONTAL}
+              locale="es-UY"
+              weekdaysShort={weekdaysShort('es-UY')}
+              weekdaysLong={weekdaysLong('es-UY')}
+              months={months('es-UY')}
+              />
+            }
             renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             datepickerProps={{
@@ -264,14 +300,21 @@ export default function ListadoDeViajes() {
               format: value => new Date(value).toLocaleDateString(),
             }}
             stepperProps={{
-              defaultValue: 1,
+              defaultValue: "",
               min: 1,
-              max: 8,
+              max: 4,
               title: 'Elija la cantidad de asientos que desea reservar',
               increaseLabel: 'Incrementar la cantidad de asientos en 1',
               decreaseLabel: 'Decrementar la cantidad de asientos en 1',
               format: value => `${value} asiento(s)`,
-              confirmLabel: 'Submit',
+              confirmLabel: 'Aceptar',
+            }}
+            priceProps={{
+              defaultValue: "",
+              min: 0,
+              title: 'Precio',
+              format: value => `${value} UYU`,
+              confirmLabel: 'Aceptar',
             }}
           />
         </div>
