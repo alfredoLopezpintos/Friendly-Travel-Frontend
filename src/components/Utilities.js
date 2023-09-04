@@ -45,3 +45,19 @@ export function transformDate2(dateObj) {
   console.log(fecha.format("DD-MM-YYYY"))
   return (fecha.format("DD-MM-YYYY"));
 }
+
+export function getDate() {
+  var today = new Date();
+  var month = today.getMonth() + 1;
+  var year = today.getFullYear();
+  var date = today.getDate();
+
+  if (month < 10) month = "0" + month;
+
+  return `${year}-${month}-${date}`;
+}
+
+export function getTime() {
+  
+  return new Date().toLocaleTimeString();
+}

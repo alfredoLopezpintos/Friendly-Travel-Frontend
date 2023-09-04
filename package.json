@@ -28,6 +28,7 @@
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "react": "^16.13.1",
+    "react-auth-kit": "^2.12.6",
     "react-datepicker": "^2.5.0",
     "react-dom": "^16.13.1",
     "react-dropdown-select": "^4.10.0",

@@ -20,10 +20,12 @@ const Login = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
     if (email.trim() === "" || password.trim() === "") {
       toast.error("Usuario y/o contraseña no pueden estar vacíos");
       return;
     }
+    
     setErrorMessage(null);
     const requestBody = {
       email: email,
@@ -83,11 +85,11 @@ const Login = () => {
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
-    if (!event.target.validity.valid) {
-      setErrorMessage("Por favor ingrese un email válido");
-    } else {
-      setErrorMessage("");
-    }
+    // if (!event.target.validity.valid) {
+    //   setErrorMessage("Por favor ingrese un email válido");
+    // } else {
+    //   setErrorMessage("Error");
+    // }
   }
 
   return (
