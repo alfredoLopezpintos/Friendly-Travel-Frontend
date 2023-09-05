@@ -14,8 +14,8 @@ function HeroSection() {
   return (
     <div className="hero-container">
       {/*<video src='/videos/video-2.mp4' autoPlay loop muted />*/}
-      <h1>TU VIAJE TE ESPERA</h1>
-      <p>¿Qué estás esperando?</p>
+      <h1 style={{"userSelect": "none"}}>TU VIAJE TE ESPERA</h1>
+      <p style={{"userSelect": "none"}}>¿Qué estás esperando?</p>
       <div className="hero-btns">
         <Button
           className="btns"

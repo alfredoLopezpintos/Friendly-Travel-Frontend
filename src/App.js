@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
@@ -20,8 +20,30 @@ import AuthenticatedRoute from "./AuthenticatedRoute";
 import { getToken } from "./components/service/AuthService";
 import { Statistics } from "./components/pages/Statistics";
 import { ChangeData } from "./components/pages/ChangeData";
+import { getExpire, resetUserSession } from "./components/service/AuthService";
+import { toast } from "react-toastify";
+import moment from 'moment'
 
 function App() {
+
+  const refreshToken = () => {
+    if(getExpire() !== null) {
+      if(moment().isSameOrAfter(moment(getExpire()))) {
+        resetUserSession();
+        window.location.reload(false);
+      }
+
+      setTimeout(() => {
+        refreshToken();
+        // toast.info("Se cerró la sesión automáticamente debido a que transcurrió el tiempo máximo por sesión")
+      }, (3600 * 1000))
+    }
+  };
+
+  useEffect(() => {
+    refreshToken()
+  }, []);
+
   return (
     <>
       <Router>

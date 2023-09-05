@@ -18,6 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "../service/AuthService";
 import Select from "react-dropdown-select";
+import { getDate } from "./../Utilities"
 
 const nafta = 74.88;
 
@@ -211,17 +212,6 @@ function TravelPreviewer() {
         }
       );
     }
-  }
-
-  function getDate() {
-    var today = new Date();
-    var month = today.getMonth() + 1;
-    var year = today.getFullYear();
-    var date = today.getDate();
-
-    if (month < 10) month = "0" + month;
-
-    return `${year}-${month}-${date}`;
   }
 
   function formValidate(data) {
