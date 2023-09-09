@@ -1,136 +1,149 @@
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
-import { render } from "@testing-library/react";
+import { useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
-import es from "date-fns/locale/es";
 import moment from "moment";
 import React, { useRef, useState, useCallback } from "react";
-import { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useForm } from "react-hook-form";
-import { BsCurrencyDollar } from "react-icons/bs";
-import { toast, ToastContainer } from "react-toastify";
+import { registerLocale } from "react-datepicker";
+import { toast } from "react-toastify";
+import "react-datepicker/dist/react-datepicker.css";
 import "../../App.css";
-import { transformDate, isNumber } from "../Utilities"
-import configData from "../../configData.json";
 import "./ListadoDeViajes.css";
-import Moment from "moment";
+import { transformDate, isNumber } from "../Utilities";
 import { getToken } from "../service/AuthService";
+import configData from "../../configData.json";
+import { URLS } from "../../utils/urls";
+import es from "date-fns/locale/es";
 import TextItem from "../TextItem";
-
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PaidIcon from '@mui/icons-material/Paid';
+import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
+import { AutoCompleteUy } from "../AutoCompleteUy";
+import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
+import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/cardsStackSection';
+import { Button } from '@rodrisu/friendly-ui/build/button';
+import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
+import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
+import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
-  const [viajes, setViajes] = React.useState([]);
-  const { register, handleSubmit } = useForm();
-  const [date, setDate] = useState(new Date());
-  const handleContacto = (data) => fetchContacto(data);
-  const onSubmit = (data, e) => fetchViajes(data, e);
-  const onError = (errors, e) => console.log(errors, e);
-  const [libraries] = useState(["places"]);
-  const originRef = useRef();
-  const destiantionRef = useRef();
-  const dateRef = useRef();
+  const [viajes, setViajes] = useState([]);
+  const [viajesSorted, setViajesSorted] = useState([]);
   const [prevViajes, setPrevViajes] = React.useState([])
   const [pageNumber, setPageNumber] = React.useState(0)
   const [cardsNumber, setCardsNumber] = React.useState(5)
-  const [visible, setVisible] = React.useState(false)
-  const observer = useRef()
+  const [visible, setVisible] = React.useState(false);
+  const [radioValue, setRadioValue] = React.useState(0);
+  const observer = useRef();
 
-  function sliceIntoChunks(arr, chunkSize) {
-    const res = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-        let chunk = arr.slice(i, i + chunkSize);
-        res.push(chunk);
-    }
-    return res;
+  const handleFormSubmit = (formValues) => {
+    const origin = formValues.AUTOCOMPLETE_FROM !== undefined ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : "";
+    const destination = formValues.AUTOCOMPLETE_TO !== undefined ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : "";
+    const date = formValues.DATEPICKER;
+    const seats = formValues.STEPPER;
+    const price = formValues.PRICE;
+
+    fetchViajes(origin, destination, date, price, seats);
+  };
+
+  const handleChange = (event) => {
+    setRadioValue((event.target).value);
+    filterTravel((event.target).value)
+  };
+
+  const handleBuscar = () => {
+    handlePrevViajes()
+    setRadioValue(0)
   }
 
-  const lastCardElement = useCallback(node => {
-    if(observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])]).length < viajes.length) {
-        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])])
-        setPageNumber(pageNumber + 1)
-        setCardsNumber(cardsNumber + 5)
-      } else {
-        setVisible(true)
-      }      
-    })
-    if (node) observer.current.observe(node)
-  })
-
-  const handlePrevViajes = () => {
-    setPrevViajes([])
-    setPageNumber(0)
-    setCardsNumber(5)    
-  }
-
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs',
-    libraries,
-  });
   const requestConfig = {
     headers: {
       Authorization: JSON.parse(getToken()),
     },
   };
 
-  if (!isLoaded) {
-    return <>loading...</>;
+  const handlePrevViajes = () => {
+    setPrevViajes([])
+    setPageNumber(0)
+    setCardsNumber(5)
   }
 
-  function formValidate(data) {
+  function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      let chunk = arr.slice(i, i + chunkSize);
+      res.push(chunk);
+    }
+    return res;
+  }
+
+  function formValidate(origin, destination, date, price, seats) {
     const dateObj = new Date();
     const today = transformDate(dateObj);
-    data.tripDate = dateRef.current.value;
-    data.destination = destiantionRef.current.value;
-    data.origin = originRef.current.value;
-    data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
+    date = moment(date).format("DD-MM-YYYY");
 
-    if (data.tripDate === "" || data.origin === "" || data.destination === "") {
-      toast.error(
-        "La busqueda debe tener por lo menos origen, destino y fecha"
-      );
+    if (date === "" ||
+      origin === "" ||
+      destination === "" ||
+      date === undefined ||
+      origin === undefined ||
+      destination === undefined) {
+      toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
       return false;
-    } else if (!isNumber(data.price) && data.price !== "") {
+    } else if (!isNumber(price) && price !== "" && price !== undefined) {
       toast.error("Precio incorrecto");
-    } else if (!isNumber(data.availablePlaces) && data.availablePlaces !== "") {
+    } else if (!isNumber(seats) && seats !== "") {
       toast.error("Asientos incorrectos");
-    } else if (!moment(data.tripDate, "DD-MM-YYYY").isValid()) {
+    } else if (!moment(date, "DD-MM-YYYY").isValid()) {
       toast.error("Fecha inválida");
-    } else if (moment(data.tripDate) < moment(today)) {
+    } else if (moment(date) < moment(today).format("DD-MM-YYYY")) {
       toast.error("La fecha del viaje no puede ser anterior al día actual");
     } else {
       return true;
     }
   }
 
-  async function fetchContacto(data) {
-
+  async function handleContacto(data) {
     const viajesGetEndPoint =
-        configData.AWS_REST_ENDPOINT +
-        "/trips/" + data;
+      URLS.GET_TRIPS_URL + "/" + data;
 
-      toast.promise((axios.get(viajesGetEndPoint, requestConfig)
-        .then((response) => {
-          console.log(viajesGetEndPoint)
-          window.location.replace("https://wa.me/"+ response.data.phoneNumber +"?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"+
-        "de%20la%20fecha%20" + response.data.tripDate + "%20desde%20" + response.data.origin +
-        "%20a%20" + response.data.destination);
-        }        
-      ).catch ((error) => {
+    toast.promise((axios.get(viajesGetEndPoint, requestConfig)
+      .then((response) => {
+        window.location.replace(
+          "https://wa.me/"
+          + response.data.phoneNumber
+          + "?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"
+          + "de%20la%20fecha%20"
+          + response.data.tripDate
+          + "%20desde%20"
+          + response.data.origin
+          + "%20a%20"
+          + response.data.destination
+        );
+      }
+      ).catch((error) => {
         console.error(error);
       }))
       ,
       {
         pending: {
-          render(){
+          render() {
             return "Cargando"
           },
           icon: true,
         },
         error: {
-          render({data}){
+          render({ data }) {
             return toast.error('Error')
           }
         }
@@ -139,47 +152,54 @@ export default function ListadoDeViajes() {
 
   }
 
-  async function fetchViajes(data, e) {
-    data.tripDate = transformDate(date);
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: configData.MAPS_KEY,
+    libraries: ["places"],
+  });
 
-    if (formValidate(data)) {
+  const handleToggle = (value) => () => {
+    setRadioValue(value);
+    filterTravel(value)
+  };
+
+  async function fetchViajes(origin, destination, date, price, seats) {
+    if (formValidate(origin, destination, date, price, seats)) {
       const viajesGetEndPoint =
-        configData.AWS_REST_ENDPOINT +
-        "/trips?origin=" +
-        data.origin +
+        URLS.GET_TRIPS_URL +
+        "?origin=" +
+        origin +
         "&destination=" +
-        data.destination +
+        destination +
         "&tripDate=" +
-        data.tripDate +
-        "&price=" +
-        data.price +
-        "&availablePlaces=" +
-        data.availablePlaces;
+        moment(date).format("DD-MM-YYYY") +
+        (price !== "" ? "&price=" + price : "") +
+        (seats !== "" ? "&availablePlaces=" + seats : "");
 
-        toast.promise(axios.get(viajesGetEndPoint)
+      toast.promise(axios.get(viajesGetEndPoint)
         .then((response) => {
           if (
             response.data.message ===
             "No hay viajes que cumplan con las condiciones seleccionadas."
-            ) {
+          ) {
             setViajes();
             toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
           } else {
-            setViajes(response.data);
+            setViajes([...response.data]);
+            setViajesSorted([...response.data]);
           }
-        }).catch ((error) => {
+        }).catch((error) => {
           console.error(error);
         })
         ,
         {
           pending: {
-            render(){
+            render() {
               return "Cargando"
             },
             icon: true,
           },
           error: {
-            render({data}){
+            render({ data }) {
               toast.error(data.response.data.message);
             }
           }
@@ -187,149 +207,222 @@ export default function ListadoDeViajes() {
     }
   }
 
-  render();
+  function filterTravel(value) {
+    setViajesSorted([...viajes]);
+    if ((value == 5)) {
+      handlePrevViajes()
+      const viajesSortedByDate = viajesSorted.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse()))
+      if ([...viajes] !== [...viajesSortedByDate]) {
+        setViajesSorted([...viajes]);
+      }
+      setViajesSorted([...viajesSortedByDate]);
+    } else if (value == 6) {
+      handlePrevViajes()
+      const viajesSortedByPrice = viajesSorted.sort((a, b) => a.price - b.price)
+      if ([...viajes] !== [...viajesSortedByPrice]) {
+        setViajesSorted([...viajes]);
+      }
+      setViajesSorted([...viajesSortedByPrice]);
+    } else if (value == 7) {
+      handlePrevViajes()
+      const viajesSortedBySeat = viajesSorted.sort((a, b) => b.availablePlaces - a.availablePlaces)
+      if ([...viajes] !== [...viajesSortedBySeat]) {
+        setViajesSorted([...viajes]);
+      }
+      setViajesSorted([...viajesSortedBySeat]);
+    }
+  }
+
+  const lastCardElement = useCallback(node => {
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])]).length < viajesSorted.length) {
+        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])])
+        setPageNumber(pageNumber + 1)
+        setCardsNumber(cardsNumber + 5)
+      } else {
+        setVisible(true)
+      }
+    })
+    if (node) observer.current.observe(node)
+  })
+
+  if (!isLoaded) {
+    return <>Cargando...</>;
+  }
+
   return (
     <>
       <main>
         <div>
-          <form
+          <SearchForm
+            onSubmit={handleFormSubmit}
             className="form-inline"
-            onSubmit={handleSubmit(onSubmit, onError)}
-          >
-            <div className="field1">
-              <Autocomplete
-                options={{ componentRestrictions: { country: "uy" } }}
-              >
-                <div>
-                  <label>ORIGEN: </label>
-                  <br />
-                  <input
-                    {...register("origin")}
-                    placeholder="Seleccione un origen"
-                    ref={originRef}
-                  />
-                </div>
-              </Autocomplete>
-              <Autocomplete
-                options={{ componentRestrictions: { country: "uy" } }}
-              >
-                <div>
-                  <label>DESTINO: </label>
-                  <br />
-                  <input
-                    {...register("destination")}
-                    placeholder="Seleccione un destino"
-                    ref={destiantionRef}
-                  />
-                </div>
-              </Autocomplete>
-              <div>
-                <label>FECHA: </label>
-                <br />
-                <input
-                  {...register("tripDate")}
-                  type="date"
-                  ref={dateRef}
-                  min="01-01-2020"
-                />
-              </div>
-              <div>
-                <label>ASIENTOS: </label>
-                <br />
-                <input
-                  {...register("availablePlaces")}
-                  placeholder="Lugares disponibles"
-                  type="number"
-                />
-              </div>
-              <div>
-                <label>PRECIO: </label>
-                <br />
-                <input
-                  {...register("price")}
-                  placeholder="En pesos uruguayos"
-                  type="number"
-                />
-              </div>
-              <button className="btn-submit" type="submit" onClick={handlePrevViajes}>
-                Buscar
-              </button>
-            </div>
-          </form>
+            initialFrom=""
+            initialTo=""
+            disabledFrom={false}
+            disabledTo={false}
+            autocompleteFromPlaceholder="Desde"
+            autocompleteToPlaceholder="Hasta"
+            renderDatePickerComponent={props => <DatePicker {...props}
+              numberOfMonths={2}
+              orientation={DatePickerOrientation.HORIZONTAL}
+              locale="es-UY"
+              weekdaysShort={weekdaysShort('es-UY')}
+              weekdaysLong={weekdaysLong('es-UY')}
+              months={months('es-UY')}
+            />
+            }
+            renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
+            renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
+            datepickerProps={{
+              defaultValue: new Date().toISOString(),
+              format: value => new Date(value).toLocaleDateString(),
+            }}
+            stepperProps={{
+              defaultValue: "",
+              min: 1,
+              max: 4,
+              title: 'Elija la cantidad de asientos que desea reservar',
+              increaseLabel: 'Incrementar la cantidad de asientos en 1',
+              decreaseLabel: 'Decrementar la cantidad de asientos en 1',
+              format: value => `${value} asiento(s)`,
+              confirmLabel: 'Aceptar',
+            }}
+            priceProps={{
+              defaultValue: "",
+              min: 0,
+              title: 'Precio',
+              format: value => `${value} UYU`,
+              confirmLabel: 'Aceptar',
+            }}
+          />
         </div>
         <br />
         <br />
-        <ol className="gradient-list">
-          { viajes &&
-            (((sliceIntoChunks(viajes, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])] : []) //.sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())) //Ordena los viajes por fecha de más reciente a más lejano
-            .map((user, index) => (
-              ([... new Set([...prevViajes, ...sliceIntoChunks(viajes, 5)[pageNumber]])].length === index + 1) ? (
-                <li ref={lastCardElement}>
-                  <div className="social-media-wrap">
-                  <div className="rating">
-                  <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
-                  </div>
-                  <div className="price">
-                    <BsCurrencyDollar />
-                    {user.price}
-                  </div>
-                  <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
-                  </div>
-                  <div className="destination">
-                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
-                    <br/>
-                  </div>
-                  <div className="destination">
-                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
-                    <div>{user.arrival_time}</div>
-                    
-                  </div>
-                  {getToken() !== null ? (
-                    <div className="contacto">
-                      <a onClick={() => handleContacto(user.tripId)} > 
-                      <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
-                      </a>
-                    </div>
-                  ):(<br />)}
-                </li>
-               ) : (
-                <li>
-                  <div className="social-media-wrap">
-                  <div className="rating">
-                  <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
-                  </div>
-                  <div className="price">
-                    <BsCurrencyDollar />
-                    {user.price}
-                  </div>
-                  <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
-                  </div>
-                  <div className="destination">
-                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br/>{user.origin}</div>
-                    <br/>
-                  </div>
-                  <div className="destination">
-                    <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br/>{user.destination}</div>
-                    <div>{user.arrival_time}</div>
-                    
-                  </div>
-                  {getToken() !== null ? (
-                    <div className="contacto">
-                      <a onClick={() => handleContacto(user.tripId)} > 
-                      <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
-                      </a>
-                    </div>
-                  ):(<br />)}
-                </li>
-               )
-            ))
-          }
-        </ol>
-        <div className="load-more-message-container">
-          { visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></> }
+        <div>
+          <div className="wrapper">
+            {viajes !== undefined && viajes.length > 0 && (
+              <div className="gradient-list">
+                <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                  <nav aria-label="main mailbox folders">
+                    <h2>Ordenar por:</h2>
+                    <List>
+                      <RadioGroup value={radioValue} onChange={handleChange}>
+                        {[5, 6, 7].map((value) => {
+                          const labelId = `checkbox-list-secondary-label-${value}`;
+                          return (
+                            <ListItem
+                              key={value}
+                              onClick={handleToggle(value)}
+                              secondaryAction={
+                                <Radio
+                                  value={value}
+                                  edge="end"
+                                  inputProps={{ 'aria-labelledby': labelId }}
+                                />
+                              }
+                              disablePadding
+                            >
+                              <ListItemButton>
+                                <ListItemIcon>
+                                  {
+                                    (value === 5) ? <AccessTimeIcon /> :
+                                      (value === 6) ? <PaidIcon /> :
+                                        (value === 7) ? <AirlineSeatReclineNormalIcon /> :
+                                          <></>
+                                  }
+                                </ListItemIcon>
+                                {
+                                  (value === 5) ? <ListItemText primary="Salida más temprana" /> :
+                                    (value === 6) ? <ListItemText primary="Precio más bajo" /> :
+                                      (value === 7) ? <ListItemText primary="Mayor cantidad de asientos" /> :
+                                        <></>
+                                }
+
+                              </ListItemButton>
+                            </ListItem>
+                          );
+                        })}
+                      </RadioGroup>
+                    </List>
+                    <Divider />
+                  </nav>
+                </Box>
+              </div>
+            )}
+            <CardsStackSection>
+              {viajes &&
+                ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
+                  .map((user, index) => (
+                    ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
+                      <div ref={lastCardElement}>
+                        <TripCard
+                          href={'#'}
+                          itinerary={
+                            <Itinerary>
+                              <Address label={user.origin} subLabel={user.origin} />
+                              <Address label={user.destination} subLabel={user.destination} />
+                            </Itinerary>
+                          }
+                          price={`${user.price} UYU`}
+                          originalPrice={{
+                            label: 'availablePlaces',
+                            value: `${user.availablePlaces} asiento(s)`,
+                          }}
+                          mainTitle={user.tripDate}
+                          button={
+                            getToken() !== null ? (
+                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                                <li style={{ marginRight: '10px' }}>
+                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
+                                </li>
+                                <li>
+                                  <Button onClick={() => handleContacto(user.tripId)} status="green"> Reservar </Button>
+                                </li>
+                              </ul>) : (<br />)
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <TripCard
+                          href={'#'}
+                          itinerary={
+                            <Itinerary>
+                              <Address label={user.origin} subLabel={user.origin} />
+                              <Address label={user.destination} subLabel={user.destination} />
+                            </Itinerary>
+                          }
+                          price={`${user.price} UYU`}
+                          originalPrice={{
+                            label: 'availablePlaces',
+                            value: `${user.availablePlaces} asiento(s)`,
+                          }}
+                          mainTitle={user.tripDate}
+                          button={
+                            getToken() !== null ? (
+                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                                <li style={{ marginRight: '10px' }}>
+                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
+                                </li>
+                                <li>
+                                  <Button onClick={() => handleContacto(user.tripId)} status="green"> Reservar </Button>
+                                </li>
+                              </ul>) : (<br />)
+                          }
+                        />
+                      </div>
+                    )
+                  ))
+              }
+            </CardsStackSection>
+            <div className="load-more-message-container">
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+            </div>
+          </div>
         </div>
       </main>
-      <ToastContainer position="top-center" />
     </>
   );
 }
