@@ -6,4 +6,5 @@ export const URLS = {
     POST_USER_URL: configData.AWS_REST_ENDPOINT + "/users",
     POST_VEHICLE_URL: configData.AWS_REST_ENDPOINT + "/vehicles",
     GET_TRIPS_URL: configData.AWS_REST_ENDPOINT + "/trips",
+    POST_REQUEST_FORGOT_PASS_URL: configData.AWS_REST_ENDPOINT + "/passwords/forgot"
 }

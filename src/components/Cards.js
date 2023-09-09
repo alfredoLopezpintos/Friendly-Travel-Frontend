@@ -25,12 +25,12 @@ function Cards() {
           <ul className="cards__items">
             <CardItem
               src={require("../assets/images/punta.jpg")}
-              text="Es uno de los centros turísticos más importante y elegidos del país"
+              text="Es uno de los centros turísticos más importantes y elegidos del país"
               label="Punta del Este"
             />
             <CardItem
               src={require("../assets/images/traffic.jpg")}
-              text="Explora la capital del país y sus sitios más iconicos"
+              text="Explora la capital del país y sus sitios más icónicos"
               label="Montevideo"
             />
             <CardItem

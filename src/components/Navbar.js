@@ -48,7 +48,7 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar-container">
-          <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+          <Link style={{"userSelect": "none"}} to="/" className="navbar-logo" onClick={closeMobileMenu}>
             FRIENDLY TRAVEL &nbsp;
             <img
               src={require("../assets/images/logo.png")}
@@ -61,12 +61,13 @@ function Navbar() {
           </div>
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
-              <Link to="/about" className="nav-links" onClick={closeMobileMenu}>
+              <Link style={{"userSelect": "none"}} to="/about" className="nav-links" onClick={closeMobileMenu}>
                 Sobre nosotros
               </Link>
             </li>
             <li className="nav-item">
               <Link
+                style={{"userSelect": "none"}}
                 to="/carpool"
                 className="nav-links"
                 onClick={closeMobileMenu}
@@ -76,6 +77,7 @@ function Navbar() {
             </li>
             <li className="nav-item">
               <Link
+                style={{"userSelect": "none"}}
                 to="/faqsPage"
                 className="nav-links"
                 onClick={closeMobileMenu}
@@ -84,15 +86,22 @@ function Navbar() {
               </Link>
             </li>
 
-            {getToken() === null ? (
-              <li className="nav-item"></li>
+            {(button && (getToken() === null))? (
+              <li className="nav-item">
+              <Link style={{"userSelect": "none"}}
+              to="/login" 
+              className="nav-links"
+                onClick={closeMobileMenu}>
+                Iniciar sesión
+              </Link>
+              </li>
             ) : (
               <li
                 className="nav-item"
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
               >
-                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+                <Link style={{"userSelect": "none"}} to="/" className="nav-links" onClick={closeMobileMenu}>
                   <img
                     src={require("../assets/images/user.png")}
                     alt="travel logo"
@@ -104,14 +113,6 @@ function Navbar() {
               </li>
             )}
           </ul>
-          {button &&
-            (getToken() === null ? (
-              <Button onClick={handleHistory} buttonStyle="btn--outline">
-                Iniciar sesión
-              </Button>
-            ) : (
-              <></>
-            ))}
         </div>
       </nav>
     </>

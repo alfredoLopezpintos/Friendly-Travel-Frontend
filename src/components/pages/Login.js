@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import Footer from "../Footer";
 import { URLS } from "../../utils/urls";
+import ModalChangePass from '../../components/ModalChangePass';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,10 +20,12 @@ const Login = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
     if (email.trim() === "" || password.trim() === "") {
       toast.error("Usuario y/o contraseña no pueden estar vacíos");
       return;
     }
+    
     setErrorMessage(null);
     const requestBody = {
       email: email,
@@ -82,11 +85,11 @@ const Login = () => {
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
-    if (!event.target.validity.valid) {
-      setErrorMessage("Por favor ingrese un email válido");
-    } else {
-      setErrorMessage("");
-    }
+    // if (!event.target.validity.valid) {
+    //   setErrorMessage("Por favor ingrese un email válido");
+    // } else {
+    //   setErrorMessage("Error");
+    // }
   }
 
   return (
@@ -137,12 +140,16 @@ const Login = () => {
               <div className="form__field" data-testid="submit-button">
                 <input type="submit" value="Aceptar" />
               </div>
-              {errorMessage && <p className="message">{errorMessage}</p>}
+              {errorMessage && <span className="message">{errorMessage}</span>}
               <br />
             </form>
-            <p>
+            <span>
               ¿Aún no tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-            </p>
+            </span>
+            <br />
+            <span>
+              ¿Olvidaste tu contraseña? <br /> <ModalChangePass  />
+            </span>            
           </div>
         </div>
       </div>
