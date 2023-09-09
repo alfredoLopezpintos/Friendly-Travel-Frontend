@@ -53,13 +53,6 @@ export default function ListadoDeViajes() {
     const seats = formValues.STEPPER;
     const price = formValues.PRICE;
 
-    console.log('En el handleFormSubmit:');
-    console.log('Origin:', origin);
-    console.log('Destination:', destination);
-    console.log('Date:', date);
-    console.log('Asientos:', seats);
-    console.log('Precio:', price);
-
     fetchViajes(origin, destination, date, price, seats);
   };
 
@@ -98,13 +91,6 @@ export default function ListadoDeViajes() {
     const dateObj = new Date();
     const today = transformDate(dateObj);
     date = moment(date).format("DD-MM-YYYY");
-
-    console.log('En el form validate:');
-    console.log('Origin:', origin);
-    console.log('Destination:', destination);
-    console.log('Date:', date);
-    console.log('Asientos:', seats);
-    console.log('Preico:', price);
 
     if (date === "" ||
       origin === "" ||
