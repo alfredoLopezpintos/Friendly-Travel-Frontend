@@ -1,11 +1,9 @@
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
 import moment from "moment";
 import React, { useRef, useState, useCallback } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { useForm } from "react-hook-form";
 import { registerLocale } from "react-datepicker";
-import { BsCurrencyDollar } from "react-icons/bs";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../App.css";
@@ -31,14 +29,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
 import { AutoCompleteUy } from "../AutoCompleteUy";
 import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
-import { CardsGridSection } from '@rodrisu/friendly-ui/build/layout/section/cardsGridSection';
 import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/cardsStackSection';
-import { SectionContentSize } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
 import { Button } from '@rodrisu/friendly-ui/build/button';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
-import { Card } from "@mui/material";
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -49,17 +44,11 @@ export default function ListadoDeViajes() {
   const [cardsNumber, setCardsNumber] = React.useState(5)
   const [visible, setVisible] = React.useState(false);
   const [radioValue, setRadioValue] = React.useState(0);
-  const [date] = useState(new Date());
-  const originRef = useRef();
-  const destiantionRef = useRef();
-  const dateRef = useRef();
   const observer = useRef();
-  const onError = (errors, e) => console.log(errors, e);
-  const { register, handleSubmit } = useForm();
 
   const handleFormSubmit = (formValues) => {
-    const origin = formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value;
-    const destination = formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value;
+    const origin = formValues.AUTOCOMPLETE_FROM !== undefined ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : "";
+    const destination = formValues.AUTOCOMPLETE_TO !== undefined ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : "";
     const date = formValues.DATEPICKER;
     const seats = formValues.STEPPER;
     const price = formValues.PRICE;
