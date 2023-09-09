@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "@rodrisu/friendly-ui": "^1.0.26",
+    "@rodrisu/friendly-ui": "^1.0.47",
     "@emailjs/browser": "^3.10.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

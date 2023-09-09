@@ -29,9 +29,16 @@ import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatRecline
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
-import {AutoCompleteUy} from "../AutoCompleteUy";
+import { AutoCompleteUy } from "../AutoCompleteUy";
 import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
+import { CardsGridSection } from '@rodrisu/friendly-ui/build/layout/section/cardsGridSection';
+import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/cardsStackSection';
+import { SectionContentSize } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
+import { Button } from '@rodrisu/friendly-ui/build/button';
+import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
+import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
+import { Card } from "@mui/material";
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -51,8 +58,8 @@ export default function ListadoDeViajes() {
   const { register, handleSubmit } = useForm();
 
   const handleFormSubmit = (formValues) => {
-    const origin = formValues.AUTOCOMPLETE_FROM
-    const destination = formValues.AUTOCOMPLETE_TO;
+    const origin = formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value;
+    const destination = formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value;
     const date = formValues.DATEPICKER;
     const seats = formValues.STEPPER;
     const price = formValues.PRICE;
@@ -111,11 +118,11 @@ export default function ListadoDeViajes() {
     console.log('Preico:', price);
 
     if (date === "" ||
-        origin === "" ||
-        destination === "" ||
-        date === undefined ||
-        origin === undefined ||
-        destination === undefined) {
+      origin === "" ||
+      destination === "" ||
+      date === undefined ||
+      origin === undefined ||
+      destination === undefined) {
       toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
       return false;
     } else if (!isNumber(price) && price !== "" && price !== undefined) {
@@ -124,7 +131,7 @@ export default function ListadoDeViajes() {
       toast.error("Asientos incorrectos");
     } else if (!moment(date, "DD-MM-YYYY").isValid()) {
       toast.error("Fecha inválida");
-    } else if (moment(date) < moment(today)) {
+    } else if (moment(date) < moment(today).format("DD-MM-YYYY")) {
       toast.error("La fecha del viaje no puede ser anterior al día actual");
     } else {
       return true;
@@ -179,10 +186,6 @@ export default function ListadoDeViajes() {
   };
 
   async function fetchViajes(origin, destination, date, price, seats) {
-    const tripDate = transformDate(new Date(date));
-
-
-
     if (formValidate(origin, destination, date, price, seats)) {
       const viajesGetEndPoint =
         URLS.GET_TRIPS_URL +
@@ -191,7 +194,7 @@ export default function ListadoDeViajes() {
         "&destination=" +
         destination +
         "&tripDate=" +
-        tripDate +
+        moment(date).format("DD-MM-YYYY") +
         (price !== "" ? "&price=" + price : "") +
         (seats !== "" ? "&availablePlaces=" + seats : "");
 
@@ -275,7 +278,7 @@ export default function ListadoDeViajes() {
     <>
       <main>
         <div>
-        <SearchForm
+          <SearchForm
             onSubmit={handleFormSubmit}
             className="form-inline"
             initialFrom=""
@@ -285,13 +288,13 @@ export default function ListadoDeViajes() {
             autocompleteFromPlaceholder="Desde"
             autocompleteToPlaceholder="Hasta"
             renderDatePickerComponent={props => <DatePicker {...props}
-              numberOfMonths={2}  
+              numberOfMonths={2}
               orientation={DatePickerOrientation.HORIZONTAL}
               locale="es-UY"
               weekdaysShort={weekdaysShort('es-UY')}
               weekdaysLong={weekdaysLong('es-UY')}
               months={months('es-UY')}
-              />
+            />
             }
             renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
@@ -322,118 +325,121 @@ export default function ListadoDeViajes() {
         <br />
         <div>
           <div className="wrapper">
-            <div className="gradient-list">
-              <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                <nav aria-label="main mailbox folders">
-                  <h2>Ordenar por:</h2>
-                  <List>
-                  <RadioGroup value={radioValue} onChange={handleChange}>
-                  {[5, 6, 7].map((value) => {
-                      const labelId = `checkbox-list-secondary-label-${value}`;
-                      return (
-                        <ListItem
-                          key={value}
-                          onClick={handleToggle(value)}
-                          secondaryAction={
-                            <Radio
-                              value={value}
-                              edge="end"
-                              inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                          }
-                          disablePadding
-                        >
-                          <ListItemButton>
-                            <ListItemIcon>
-                              {
-                                (value === 5) ? <AccessTimeIcon /> :
-                                  (value === 6) ? <PaidIcon /> :
-                                    (value === 7) ? <AirlineSeatReclineNormalIcon /> :
-                                      <></>
+            {viajes !== undefined && viajes.length > 0 && (
+              <div className="gradient-list">
+                <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                  <nav aria-label="main mailbox folders">
+                    <h2>Ordenar por:</h2>
+                    <List>
+                      <RadioGroup value={radioValue} onChange={handleChange}>
+                        {[5, 6, 7].map((value) => {
+                          const labelId = `checkbox-list-secondary-label-${value}`;
+                          return (
+                            <ListItem
+                              key={value}
+                              onClick={handleToggle(value)}
+                              secondaryAction={
+                                <Radio
+                                  value={value}
+                                  edge="end"
+                                  inputProps={{ 'aria-labelledby': labelId }}
+                                />
                               }
-                            </ListItemIcon>
-                            {
-                              (value === 5) ? <ListItemText primary="Salida más temprana" /> :
-                                (value === 6) ? <ListItemText primary="Precio más bajo" /> :
-                                  (value === 7) ? <ListItemText primary="Mayor cantidad de asientos" /> :
-                                    <></>
-                            }
+                              disablePadding
+                            >
+                              <ListItemButton>
+                                <ListItemIcon>
+                                  {
+                                    (value === 5) ? <AccessTimeIcon /> :
+                                      (value === 6) ? <PaidIcon /> :
+                                        (value === 7) ? <AirlineSeatReclineNormalIcon /> :
+                                          <></>
+                                  }
+                                </ListItemIcon>
+                                {
+                                  (value === 5) ? <ListItemText primary="Salida más temprana" /> :
+                                    (value === 6) ? <ListItemText primary="Precio más bajo" /> :
+                                      (value === 7) ? <ListItemText primary="Mayor cantidad de asientos" /> :
+                                        <></>
+                                }
 
-                          </ListItemButton>
-                        </ListItem>
-                      );
-                    })}
-                  </RadioGroup> 
-                  </List>
-                  <Divider />
-                </nav>
-              </Box>
-            </div>
-            <ol className="gradient-list">
+                              </ListItemButton>
+                            </ListItem>
+                          );
+                        })}
+                      </RadioGroup>
+                    </List>
+                    <Divider />
+                  </nav>
+                </Box>
+              </div>
+            )}
+            <CardsStackSection>
               {viajes &&
                 ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
                   .map((user, index) => (
                     ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
-                      <li ref={lastCardElement}>
-                        <div className="social-media-wrap">
-                          <div className="rating">
-                            <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
-                          </div>
-                          <div className="price">
-                            <BsCurrencyDollar />
-                            {user.price}
-                          </div>
-                          <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
-                        </div>
-                        <div className="destination">
-                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br />{user.origin}</div>
-                          <br />
-                        </div>
-                        <div className="destination">
-                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
-                          <div>{user.arrival_time}</div>
-                        </div>
-                        {getToken() !== null ? (
-                          <div className="contacto">
-                            <a onClick={() => handleContacto(user.tripId)} >
-                              <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
-                            </a>
-                          </div>
-                        ) : (<br />)}
-                      </li>
+                      <div ref={lastCardElement}>
+                        <TripCard
+                          href={'#'}
+                          itinerary={
+                            <Itinerary>
+                              <Address label={user.origin} subLabel={user.origin} />
+                              <Address label={user.destination} subLabel={user.destination} />
+                            </Itinerary>
+                          }
+                          price={`${user.price} UYU`}
+                          originalPrice={{
+                            label: 'availablePlaces',
+                            value: `${user.availablePlaces} asiento(s)`,
+                          }}
+                          mainTitle={user.tripDate}
+                          button={
+                            getToken() !== null ? (
+                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                                <li style={{ marginRight: '10px' }}>
+                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
+                                </li>
+                                <li>
+                                  <Button onClick={() => handleContacto(user.tripId)} status="green"> Reservar </Button>
+                                </li>
+                              </ul>) : (<br />)
+                          }
+                        />
+                      </div>
                     ) : (
-                      <li>
-                        <div className="social-media-wrap">
-                          <div className="rating">
-                            <img src={require("../../assets/images/asiento.png")} alt="fecha" width={20}></img> {user.availablePlaces}
-                          </div>
-                          <div className="price">
-                            <BsCurrencyDollar />
-                            {user.price}
-                          </div>
-                          <div><img src={require("../../assets/images/fecha.png")} alt="fecha" width={20}></img> {user.tripDate}</div>
-                        </div>
-                        <div className="destination">
-                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> ORIGEN: <br />{user.origin}</div>
-                          <br />
-                        </div>
-                        <div className="destination">
-                          <div><img src={require("../../assets/images/localizador.png")} alt="fecha" width={20}></img> DESTINO: <br />{user.destination}</div>
-                          <div>{user.arrival_time}</div>
-
-                        </div>
-                        {getToken() !== null ? (
-                          <div className="contacto">
-                            <a onClick={() => handleContacto(user.tripId)} >
-                              <img src={require("../../assets/images/wpp.png")} alt="travel logo" ></img>
-                            </a>
-                          </div>
-                        ) : (<br />)}
-                      </li>
+                      <div>
+                        <TripCard
+                          href={'#'}
+                          itinerary={
+                            <Itinerary>
+                              <Address label={user.origin} subLabel={user.origin} />
+                              <Address label={user.destination} subLabel={user.destination} />
+                            </Itinerary>
+                          }
+                          price={`${user.price} UYU`}
+                          originalPrice={{
+                            label: 'availablePlaces',
+                            value: `${user.availablePlaces} asiento(s)`,
+                          }}
+                          mainTitle={user.tripDate}
+                          button={
+                            getToken() !== null ? (
+                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                                <li style={{ marginRight: '10px' }}>
+                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
+                                </li>
+                                <li>
+                                  <Button onClick={() => handleContacto(user.tripId)} status="green"> Reservar </Button>
+                                </li>
+                              </ul>) : (<br />)
+                          }
+                        />
+                      </div>
                     )
                   ))
               }
-            </ol>
+            </CardsStackSection>
             <div className="load-more-message-container">
               {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
