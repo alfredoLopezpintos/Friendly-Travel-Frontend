@@ -1,6 +1,7 @@
 import { ThreeDots } from "react-loader-spinner";
 import { usePromiseTracker } from "react-promise-tracker";
 import moment from 'moment';
+import { toast } from "react-toastify";
 
 export function LoadingIndicator() {
   const { promiseInProgress } = usePromiseTracker();
@@ -56,4 +57,34 @@ export function getDate() {
 export function getTime() {
   
   return new Date().toLocaleTimeString();
+}
+
+export function formValidate(origin, destination, date, price, seats) {
+  const dateObj = new Date();
+  const today = transformDate(dateObj);
+  date = moment(date).format("DD-MM-YYYY");
+
+  if (date === "" ||
+    origin === "" ||
+    destination === "" ||
+    date === undefined ||
+    origin === undefined ||
+    destination === undefined) {
+    toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
+    return false;
+  } else if (!isNumber(price) && price !== "" && price !== undefined) {
+    toast.error("Precio incorrecto");
+    return false;
+  } else if (!isNumber(seats) && seats !== "") {
+    toast.error("Asientos incorrectos");
+    return false;
+  } else if (!moment(date, "DD-MM-YYYY").isValid()) {
+    toast.error("Fecha inválida");
+    return false;
+  } else if (moment(date) < moment(today).format("DD-MM-YYYY")) {
+    toast.error("La fecha del viaje no puede ser anterior al día actual");
+    return false;
+  } else {
+    return true;
+  }
 }
