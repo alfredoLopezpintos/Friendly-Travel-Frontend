@@ -48,7 +48,12 @@ const ListadoDeViajes = () =>  {
   const observer = useRef();
 
   const location = useLocation();
-  const receivedData = location.state?.data || "";
+  const receivedData = location.state?.data || 
+                      { desde: undefined,
+                      hasta: undefined,
+                      fecha: undefined,
+                      asientos: undefined,
+                      precio: undefined };
 
   useEffect(()=>{
     if((receivedData.desde !== undefined) && (receivedData.hasta !== undefined) && (receivedData.fecha !== undefined)) {
@@ -56,18 +61,22 @@ const ListadoDeViajes = () =>  {
                   receivedData.hasta,
                   receivedData.fecha,
                   receivedData.precio, 
-                  receivedData.asientos)
+                  receivedData.asientos);
     }
   }, [])
 
   const handleFormSubmit = (formValues) => {
-    const origin = formValues.AUTOCOMPLETE_FROM !== undefined ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : "";
-    const destination = formValues.AUTOCOMPLETE_TO !== undefined ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : "";
-    const date = formValues.DATEPICKER;
-    const seats = formValues.STEPPER;
-    const price = formValues.PRICE;
+    receivedData.desde = (formValues.AUTOCOMPLETE_FROM !== undefined) ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : receivedData.desde;
+    receivedData.hasta = (formValues.AUTOCOMPLETE_TO !== undefined) ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : receivedData.hasta;
+    receivedData.fecha = (formValues.DATEPICKER !== undefined) ? formValues.DATEPICKER : receivedData.fecha;
+    receivedData.asientos = (formValues.STEPPER !== undefined) ? formValues.STEPPER : receivedData.asientos;
+    receivedData.precio = (formValues.PRICE !== undefined) ? formValues.PRICE : receivedData.precio;
 
-    fetchViajes(origin, destination, date, price, seats);
+    fetchViajes(receivedData.desde,
+      receivedData.hasta,
+      receivedData.fecha,
+      receivedData.precio, 
+      receivedData.asientos);
   };
 
   const handleChange = (event) => {
@@ -267,11 +276,11 @@ const ListadoDeViajes = () =>  {
             renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             datepickerProps={{
-              defaultValue: ((receivedData.fecha !== "") ? receivedData.fecha : new Date().toISOString()),
+              defaultValue: ((receivedData.fecha !== undefined) ? receivedData.fecha : new Date().toISOString()),
               format: value => new Date(value).toLocaleDateString(),
             }}
             stepperProps={{
-              defaultValue: receivedData.asientos,
+              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : ""),
               min: 1,
               max: 4,
               title: 'Elija la cantidad de asientos que desea reservar',
@@ -281,7 +290,7 @@ const ListadoDeViajes = () =>  {
               confirmLabel: 'Aceptar',
             }}
             priceProps={{
-              defaultValue: receivedData.precio,
+              defaultValue: ((receivedData.precio !== undefined) ? receivedData.precio : ""),
               min: 0,
               title: 'Precio',
               format: value => `${value} UYU`,

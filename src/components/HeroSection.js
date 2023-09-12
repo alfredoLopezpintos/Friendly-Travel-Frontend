@@ -23,8 +23,6 @@ function HeroSection() {
                       asientos: formValues.STEPPER,
                       precio: formValues.PRICE }
 
-    console.log(dataToSend)
-
     if(formValidate(dataToSend.desde, dataToSend.hasta, dataToSend.fecha, dataToSend.precio, dataToSend.asientos)) {
       history.push('/viajes', { data: dataToSend });
     }
