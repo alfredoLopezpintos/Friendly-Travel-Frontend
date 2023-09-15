@@ -14,7 +14,6 @@
     ]
   },
   "dependencies": {
-    "@rodrisu/friendly-ui": "^1.0.49",
     "@emailjs/browser": "^3.10.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -22,6 +21,7 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
     "@react-google-maps/api": "^2.13.1",
+    "@rodrisu/friendly-ui": "^1.0.49",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^1.1.3",
     "classcat": "4.0.2",

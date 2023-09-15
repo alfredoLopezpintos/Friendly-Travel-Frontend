@@ -1,14 +1,14 @@
 import { useJsApiLoader } from "@react-google-maps/api";
 import axios from "axios";
 import moment from "moment";
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { registerLocale } from "react-datepicker";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../App.css";
 import "./ListadoDeViajes.css";
-import { transformDate, isNumber } from "../Utilities";
+import { formValidate } from "../Utilities";
 import { getToken } from "../service/AuthService";
 import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
@@ -34,6 +34,7 @@ import { Button } from '@rodrisu/friendly-ui/build/button';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
+import { useLocation } from 'react-router-dom';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -46,14 +47,36 @@ export default function ListadoDeViajes() {
   const [radioValue, setRadioValue] = React.useState(0);
   const observer = useRef();
 
-  const handleFormSubmit = (formValues) => {
-    const origin = formValues.AUTOCOMPLETE_FROM !== undefined ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : "";
-    const destination = formValues.AUTOCOMPLETE_TO !== undefined ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : "";
-    const date = formValues.DATEPICKER;
-    const seats = formValues.STEPPER;
-    const price = formValues.PRICE;
+  const location = useLocation();
+  const receivedData = location.state?.data || 
+                      { desde: undefined,
+                      hasta: undefined,
+                      fecha: undefined,
+                      asientos: undefined,
+                      precio: undefined };
 
-    fetchViajes(origin, destination, date, price, seats);
+  useEffect(()=>{
+    if((receivedData.desde !== undefined) && (receivedData.hasta !== undefined) && (receivedData.fecha !== undefined)) {
+      fetchViajes(receivedData.desde,
+                  receivedData.hasta,
+                  receivedData.fecha,
+                  receivedData.precio, 
+                  receivedData.asientos);
+    }
+  }, [])
+
+  const handleFormSubmit = (formValues) => {
+    receivedData.desde = (formValues.AUTOCOMPLETE_FROM !== undefined) ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : receivedData.desde;
+    receivedData.hasta = (formValues.AUTOCOMPLETE_TO !== undefined) ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : receivedData.hasta;
+    receivedData.fecha = (formValues.DATEPICKER !== undefined) ? formValues.DATEPICKER : receivedData.fecha;
+    receivedData.asientos = (formValues.STEPPER !== undefined) ? formValues.STEPPER : receivedData.asientos;
+    receivedData.precio = (formValues.PRICE !== undefined) ? formValues.PRICE : receivedData.precio;
+
+    fetchViajes(receivedData.desde,
+      receivedData.hasta,
+      receivedData.fecha,
+      receivedData.precio, 
+      receivedData.asientos);
   };
 
   const handleChange = (event) => {
@@ -85,32 +108,6 @@ export default function ListadoDeViajes() {
       res.push(chunk);
     }
     return res;
-  }
-
-  function formValidate(origin, destination, date, price, seats) {
-    const dateObj = new Date();
-    const today = transformDate(dateObj);
-    date = moment(date).format("DD-MM-YYYY");
-
-    if (date === "" ||
-      origin === "" ||
-      destination === "" ||
-      date === undefined ||
-      origin === undefined ||
-      destination === undefined) {
-      toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
-      return false;
-    } else if (!isNumber(price) && price !== "" && price !== undefined) {
-      toast.error("Precio incorrecto");
-    } else if (!isNumber(seats) && seats !== "") {
-      toast.error("Asientos incorrectos");
-    } else if (!moment(date, "DD-MM-YYYY").isValid()) {
-      toast.error("Fecha inválida");
-    } else if (moment(date) < moment(today).format("DD-MM-YYYY")) {
-      toast.error("La fecha del viaje no puede ser anterior al día actual");
-    } else {
-      return true;
-    }
   }
 
   async function handleContacto(data) {
@@ -254,12 +251,15 @@ export default function ListadoDeViajes() {
   return (
     <>
       <main>
-        <div>
+        <div style={{display: "flex",
+    "flex-direction": "column",
+    "align-items": "center"}}
+        >
           <SearchForm
             onSubmit={handleFormSubmit}
             className="form-inline"
-            initialFrom=""
-            initialTo=""
+            initialFrom={ receivedData.desde }
+            initialTo={ receivedData.hasta}
             disabledFrom={false}
             disabledTo={false}
             autocompleteFromPlaceholder="Desde"
@@ -276,11 +276,11 @@ export default function ListadoDeViajes() {
             renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
             datepickerProps={{
-              defaultValue: new Date().toISOString(),
+              defaultValue: ((receivedData.fecha !== undefined) ? receivedData.fecha : new Date().toISOString()),
               format: value => new Date(value).toLocaleDateString(),
             }}
             stepperProps={{
-              defaultValue: "",
+              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : ""),
               min: 1,
               max: 4,
               title: 'Elija la cantidad de asientos que desea reservar',
@@ -290,7 +290,7 @@ export default function ListadoDeViajes() {
               confirmLabel: 'Aceptar',
             }}
             priceProps={{
-              defaultValue: "",
+              defaultValue: ((receivedData.precio !== undefined) ? receivedData.precio : ""),
               min: 0,
               title: 'Precio',
               format: value => `${value} UYU`,

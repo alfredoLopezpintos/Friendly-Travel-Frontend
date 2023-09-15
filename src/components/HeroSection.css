@@ -49,6 +49,10 @@ video {
   margin-left: 4px;
 }
 
+.form-inline {
+  width: 500px;
+}
+
 @media screen and (max-width: 960px) {
   .hero-container > h1 {
     font-size: 70px;
@@ -78,4 +82,30 @@ video {
   .hero-btns {
     display: block;
   }
+
+  .form-inline {
+    width: 400px;
+  }
 }
+
+@media screen and (max-width: 450px) {
+
+  .form-inline {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+
+  .form-inline {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+
+  .form-inline {
+    width: 270px;
+  }
+}
+
