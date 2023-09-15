@@ -37,7 +37,7 @@ import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
 import { useLocation } from 'react-router-dom';
 registerLocale("es", es);
 
-const ListadoDeViajes = () =>  {
+export default function ListadoDeViajes() {
   const [viajes, setViajes] = useState([]);
   const [viajesSorted, setViajesSorted] = useState([]);
   const [prevViajes, setPrevViajes] = React.useState([])
@@ -426,6 +426,4 @@ const ListadoDeViajes = () =>  {
     </>
   );
 }
-
-export default ListadoDeViajes;
 
