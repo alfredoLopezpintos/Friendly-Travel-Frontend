@@ -10,14 +10,14 @@ import { color, font } from '@rodrisu/friendly-ui/build/_utils/branding'
 import { ArrowIcon } from '@rodrisu/friendly-ui/build/icon/arrowIcon'
 import { Avatar } from '@rodrisu/friendly-ui/build//avatar'
 import { Drawer, DropdownButton, Menu, TopBar } from '@rodrisu/friendly-ui/build/topBar'
-import { ItemAction  } from '@rodrisu/friendly-ui/build/itemAction'
+import { ItemAction } from '@rodrisu/friendly-ui/build/itemAction'
 import { BankIcon } from '@rodrisu/friendly-ui/build/icon/bankIcon'
 import { BubbleIcon } from '@rodrisu/friendly-ui/build/icon/bubbleIcon'
 import { CrewIcon } from '@rodrisu/friendly-ui/build/icon/crew'
 import { CrossDiscIcon } from '@rodrisu/friendly-ui/build/icon/crossDiscIcon'
 import { HomeIcon } from '@rodrisu/friendly-ui/build/icon/homeIcon'
-import { QuestionIcon } from '@rodrisu/friendly-ui/build/icon/questionIcon'
-import { ProfileIcon } from '@rodrisu/friendly-ui/build/icon/profileIcon'
+import { InfoIcon } from '@rodrisu/friendly-ui/build/icon/infoIcon'
+import { AloneInTheBackIcon } from '@rodrisu/friendly-ui/build/icon/aloneInTheBackIcon'
 import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { boolean } from '@storybook/addon-knobs'
 
@@ -84,7 +84,7 @@ function Navbar() {
     }}
     className="SignIn"
   >
-    <div className="Text">Iniciar Sesión</div>    
+    <div className="Text">Iniciar Sesión</div>
   </Button>)
 
   const leftAction = (
@@ -95,14 +95,14 @@ function Navbar() {
 
   const rightAction = (
     <>
-    <Link style={{"userSelect": "none"}} to="/" className="navbar-logo" onClick={closeMobileMenu}>
-    <img
-              src={require("../assets/images/Friendly-Logo-new.png")}
-              alt="travel logo"
-              width={50}
-            ></img> &nbsp;
-            Friendly-Travel
-          </Link>
+      <Link style={{ "userSelect": "none" }} to="/" className="navbar-logo" onClick={closeMobileMenu}>
+        <img
+          src={require("../assets/images/Friendly-Logo-new.png")}
+          alt="travel logo"
+          width={50}
+        ></img> &nbsp;
+        Friendly-Travel
+      </Link>
     </>
   )
 
@@ -115,9 +115,9 @@ function Navbar() {
         }}
       >
         <ul className="navRouteContainer">
-          <li className="navRoute" onClick={() => {history.push("/about")}}>Sobre nosotros</li>
-          <li className="navRoute" onClick={() => {history.push("/viajes")}}>Listado de viajes</li>
-          <li className="navRoute" onClick={() => {history.push("/faqsPage")}}>Preguntas frecuentes</li>
+          <li className="navRoute" onClick={() => { history.push("/about") }}>Sobre nosotros</li>
+          <li className="navRoute" onClick={() => { history.push("/viajes") }}>Listado de viajes</li>
+          <li className="navRoute" onClick={() => { history.push("/faqsPage") }}>Preguntas frecuentes</li>
         </ul>
 
       </span>
@@ -131,19 +131,23 @@ function Navbar() {
       <nav className="navbar">
         <div className="navbar-container">
           <Fragment>
-            <TopBar zIndex={50} style={{"background-color": "black"}}
+            <TopBar zIndex={50} style={{ "background-color": "black" }}
               leftItem={boolean('With rightItem', true) && rightAction}
               centerItem={boolean('With centerItem', true) && centerContent}
               rightItem={dropdownButton}
             />
             <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
               <Menu>
-                <ItemAction  action="Inicio" leftAddon={<HomeIcon />} href={"/"} />
-                <ItemAction  action="Sobre nosotros" leftAddon={<CrewIcon />} href={"/about"} />
-                <ItemAction  action="Listado de Viajes" leftAddon={<BubbleIcon />} href={"/viajes"} />
-                <ItemAction  action="Preguntas Frecuentes" leftAddon={<QuestionIcon />} href={"/faqsPage"} />
+                <ItemAction action="Crear Viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
+                  history.push("/map")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Opciones" leftAddon={<InfoIcon />} onClick={() => {
+                  history.push("/changeData")
+                  setDrawerOpened(false)
+                }} />
                 <Menu.Divider />
-                <ItemAction  action="Cerrar sesión" leftAddon={<CrossDiscIcon />} href={"/"} onClick={logoutHandler2} />
+                <ItemAction action="Cerrar sesión" leftAddon={<CrossDiscIcon />} onClick={logoutHandler2} />
               </Menu>
             </Drawer>
           </Fragment>
