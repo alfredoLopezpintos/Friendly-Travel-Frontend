@@ -38,7 +38,7 @@ const Modal = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  z-index: 999;
+  z-index: 900;
   background: rgb(199, 236, 255);
   background: linear-gradient(
     126deg,
