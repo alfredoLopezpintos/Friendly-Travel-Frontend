@@ -16,7 +16,6 @@ import { QuestionIcon } from '@rodrisu/friendly-ui/build/icon/questionIcon'
 import { AloneInTheBackIcon } from '@rodrisu/friendly-ui/build/icon/aloneInTheBackIcon'
 import { ProfileIcon } from '@rodrisu/friendly-ui/build/icon/profileIcon'
 import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
-import { boolean } from '@storybook/addon-knobs'
 
 function Navbar() {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
@@ -42,7 +41,7 @@ function Navbar() {
     <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
       <Avatar
         isBubble
-        image="data:image/png;base64,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"
+        image={require("../assets/images/user.png")}
       />
     </DropdownButton>
   ) : (<Button
@@ -98,7 +97,7 @@ function Navbar() {
       <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
         <Avatar
           isBubble
-          image="data:image/png;base64,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"
+          image={require("../assets/images/user.png")}
         />
       </DropdownButton>
       <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
@@ -134,7 +133,7 @@ function Navbar() {
       <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
         <Avatar
           isBubble
-          image="data:image/png;base64,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"
+          image={require("../assets/images/user.png")}
         />
       </DropdownButton>
       <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
@@ -178,8 +177,8 @@ function Navbar() {
         <div className="navbar-container">
           <Fragment>
             <TopBar zIndex={50} style={{ "background-color": "black" }}
-              leftItem={boolean('With rightItem', true) && rightAction}
-              centerItem={boolean('With centerItem', true) && ((windowSize.current[0] < 1000) ? true : centerContent)}
+              leftItem={rightAction}
+              centerItem={(windowSize.current[0] < 1000) ? true : centerContent}
               rightItem={((windowSize.current[0] < 1000) ? ((getToken() !== null) ? mobileMenuExtended : mobileMenu) : dropdownButton)}
             />
             <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
