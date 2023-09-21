@@ -5,7 +5,6 @@ import { useHistory, Link, Redirect } from "react-router-dom";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
-import Footer from "../Footer";
 import { URLS } from "../../utils/urls";
 import ModalChangePass from '../../components/ModalChangePass';
 
@@ -153,16 +152,16 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Footer />
-
-      {shouldRedirect && (
-        <Redirect
-          to={{
-            pathname: "/changePass",
-            state: { endpointResponse },
-          }}
-        />
-      )}
+      {(shouldRedirect) ? (history.push('/changePass', { data: email })) : (<></>)
+      //  && (
+      //   <Redirect
+      //     to={{
+      //       pathname: "/changePass",
+      //       state: { endpointResponse },
+      //     }}
+      //   />
+      // )
+      }
     </>
   );
 };

@@ -176,7 +176,7 @@ function TravelPreviewer() {
     data.availablePlaces = lugaresRef.current.value;
     data.distancia = distance;
     data.duracion = duration;
-    console.log(data);
+    // console.log(data);
     if (formValidate(data)) {
       data.tripDate = Moment(data.tripDate).format("DD-MM-YYYY");
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips";

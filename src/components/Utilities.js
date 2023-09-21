@@ -39,7 +39,7 @@ export function transformDate(dateObj) {
 
 export function transformDate2(dateObj) {
   const fecha = moment(dateObj);
-  console.log(fecha.format("DD-MM-YYYY"))
+  // console.log(fecha.format("DD-MM-YYYY"))
   return (fecha.format("DD-MM-YYYY"));
 }
 

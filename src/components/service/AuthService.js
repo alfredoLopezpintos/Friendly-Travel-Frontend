@@ -35,3 +35,7 @@ export function resetUserSession() {
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("dateOfExpire");
 }
+
+// export function authorizeChangePassAccess() {
+//   window.localStorage.setItem()
+// }

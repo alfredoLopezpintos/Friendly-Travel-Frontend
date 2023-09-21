@@ -1,18 +1,27 @@
 import axios from "axios";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import configData from "../../configData.json";
-import Footer from "../Footer";
 import './Login.css';
+import {
+  isValidEmail
+} from "../../utils/ValidationFunctions";
+import { URLS } from "../../utils/urls";
+import { useLocation } from 'react-router-dom';
 
 export default function ChangePass() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data, e) => fetchViajes(data, e);
-  const onError = (errors, e) => console.log(errors, e);
-  const redirect = () => redirect2();
   const history = useHistory();
+  const location = useLocation();
+  const receivedData = (location.state?.data) ? location.state?.data : undefined;
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      email: ((receivedData !== undefined) ? receivedData : "")
+    }
+  });
+  const onSubmit = (data, e) => fetchNewPass(data, e);
+  const onError = (errors, e) => console.log(errors, e);
 
   function formValidate(data) {
     if (
@@ -23,7 +32,8 @@ export default function ChangePass() {
     ) {
       toast.error("Debe llenar todos los campos");
       return false;
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
+    // } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(data.email)) {
+    } else if (!isValidEmail(data.email)) {
       toast.error("El formato del correo electrónico no es válido");
       return false;
     } else if (data.newPassword1 !== data.newPassword2) {
@@ -34,25 +44,22 @@ export default function ChangePass() {
     }
   }
   
-  async function fetchViajes(data, e) {
-    // A MANO POR AHORA
-    //data.user = "user";
-    //data.vehicle = "GAB1234";
-    console.log(data);
-    
+  async function fetchNewPass(data, e) {    
     if (formValidate(data)) {
-      const viajesGetEndpoint =
-      configData.AWS_REST_ENDPOINT + "/login/new-password";
+      const viajesGetEndpoint = (receivedData !== undefined) ? URLS.POST_CHANGE_PASS_FIRST_TIME : 
+      URLS.POST_CHANGE_PASS;
+      console.log(viajesGetEndpoint);
+      console.log(receivedData);
+      console.log(data);
       
-      console.log(data)
       const response = 
       toast.promise(axios.post(viajesGetEndpoint, data)
       .then((response) => {
-        console.log(response);
+        console.log(viajesGetEndpoint);
         redirect();
       }).catch((error) => {
         console.error(error);
-        toast.error("La contraseña no cumple con los requisitos");
+        toast.error("La contraseña no cumple con los requisitos"); // FALTAN MENSAJES DE ERROR ACORDE A LA SITUACION
       })
       ,
       {
@@ -72,7 +79,7 @@ export default function ChangePass() {
     }
   }
   
-  async function redirect2(data, e) {
+  async function redirect(data, e) {
     toast.success("Contraseña modificada correctamente");
     history.push("/login");
   }
@@ -96,11 +103,11 @@ export default function ChangePass() {
                   <input
                     {...register("email")}
                     placeholder="info@mailaddress.com"
-                    type="text"
+                    type="email"
                   />
                 </div>
 
-                <label>Contraseña actual</label>
+                <label>Código recibido por correo</label>
                 <div className="form__field">
                   <input
                     {...register("password")}
@@ -142,7 +149,6 @@ export default function ChangePass() {
         </div>
       </div>
       <ToastContainer position="top-center" />
-      <Footer />
     </>
   );
 }
