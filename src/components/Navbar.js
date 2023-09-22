@@ -47,7 +47,6 @@ function Navbar() {
   ) : (<Button
     onClick={() => {
       history.push("/login");
-      console.log(windowSize.current[0])
     }}
     className="SignIn"
   >
@@ -79,7 +78,7 @@ function Navbar() {
         style={{
           ...font.m,
           color: color.midnightGreen,
-          "line-height": "normal"
+          "lineHeight": "normal"
         }}
       >
         <ul className="navRouteContainer">

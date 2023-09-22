@@ -53,6 +53,11 @@ function App() {
             path="/changePass"
             component={ChangePass}
           />
+          {/* <AuthenticatedRoute
+            authed={(getToken() !== null) || ()}
+            path="/changePass" 
+            component={ChangePass}
+          /> */}
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
           <Route path="/statistics" component={Statistics} />
