@@ -35,6 +35,7 @@ import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
 import { useLocation } from 'react-router-dom';
+import ModalInfo from '../ModalReservarViaje';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -45,7 +46,15 @@ export default function ListadoDeViajes() {
   const [cardsNumber, setCardsNumber] = React.useState(5)
   const [visible, setVisible] = React.useState(false);
   const [radioValue, setRadioValue] = React.useState(0);
+  const [displayModal, setDisplayModal] = useState(false);
+  const [result, setResult] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [modalData, setModalData] = useState([]);
   const observer = useRef();
+  const handleClose = () => {
+    setDisplayModal(false);
+  };
 
   const location = useLocation();
   const receivedData = location.state?.data || 
@@ -92,6 +101,7 @@ export default function ListadoDeViajes() {
   const requestConfig = {
     headers: {
       Authorization: JSON.parse(getToken()),
+      "Content-Type": "application/json",
     },
   };
 
@@ -110,11 +120,50 @@ export default function ListadoDeViajes() {
     return res;
   }
 
+  async function handleAppointment(data) {
+    // const appointmentPutEndPoint =
+    // URLS.PUT_RESERVE_TRAVEL + "/" + data.tripId;
+
+    setModalData(data)
+    setModal(true)
+
+    // toast.promise((axios.put(appointmentPutEndPoint, 
+    //   {
+    //     "places": JSON.parse(data.availablePlaces)
+    //   },
+    //   requestConfig)
+    //   .then((response) => {
+    //     console.log(response)
+    //   }
+    //   ).catch((error) => {
+    //     console.error(error);
+    //     if (error.response.data.message == "No fue posible enviar mail de confirmación, pero la reserva se realizó correctamente") {
+    //       console.log("A" + data.availablePlaces)
+    //     }
+    //     toast.error(error.response.data.message)
+    //     // console.error(error.response.data.message);
+    //   }))
+    //   ,
+    //   {
+    //     pending: {
+    //       render() {
+    //         return "Cargando"
+    //       },
+    //       icon: true,
+    //     },
+    //     error: {
+    //       render({ data }) {
+    //         return toast.error('Error')
+    //       }
+    //     }
+    //   });
+  }
+
   async function handleContacto(data) {
-    const viajesGetEndPoint =
+    const contactoGetEndPoint =
       URLS.GET_TRIPS_URL + "/" + data;
 
-    toast.promise((axios.get(viajesGetEndPoint, requestConfig)
+    toast.promise((axios.get(contactoGetEndPoint, requestConfig)
       .then((response) => {
         window.location.replace(
           "https://wa.me/"
@@ -145,8 +194,6 @@ export default function ListadoDeViajes() {
           }
         }
       });
-
-
   }
 
   const { isLoaded } = useJsApiLoader({
@@ -251,6 +298,8 @@ export default function ListadoDeViajes() {
   return (
     <>
       <main>
+      {(modal === true) ? <ModalInfo setModal={setModal} handlePrevModalClose={handleClose}
+                                        data={modalData} /> : <></>}
         <div style={{display: "flex",
     "flex-direction": "column",
     "align-items": "center"}}
@@ -280,7 +329,7 @@ export default function ListadoDeViajes() {
               format: value => new Date(value).toLocaleDateString(),
             }}
             stepperProps={{
-              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : ""),
+              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : "1"),
               min: 1,
               max: 4,
               title: 'Elija la cantidad de asientos que desea reservar',
@@ -378,7 +427,7 @@ export default function ListadoDeViajes() {
                                   <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
                                 </li>
                                 <li>
-                                  <Button onClick={() => handleContacto(user.tripId)} status="green"> Reservar </Button>
+                                  <Button onClick={() => handleAppointment(user)} status="green"> Reservar </Button>
                                 </li>
                               </ul>) : (<br />)
                           }
@@ -407,7 +456,7 @@ export default function ListadoDeViajes() {
                                   <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
                                 </li>
                                 <li>
-                                  <Button onClick={() => handleContacto(user.tripId)} status="green"> Reservar </Button>
+                                  <Button onClick={() => handleAppointment(user)} status="green"> Reservar </Button>
                                 </li>
                               </ul>) : (<br />)
                           }
