@@ -14,6 +14,8 @@ const AutoCompleteUy = ({
   error,
   defaultValue,
   embeddedInSearchForm,
+  onClickItem,
+  onBlur,
 }) => {
   const [items, setItems] = useState([]);
   const [isSearching, setSearching] = useState(false);
@@ -65,6 +67,7 @@ const AutoCompleteUy = ({
   
           return {
             id: prediction.place_id,
+            description: prediction.description,
             label: main_text,
             labelInfo: secondary_text,
             terms: prediction.terms,
@@ -96,7 +99,7 @@ const AutoCompleteUy = ({
       renderNoResults={() => 'No se encontraron resultados'}
       renderEmptySearch={renderEmptySearch}
       onSelect={onSelect}
-      getItemValue={(item) => item.id}
+      getItemValue={onClickItem}
       renderQuery={(item) => item.label}
       error={error}
       maxItems={5}
@@ -104,6 +107,7 @@ const AutoCompleteUy = ({
       selectedItemStatus={ItemStatus.DEFAULT}
       inputAddon={inputAddon}
       embeddedInSearchForm={embeddedInSearchForm}
+      onBlur={onBlur}
     />
   );
 };

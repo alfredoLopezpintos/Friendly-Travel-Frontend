@@ -70,7 +70,7 @@ export function formValidate(origin, destination, date, price, seats) {
     date === undefined ||
     origin === undefined ||
     destination === undefined) {
-    toast.error("La busqueda debe tener por lo menos origen, destino y fecha");
+    toast.error("La búsqueda debe tener por lo menos origen, destino y fecha");
     return false;
   } else if (!isNumber(price) && price !== "" && price !== undefined) {
     toast.error("Precio incorrecto");
