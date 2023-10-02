@@ -52,8 +52,8 @@ export default function RegistrarVehiculo() {
   async function fetchViajes(data, e) {
     if (formValidate(data)) {
       const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/vehicles";
-      console.log(requestConfig)
-      console.log(data)
+      // console.log(requestConfig)
+      // console.log(data)
 
         toast.promise(axios.post(viajesGetEndpoint, data, requestConfig)
         .then((response) => {

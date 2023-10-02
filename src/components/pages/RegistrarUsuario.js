@@ -44,7 +44,7 @@ export default function RegistrarUsuario() {
       toast.error("Fecha inválida");
       return false;
     } else if (moment().diff(data.birthDate, "years") < 18) {
-      console.log(moment().diff(data.birthDate, "years") < 18);
+      // console.log(moment().diff(data.birthDate, "years") < 18);
       toast.error("El usuario debe ser mayor de edad");
       return false;
     } else if (!isValidEmail(data.email)) {
@@ -90,7 +90,7 @@ export default function RegistrarUsuario() {
   }
 
   function postData(data, e) {
-    console.log(data);
+    // console.log(data);
     if (formValidate(data)) {
       toast.promise(
         uploadImageAndRegisterUser(data),
@@ -120,8 +120,8 @@ export default function RegistrarUsuario() {
   };
 
   async function redirect(data, e) {
-    toast.success("Usuario creado correctamente.");
-    history.push("/");
+    toast.success("Usuario creado correctamente");
+    history.push("/login");
   }
 
   return (

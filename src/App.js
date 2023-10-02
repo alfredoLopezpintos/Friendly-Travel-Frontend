@@ -25,7 +25,6 @@ import { toast } from "react-toastify";
 import moment from 'moment'
 
 function App() {
-
   const refreshToken = () => {
     if(getExpire() !== null) {
       if(moment().isSameOrAfter(moment(getExpire()))) {
@@ -46,13 +45,19 @@ function App() {
 
   return (
     <>
+
       <Router>
-        <Navbar />
+                <Navbar />
         <Switch>
           <Route
             path="/changePass"
             component={ChangePass}
           />
+          {/* <AuthenticatedRoute
+            authed={(getToken() !== null) || ()}
+            path="/changePass" 
+            component={ChangePass}
+          /> */}
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
           <Route path="/statistics" component={Statistics} />

@@ -30,7 +30,7 @@ export function useImageUploader() {
   }
 
   async function removeImage(e) {
-    console.log("Remove clicked");
+    // console.log("Remove clicked");
     setImage("");
   }
 
@@ -53,12 +53,12 @@ export function useImageUploader() {
         array.push(binary.charCodeAt(i));
       }
       let blobData = new Blob([new Uint8Array(array)], { type: "image/*" });
-      console.log("Uploading to: ", response.data.object.uploadUrl);
+      // console.log("Uploading to: ", response.data.object.uploadUrl);
       const result = await fetch(response.data.object.uploadUrl, {
         method: response.data.object.uploadMethod,
         body: blobData,
       });
-      console.log("Result: ", result);
+      // console.log("Result: ", result);
       // Final URL for the user doesn't need the query string params
       setUploadURL(response.data.object.uploadURL);
     } catch (error) {
