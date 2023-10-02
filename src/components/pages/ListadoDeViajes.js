@@ -262,6 +262,7 @@ export default function ListadoDeViajes() {
             initialTo={ receivedData.hasta}
             disabledFrom={false}
             disabledTo={false}
+            showVehicleField={false}
             autocompleteFromPlaceholder="Desde"
             autocompleteToPlaceholder="Hasta"
             renderDatePickerComponent={props => <DatePicker {...props}
