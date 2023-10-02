@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMediaQuery } from 'react-responsive';
 import { useHistory } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import configData from "../../configData.json";
@@ -22,6 +22,7 @@ import { URLS } from "../../utils/urls";
 import { AutoCompleteUy } from "../AutoCompleteUy";
 import { months, weekdaysLong, weekdaysShort } from "../DatePickerProps.js";
 import Footer from "../Footer";
+import MapView from '../MapView';
 import { formValidate } from "../Utilities";
 import { getToken } from "../service/AuthService";
 import "./Login.css";
@@ -314,8 +315,12 @@ function TravelPreviewer() {
     if (distance && vehiculo.length > 0) {
       const distanceInKilometers = parseFloat(distance.replace(" km", "").replace(",", ".")); // Parse the distance
       const tripCost = (distanceInKilometers / 12) * nafta;
+      
+      
+      // const suggestedPrice = tripCost / (formData.STEPPER + 1); //Comentado porque al actualizar la cantidad de asientos, se reinicia el mapa
+
       // Calculate the cost based on the tripCost and the number of passengers
-      const suggestedPrice = tripCost / (formData.STEPPER + 1);
+      const suggestedPrice = tripCost / 4;
 
       // Update the state with the suggested price
       setSugerido(`Sugerido: $ ${suggestedPrice.toFixed(0)}`);
@@ -399,21 +404,7 @@ function TravelPreviewer() {
                 {SearchFormComponent}
               </TopSection>
               <BottomSection>
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={center}
-                  zoom={7}
-                  options={{
-                    zoomControl: true,
-                    streetViewControl: false,
-                    mapTypeControl: false,
-                    fullscreenControl: false,
-                  }}
-                >
-                  {directionsResponse && (
-                    <DirectionsRenderer directions={directionsResponse} />
-                  )}
-                </GoogleMap>
+                <MapView directionsResponse={directionsResponse} />
               </BottomSection>
             </>
           ) : (
@@ -423,26 +414,12 @@ function TravelPreviewer() {
                   {SearchFormComponent}
                 </Modal>
               </MapContainer>
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={7}
-                options={{
-                  zoomControl: true,
-                  streetViewControl: false,
-                  mapTypeControl: false,
-                  fullscreenControl: false,
-                }}
-              >
-                {directionsResponse && (
-                  <DirectionsRenderer directions={directionsResponse} />
-                )}
-              </GoogleMap>
+              <MapView 
+              directionsResponse={directionsResponse} />
             </>
           )}
         </>
       )}
-      <ToastContainer position="top-center" />
       <Footer />
     </>
   );
