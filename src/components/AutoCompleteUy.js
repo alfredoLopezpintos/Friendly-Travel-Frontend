@@ -64,13 +64,16 @@ const AutoCompleteUy = ({
         const mappedPredictions = filteredPredictions.map((prediction) => {
           const main_text = prediction.structured_formatting.main_text;
           const secondary_text = prediction.structured_formatting.secondary_text;
+          const city_text = prediction.terms[prediction.terms.length - 3]?.value;
+          const state_text = prediction.terms[prediction.terms.length - 2]?.value;
   
           return {
             id: prediction.place_id,
             description: prediction.description,
             label: main_text,
             labelInfo: secondary_text,
-            terms: prediction.terms,
+            city: city_text,
+            state: state_text,
           };
         });
         setItems(mappedPredictions);
