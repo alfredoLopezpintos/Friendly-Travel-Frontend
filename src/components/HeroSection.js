@@ -38,6 +38,7 @@ function HeroSection() {
         <SearchForm
               onSubmit={handleFormSubmit}
               className="form-inline"
+              showVehicleField={false}
               initialFrom=""
               initialTo=""
               disabledFrom={false}
