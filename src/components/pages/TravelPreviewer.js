@@ -200,6 +200,7 @@ function TravelPreviewer() {
       destination: data.AUTOCOMPLETE_TO !== undefined ? data.AUTOCOMPLETE_TO.item : "",
       tripDate: data.DATEPICKER,
       availablePlaces: data.STEPPER,
+      price: data.PRICE,
       distance: distance,
       duration: duration,
       vehicle: data.AUTOCOMPLETE_VEHICLE !== undefined ? data.AUTOCOMPLETE_VEHICLE.item.labelInfo : "",
