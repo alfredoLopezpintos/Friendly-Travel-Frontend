@@ -61,7 +61,7 @@ function HeroSection() {
                 format: value => new Date(value).toLocaleDateString(),
               }}
               stepperProps={{
-                defaultValue: "",
+                defaultValue: 1,
                 min: 1,
                 max: 4,
                 title: 'Elija la cantidad de asientos que desea reservar',
@@ -74,7 +74,7 @@ function HeroSection() {
                 defaultValue: "",
                 min: 0,
                 title: 'Precio',
-                format: value => `${value} UYU`,
+                format: value => `$ ${value}`,
                 confirmLabel: 'Aceptar',
               }}
             />

@@ -284,7 +284,7 @@ export default function ListadoDeViajes() {
               format: value => new Date(value).toLocaleDateString(),
             }}
             stepperProps={{
-              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : ""),
+              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : 1),
               min: 1,
               max: 4,
               title: 'Elija la cantidad de asientos que desea reservar',
@@ -297,7 +297,7 @@ export default function ListadoDeViajes() {
               defaultValue: ((receivedData.precio !== undefined) ? receivedData.precio : ""),
               min: 0,
               title: 'Precio',
-              format: value => `${value} UYU`,
+              format: value => `$ ${value}`,
               confirmLabel: 'Aceptar',
             }}
           />
@@ -369,7 +369,7 @@ export default function ListadoDeViajes() {
                               <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
-                          price={`${user.price} UYU`}
+                          price={`$ ${user.price}`}
                           originalPrice={{
                             label: 'availablePlaces',
                             value: `${user.availablePlaces} asiento(s)`,
@@ -398,7 +398,7 @@ export default function ListadoDeViajes() {
                               <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
-                          price={`${user.price} UYU`}
+                          price={`$ ${user.price}`}
                           originalPrice={{
                             label: 'availablePlaces',
                             value: `${user.availablePlaces} asiento(s)`,
