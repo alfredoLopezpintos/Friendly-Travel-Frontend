@@ -66,11 +66,13 @@ export default function ListadoDeViajes() {
   }, [])
 
   const handleFormSubmit = (formValues) => {
-    receivedData.desde = (formValues.AUTOCOMPLETE_FROM !== undefined) ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : receivedData.desde;
-    receivedData.hasta = (formValues.AUTOCOMPLETE_TO !== undefined) ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : receivedData.hasta;
+    receivedData.desde = (formValues.AUTOCOMPLETE_FROM !== undefined) ? formValues.AUTOCOMPLETE_FROM.item.city : receivedData.desde;
+    receivedData.hasta = (formValues.AUTOCOMPLETE_TO !== undefined) ? formValues.AUTOCOMPLETE_TO.item.city : receivedData.hasta;
     receivedData.fecha = (formValues.DATEPICKER !== undefined) ? formValues.DATEPICKER : receivedData.fecha;
     receivedData.asientos = (formValues.STEPPER !== undefined) ? formValues.STEPPER : receivedData.asientos;
     receivedData.precio = (formValues.PRICE !== undefined) ? formValues.PRICE : receivedData.precio;
+
+    console.log(receivedData)
 
     fetchViajes(receivedData.desde,
       receivedData.hasta,
@@ -362,8 +364,8 @@ export default function ListadoDeViajes() {
                           href={'#'}
                           itinerary={
                             <Itinerary>
-                              <Address label={user.origin} subLabel={user.origin} />
-                              <Address label={user.destination} subLabel={user.destination} />
+                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
                           price={`${user.price} UYU`}
@@ -391,8 +393,8 @@ export default function ListadoDeViajes() {
                           href={'#'}
                           itinerary={
                             <Itinerary>
-                              <Address label={user.origin} subLabel={user.origin} />
-                              <Address label={user.destination} subLabel={user.destination} />
+                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
                           price={`${user.price} UYU`}
