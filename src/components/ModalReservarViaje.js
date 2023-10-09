@@ -47,11 +47,14 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
                 handleClose()
             }
             ).catch((error) => {
-              console.error(error);
+            //   console.error(error);
               if (error.response.data.message == "No fue posible enviar mail de confirmación, pero la reserva se realizó correctamente") {
-                console.log("A" + data.availablePlaces)
+                // console.log("A" + data.availablePlaces)
+                toast.warning(error.response.data.message)
+                handleClose()
+              } else {
+                toast.error(error.response.data.message)
               }
-              toast.error(error.response.data.message)
               // console.error(error.response.data.message);
             }))
             ,
