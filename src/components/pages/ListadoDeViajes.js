@@ -123,42 +123,8 @@ export default function ListadoDeViajes() {
   }
 
   async function handleAppointment(data) {
-    // const appointmentPutEndPoint =
-    // URLS.PUT_RESERVE_TRAVEL + "/" + data.tripId;
-
     setModalData(data)
     setModal(true)
-
-    // toast.promise((axios.put(appointmentPutEndPoint, 
-    //   {
-    //     "places": JSON.parse(data.availablePlaces)
-    //   },
-    //   requestConfig)
-    //   .then((response) => {
-    //     console.log(response)
-    //   }
-    //   ).catch((error) => {
-    //     console.error(error);
-    //     if (error.response.data.message == "No fue posible enviar mail de confirmación, pero la reserva se realizó correctamente") {
-    //       console.log("A" + data.availablePlaces)
-    //     }
-    //     toast.error(error.response.data.message)
-    //     // console.error(error.response.data.message);
-    //   }))
-    //   ,
-    //   {
-    //     pending: {
-    //       render() {
-    //         return "Cargando"
-    //       },
-    //       icon: true,
-    //     },
-    //     error: {
-    //       render({ data }) {
-    //         return toast.error('Error')
-    //       }
-    //     }
-    //   });
   }
 
   async function handleContacto(data) {
