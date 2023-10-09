@@ -75,11 +75,13 @@ export default function ListadoDeViajes() {
   }, [])
 
   const handleFormSubmit = (formValues) => {
-    receivedData.desde = (formValues.AUTOCOMPLETE_FROM !== undefined) ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : receivedData.desde;
-    receivedData.hasta = (formValues.AUTOCOMPLETE_TO !== undefined) ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : receivedData.hasta;
+    receivedData.desde = (formValues.AUTOCOMPLETE_FROM !== undefined) ? formValues.AUTOCOMPLETE_FROM.item.city : receivedData.desde;
+    receivedData.hasta = (formValues.AUTOCOMPLETE_TO !== undefined) ? formValues.AUTOCOMPLETE_TO.item.city : receivedData.hasta;
     receivedData.fecha = (formValues.DATEPICKER !== undefined) ? formValues.DATEPICKER : receivedData.fecha;
     receivedData.asientos = (formValues.STEPPER !== undefined) ? formValues.STEPPER : receivedData.asientos;
     receivedData.precio = (formValues.PRICE !== undefined) ? formValues.PRICE : receivedData.precio;
+
+    console.log(receivedData)
 
     fetchViajes(receivedData.desde,
       receivedData.hasta,
@@ -179,6 +181,7 @@ export default function ListadoDeViajes() {
       }
       ).catch((error) => {
         console.error(error);
+        toast.error(error.response.data.message);
       }))
       ,
       {
@@ -311,6 +314,7 @@ export default function ListadoDeViajes() {
             initialTo={ receivedData.hasta}
             disabledFrom={false}
             disabledTo={false}
+            showVehicleField={false}
             autocompleteFromPlaceholder="Desde"
             autocompleteToPlaceholder="Hasta"
             renderDatePickerComponent={props => <DatePicker {...props}
@@ -329,7 +333,7 @@ export default function ListadoDeViajes() {
               format: value => new Date(value).toLocaleDateString(),
             }}
             stepperProps={{
-              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : "1"),
+              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : 1),
               min: 1,
               max: 4,
               title: 'Elija la cantidad de asientos que desea reservar',
@@ -342,7 +346,7 @@ export default function ListadoDeViajes() {
               defaultValue: ((receivedData.precio !== undefined) ? receivedData.precio : ""),
               min: 0,
               title: 'Precio',
-              format: value => `${value} UYU`,
+              format: value => `$ ${value}`,
               confirmLabel: 'Aceptar',
             }}
           />
@@ -410,11 +414,11 @@ export default function ListadoDeViajes() {
                           href={'#'}
                           itinerary={
                             <Itinerary>
-                              <Address label={user.origin} subLabel={user.origin} />
-                              <Address label={user.destination} subLabel={user.destination} />
+                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
-                          price={`${user.price} UYU`}
+                          price={`$ ${user.price}`}
                           originalPrice={{
                             label: 'availablePlaces',
                             value: `${user.availablePlaces} asiento(s)`,
@@ -439,11 +443,11 @@ export default function ListadoDeViajes() {
                           href={'#'}
                           itinerary={
                             <Itinerary>
-                              <Address label={user.origin} subLabel={user.origin} />
-                              <Address label={user.destination} subLabel={user.destination} />
+                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
-                          price={`${user.price} UYU`}
+                          price={`$ ${user.price}`}
                           originalPrice={{
                             label: 'availablePlaces',
                             value: `${user.availablePlaces} asiento(s)`,

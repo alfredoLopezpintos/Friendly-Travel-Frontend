@@ -17,8 +17,8 @@ function HeroSection() {
 
   const handleFormSubmit = (formValues) => {
  
-    var dataToSend = { desde: ( formValues.AUTOCOMPLETE_FROM !== undefined ? formValues.AUTOCOMPLETE_FROM.item.terms.at(-3).value : "" ),
-                      hasta: ( formValues.AUTOCOMPLETE_TO !== undefined ? formValues.AUTOCOMPLETE_TO.item.terms.at(-3).value : "" ),
+    var dataToSend = { desde: ( formValues.AUTOCOMPLETE_FROM !== undefined ? formValues.AUTOCOMPLETE_FROM.item.city : "" ),
+                      hasta: ( formValues.AUTOCOMPLETE_TO !== undefined ? formValues.AUTOCOMPLETE_TO.item.city : "" ),
                       fecha: formValues.DATEPICKER,
                       asientos: formValues.STEPPER,
                       precio: formValues.PRICE }
@@ -38,6 +38,7 @@ function HeroSection() {
         <SearchForm
               onSubmit={handleFormSubmit}
               className="form-inline"
+              showVehicleField={false}
               initialFrom=""
               initialTo=""
               disabledFrom={false}
@@ -60,7 +61,7 @@ function HeroSection() {
                 format: value => new Date(value).toLocaleDateString(),
               }}
               stepperProps={{
-                defaultValue: "",
+                defaultValue: 1,
                 min: 1,
                 max: 4,
                 title: 'Elija la cantidad de asientos que desea reservar',
@@ -73,7 +74,7 @@ function HeroSection() {
                 defaultValue: "",
                 min: 0,
                 title: 'Precio',
-                format: value => `${value} UYU`,
+                format: value => `$ ${value}`,
                 confirmLabel: 'Aceptar',
               }}
             />
