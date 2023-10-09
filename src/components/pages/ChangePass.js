@@ -48,14 +48,12 @@ export default function ChangePass() {
     if (formValidate(data)) {
       const changePassPostEndpoint = (receivedData !== undefined) ? URLS.POST_CHANGE_PASS_FIRST_TIME : 
       URLS.POST_CHANGE_PASS;
-      console.log(changePassPostEndpoint);
-      console.log(receivedData);
-      console.log(data);
+      // console.log(data);
       
       const response = 
       toast.promise(axios.post(changePassPostEndpoint, data)
       .then((response) => {
-        console.log(changePassPostEndpoint);
+        // console.log(changePassPostEndpoint);
         redirect();
       }).catch((error) => {
         console.error(error);
