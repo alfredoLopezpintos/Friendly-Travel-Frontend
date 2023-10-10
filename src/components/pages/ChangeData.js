@@ -12,19 +12,21 @@ import {
   } from "../../utils/ValidationFunctions";
 import { getToken, getUser } from "../service/AuthService";
 import { URLS } from "../../utils/urls";
+import ModalDeleteData from '../ModalDeleteData';
 
 
 export function ChangeData() {
 
   const history = useHistory();
-  const [email, setEmail] = useState('');
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [displayModal, setDisplayModal] = useState(false);
-
+  const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
 
   const handleClose = () => {
     setDisplayModal(false);
@@ -37,7 +39,7 @@ export function ChangeData() {
     },
   };
 
-  async function handleHistory() {
+  async function handlePass() {
     // history.push("/changePass");
     const email = getUser()
 
@@ -72,6 +74,14 @@ export function ChangeData() {
     }
   };
 
+  const handleClose2 = () => {
+    setShowModalDelete(false);
+  };
+
+  function handleDeleteData() {
+    setShowModalDelete(true)
+  }
+
   return (
     <>
       {(success === true) ? (<ModalInfo setSuccess={setSuccess} handlePrevModalClose={handleClose} message={result} errorMessage={errorMessage} />) :
@@ -87,16 +97,24 @@ export function ChangeData() {
                   <Button className="btns"
                     buttonStyle="btn--test"
                     buttonSize="btn--large"
-                    onClick={handleHistory}>
+                    onClick={handlePass}>
                     Cambiar contraseña
                   </Button>
                   <br />
                   <ModalRegistrarVehiculo />
-                  <div className="divider"></div>
+                  <div className="divider" />
                   <h2>Datos de usuario</h2>
+                  <br />
+                  <Button className="btns"
+                    buttonStyle="btn--test"
+                    buttonSize="btn--large"
+                    onClick={handleDeleteData}>
+                    Borrar datos de usuario
+                  </Button>
                 </div>
               </div>
             </div>
+            {(showModalDelete === true) ? <ModalDeleteData setModal={setModal2} handlePrevModalClose={handleClose2} /> : <></>}
             <Footer />
           </>
         )}

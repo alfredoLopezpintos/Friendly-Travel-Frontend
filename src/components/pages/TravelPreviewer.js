@@ -260,8 +260,8 @@ function TravelPreviewer() {
   }
 
   function calculateRoute(e) {
-    console.log("Desde: " + originForm);
-    console.log("Hasta: " + destinationForm);
+    // console.log("Desde: " + originForm);
+    // console.log("Hasta: " + destinationForm);
     e?.preventDefault();
     if (originForm === "" || destinationForm === "") {
       return;

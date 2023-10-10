@@ -81,7 +81,7 @@ export default function ListadoDeViajes() {
     receivedData.asientos = (formValues.STEPPER !== undefined) ? formValues.STEPPER : receivedData.asientos;
     receivedData.precio = (formValues.PRICE !== undefined) ? formValues.PRICE : receivedData.precio;
 
-    console.log(receivedData)
+    // console.log(receivedData)
 
     fetchViajes(receivedData.desde,
       receivedData.hasta,
@@ -94,11 +94,6 @@ export default function ListadoDeViajes() {
     setRadioValue((event.target).value);
     filterTravel((event.target).value)
   };
-
-  const handleBuscar = () => {
-    handlePrevViajes()
-    setRadioValue(0)
-  }
 
   const requestConfig = {
     headers: {
