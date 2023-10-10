@@ -38,15 +38,13 @@ export default function ModalDeleteData({ setModal, handlePrevModalClose }) {
     const handleDelete = async () => {
 
         const deleteUserEndPoint =
-        URLS.DELETE_USER + "/" + getUser().replace(/@/g, '%40');
+        // URLS.DELETE_USER + "/" + getUser().replace(/@/g, '%40');
+        URLS.DELETE_USER + "/" + getUser();
 
         toast.promise((axios.delete(deleteUserEndPoint, requestConfig)
-            .then((response) => {
-                console.log(response)
-                toast.success("Datos eliminados con éxito")
+            .then(() => {
                 resetUserSession();
-                window.location.reload(false);
-                history.push("/");
+                history.push('/', { data: { message: "Datos eliminados con éxito" } });
             }
             ).catch((error) => {
                 console.error(error);
@@ -97,7 +95,7 @@ export default function ModalDeleteData({ setModal, handlePrevModalClose }) {
                             "textAlign": "center",
                             "userSelect": "none"
                         }}>
-                            {'¿Desea borrar los datos de usuario?'}
+                            {'¿Desea eliminar la cuenta?'}
                             <br />
                             {'Esta acción es permanente y no se puede deshacer.'}
                         </h2>

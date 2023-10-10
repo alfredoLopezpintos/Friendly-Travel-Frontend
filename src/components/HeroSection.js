@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
 import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
@@ -7,13 +7,19 @@ import { AutoCompleteUy } from "../components/AutoCompleteUy";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import "./HeroSection.css";
 import { formValidate } from "../components/Utilities";
+import { useLocation } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 function HeroSection() {
   const history = useHistory();
 
-  // const handleHistory = () => {
-  //   history.push("/viajes");
-  // };
+  const location = useLocation();
+  const receivedData = location.state?.data || 
+                          { message: undefined };
+
+  useEffect(() => {
+    toast.info(receivedData.message)
+  }, []);
 
   const handleFormSubmit = (formValues) => {
  

@@ -109,7 +109,7 @@ export function ChangeData() {
                     buttonStyle="btn--test"
                     buttonSize="btn--large"
                     onClick={handleDeleteData}>
-                    Borrar datos de usuario
+                    Eliminar cuenta
                   </Button>
                 </div>
               </div>
