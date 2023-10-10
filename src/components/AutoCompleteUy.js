@@ -51,6 +51,7 @@ const AutoCompleteUy = ({
     const options = {
       input: query,
       componentRestrictions: { country: 'uy' }, // 'uy' is the ISO code for Uruguay
+      language: 'es',
       types: ['street_address','administrative_area_level_3','locality'], // Restrict the results to cities
     };
   
