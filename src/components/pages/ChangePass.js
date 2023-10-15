@@ -55,7 +55,6 @@ export default function ChangePass() {
         redirect();
       }).catch((error) => {
         console.error(error);
-        console.error(data);
         toast.error(error.response.data.message); // FALTAN MENSAJES DE ERROR ACORDE A LA SITUACION
       })
       ,
