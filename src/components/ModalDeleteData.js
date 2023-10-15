@@ -44,7 +44,7 @@ export default function ModalDeleteData({ setModal, handlePrevModalClose }) {
         toast.promise((axios.delete(deleteUserEndPoint, requestConfig)
             .then(() => {
                 resetUserSession();
-                history.push('/', { data: { message: "Datos eliminados con éxito" } });
+                history.push('/', { data: { message: "Cuenta eliminada con éxito" } });
             }
             ).catch((error) => {
                 console.error(error);
@@ -95,7 +95,7 @@ export default function ModalDeleteData({ setModal, handlePrevModalClose }) {
                             "textAlign": "center",
                             "userSelect": "none"
                         }}>
-                            {'¿Desea eliminar la cuenta?'}
+                            {'¿Está seguro que desea eliminar la cuenta?'}
                             <br />
                             {'Esta acción es permanente y no se puede deshacer.'}
                         </h2>
