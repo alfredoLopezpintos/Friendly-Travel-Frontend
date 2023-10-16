@@ -60,7 +60,7 @@ export function ChangeData() {
           setErrorMessage(false)
           if (responseAddVehicle.data.message === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') {
             setSuccess(true);
-            setResult("Se envió un correo con las instrucciones para cambiar su contraseña");
+            setResult("Se envió un correo con el código necesario para cambiar su contraseña");
           }
           setIsSubmitting(false);
           setIsFormSubmitted(true);
