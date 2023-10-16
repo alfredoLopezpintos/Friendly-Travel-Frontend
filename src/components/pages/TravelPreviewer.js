@@ -86,6 +86,7 @@ function TravelPreviewer() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: configData.MAPS_KEY,
     libraries,
+    language: "es",
   });
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
