@@ -26,7 +26,9 @@ const AutoCompleteUy = ({
   const loadGoogleMapsScript = () => {
     if (!window.google) {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&language=es`;
+      script.defer = true;
+      script.async = true;
       script.onload = initializeAutocompleteService;
       document.head.appendChild(script);
     } else {
@@ -45,14 +47,12 @@ const AutoCompleteUy = ({
   const searchForItems = (query) => {
     setSearching(true);
   
-    const autocompleteService = new window.google.maps.places.AutocompleteService();
-  
     // Set componentRestrictions to Uruguay
     const options = {
       input: query,
       componentRestrictions: { country: 'uy' }, // 'uy' is the ISO code for Uruguay
       language: 'es',
-      types: ['street_address','administrative_area_level_3','locality'], // Restrict the results to cities
+      types: ['street_address','locality', 'political'], // Restrict the results to cities
     };
   
     autocompleteService.getPlacePredictions(options, (predictions, status) => {
@@ -65,8 +65,12 @@ const AutoCompleteUy = ({
         const mappedPredictions = filteredPredictions.map((prediction) => {
           const main_text = prediction.structured_formatting.main_text;
           const secondary_text = prediction.structured_formatting.secondary_text;
-          const city_text = prediction.terms[prediction.terms.length - 3]?.value;
-          const state_text = prediction.terms[prediction.terms.length - 2]?.value;
+          const city_text = prediction.terms.length >= 3
+          ? prediction.terms[prediction.terms.length - 3]?.value
+          : prediction.terms[prediction.terms.length - 2]?.value;
+          const state_text = prediction.terms.length >= 2
+          ? prediction.terms[prediction.terms.length - 2]?.value
+          : prediction.terms[prediction.terms.length - 1]?.value;
   
           return {
             id: prediction.place_id,

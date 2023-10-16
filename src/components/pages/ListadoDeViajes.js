@@ -168,6 +168,7 @@ export default function ListadoDeViajes() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: configData.MAPS_KEY,
     libraries: ["places"],
+    language: "es",
   });
 
   const handleToggle = (value) => () => {
