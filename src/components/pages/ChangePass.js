@@ -48,16 +48,14 @@ export default function ChangePass() {
     if (formValidate(data)) {
       const changePassPostEndpoint = (receivedData !== undefined) ? URLS.POST_CHANGE_PASS_FIRST_TIME : 
       URLS.POST_CHANGE_PASS;
-      // console.log(data);
       
       const response = 
       toast.promise(axios.post(changePassPostEndpoint, data)
-      .then((response) => {
-        // console.log(changePassPostEndpoint);
+      .then(() => {
         redirect();
       }).catch((error) => {
         console.error(error);
-        toast.error("La contraseña no cumple con los requisitos"); // FALTAN MENSAJES DE ERROR ACORDE A LA SITUACION
+        toast.error(error.response.data.message); // FALTAN MENSAJES DE ERROR ACORDE A LA SITUACION
       })
       ,
       {
@@ -108,7 +106,7 @@ export default function ChangePass() {
                 <label>Código recibido por correo</label>
                 <div className="form__field">
                   <input
-                    {...register("password")}
+                    {...register("code")}
                     placeholder="••••••••••••"
                     type="password"
                   />
