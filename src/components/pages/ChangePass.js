@@ -22,6 +22,7 @@ export default function ChangePass() {
   });
   const onSubmit = (data, e) => fetchNewPass(data, e);
   const onError = (errors, e) => console.log(errors, e);
+  const changePassFirstTime = (receivedData !== undefined) ? register("password") : register("code")
 
   function formValidate(data) {
     if (
@@ -106,7 +107,7 @@ export default function ChangePass() {
                 <label>Código recibido por correo</label>
                 <div className="form__field">
                   <input
-                    {...register("code")}
+                    {...changePassFirstTime}
                     placeholder="••••••••••••"
                     type="password"
                   />
