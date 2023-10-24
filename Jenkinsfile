@@ -28,7 +28,9 @@ pipeline {
             steps {
                 script{
                     data="""
-                    {"AWS_REST_ENDPOINT":"${aws_rest_endpoint}/${env.ENV_NAME}"}
+                    {"AWS_REST_ENDPOINT":"${aws_rest_endpoint}/${env.ENV_NAME}",
+                    "MAPS_KEY": "AIzaSyD_KubkgZ_9WoPEAX0mN-Wa9dEkfxgUzbs",
+                    "PRECIO_NAFTA": 74.88}
                     """
                     writeFile(file: 'src/configData.json', text: data)
                 }
