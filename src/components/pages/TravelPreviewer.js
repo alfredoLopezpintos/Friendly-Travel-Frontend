@@ -423,7 +423,6 @@ function TravelPreviewer() {
           )}
         </>
       )}
-      <Footer />
     </>
   );
 }

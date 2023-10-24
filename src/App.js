@@ -47,7 +47,7 @@ function App() {
     <>
 
       <Router>
-                <Navbar />
+        <Navbar />
         <Switch>
           <Route
             path="/changePass"

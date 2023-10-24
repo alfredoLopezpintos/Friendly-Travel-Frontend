@@ -4,8 +4,7 @@ import { DirectionsRenderer, GoogleMap } from "@react-google-maps/api";
 function MapView({ directionsResponse }) {
   const containerStyle = {
     width: "100%",
-    height: "700px",
-    position: "fixed",
+    height: "92.64vh",
   };
 
   return (
