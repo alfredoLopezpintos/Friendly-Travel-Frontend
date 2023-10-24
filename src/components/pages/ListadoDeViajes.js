@@ -34,11 +34,12 @@ import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import ModalInfo from '../ModalReservarViaje';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
+  const history = useHistory();
   const [viajes, setViajes] = useState([]);
   const [viajesSorted, setViajesSorted] = useState([]);
   const [prevViajes, setPrevViajes] = React.useState([])
@@ -128,17 +129,10 @@ export default function ListadoDeViajes() {
 
     toast.promise((axios.get(contactoGetEndPoint, requestConfig)
       .then((response) => {
-        window.location.replace(
-          "https://wa.me/"
-          + response.data.phoneNumber
-          + "?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"
-          + "de%20la%20fecha%20"
-          + response.data.tripDate
-          + "%20desde%20"
-          + response.data.origin
-          + "%20a%20"
-          + response.data.destination
-        );
+        history.push('/redirecting', { data: { phone: response.data.phoneNumber,
+                                                date: response.data.tripDate,
+                                                origin: response.data.origin,
+                                                destination: response.data.destination } });
       }
       ).catch((error) => {
         console.error(error);
