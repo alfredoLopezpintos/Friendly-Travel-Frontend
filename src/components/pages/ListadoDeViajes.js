@@ -129,10 +129,20 @@ export default function ListadoDeViajes() {
 
     toast.promise((axios.get(contactoGetEndPoint, requestConfig)
       .then((response) => {
-        history.push('/redirecting', { data: { phone: response.data.phoneNumber,
-                                                date: response.data.tripDate,
-                                                origin: response.data.origin,
-                                                destination: response.data.destination } });
+        const data = {
+          phone: response.data.phoneNumber,
+          date: response.data.tripDate,
+          origin: response.data.origin,
+          destination: response.data.destination
+        };
+        
+        const queryString = Object.keys(data)
+          .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
+          .join('&');
+        
+        const redirectUrl = `/redirecting?${queryString}`;
+        
+        window.open(redirectUrl, '_blank');
       }
       ).catch((error) => {
         console.error(error);

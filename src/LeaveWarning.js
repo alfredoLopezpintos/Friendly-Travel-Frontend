@@ -6,14 +6,17 @@ import { ArrowIcon } from '@rodrisu/friendly-ui/build/icon/arrowIcon';
 import { color } from '@rodrisu/friendly-ui/build/_utils/branding';
 
 const LeaveWarning = () => {
-  const location = useLocation();
-  const receivedData = location.state?.data ||
-    {};
   const history = useHistory();
 
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const phone = urlSearchParams.get('phone');
+  const date = urlSearchParams.get('date');
+  const origin = urlSearchParams.get('origin');
+  const destination = urlSearchParams.get('destination');
+
   useEffect(() => {
-    if ((receivedData.phone === undefined) || (receivedData.date === undefined) ||
-      (receivedData.origin === undefined) || (receivedData.destination === undefined)) {
+    if ((phone === undefined) || (date === undefined) ||
+      (origin === undefined) || (destination === undefined)) {
       history.push("/")
     }
   }, [])
@@ -29,19 +32,19 @@ const LeaveWarning = () => {
   const handleClick = () => {
     window.location.replace(
       "https://wa.me/"
-      + receivedData.phone
+      + phone
       + "?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"
       + "de%20la%20fecha%20"
-      + receivedData.date
+      + date
       + "%20desde%20"
-      + receivedData.origin
+      + origin
       + "%20a%20"
-      + receivedData.destination
+      + destination
     );
   }
 
   const handleCancel = () => {
-    history.push("/")
+    window.close();
   }
 
   return (
@@ -51,7 +54,7 @@ const LeaveWarning = () => {
       <ButtonGroup isInline>
         <Button status={ButtonStatus.SECONDARY} onClick={handleCancel}>Cancelar</Button>
         <Button status={ButtonStatus.GREEN} onClick={handleClick}>
-          <ArrowIcon right iconColor={color.white} />Acceptar
+          <ArrowIcon right iconColor={color.white} />Aceptar
         </Button>
       </ButtonGroup>
     </div>
