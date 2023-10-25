@@ -32,7 +32,7 @@ const LeaveWarning = () => {
   const handleClick = () => {
     window.location.replace(
       "https://wa.me/"
-      + phone
+      + "598" + phone
       + "?text=%20Hola!%20Te%20escribo%20desde%20Friendly%20Travel!%20Me%20gustaría%20unirme%20a%20tu%20viaje%20"
       + "de%20la%20fecha%20"
       + date
