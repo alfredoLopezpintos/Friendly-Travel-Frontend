@@ -21,10 +21,11 @@ import { getToken } from "./components/service/AuthService";
 import { Statistics } from "./components/pages/Statistics";
 import { ChangeData } from "./components/pages/ChangeData";
 import { getExpire, resetUserSession } from "./components/service/AuthService";
-import { toast } from "react-toastify";
 import moment from 'moment'
+import LeaveWarning from "./LeaveWarning";
 
 function App() {
+
   const refreshToken = () => {
     if(getExpire() !== null) {
       if(moment().isSameOrAfter(moment(getExpire()))) {
@@ -49,6 +50,11 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
+          <AuthenticatedRoute
+              authed={(getToken() !== null)}
+              path="/redirecting" 
+              component={LeaveWarning}
+            />
           <Route
             path="/changePass"
             component={ChangePass}
