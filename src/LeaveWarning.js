@@ -15,8 +15,8 @@ const LeaveWarning = () => {
   const destination = urlSearchParams.get('destination');
 
   useEffect(() => {
-    if ((phone === undefined) || (date === undefined) ||
-      (origin === undefined) || (destination === undefined)) {
+    if ((phone === null) || (date === null) ||
+      (origin === null) || (destination === null)) {
       history.push("/")
     }
   }, [])
