@@ -13,9 +13,7 @@ import { TabsSection } from '@rodrisu/friendly-ui/build/layout/section/tabsSecti
 import { ItemAction } from '@rodrisu/friendly-ui/build/itemAction'
 import { TabStatus } from '@rodrisu/friendly-ui/build/tabs'
 import { BaseSection } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
-// import { ItemAction } from '../../../itemAction'
-// import { TabStatus } from '../../../tabs'
-// import { BaseSection } from '../baseSection'
+import ModalTravelInfo from './components/ModalTravelInfo';
 
 const HistorialViajes = () => {
 
@@ -37,10 +35,13 @@ const HistorialViajes = () => {
   const [visiblePassenger, setVisiblePassenger] = React.useState(false);  
   const observerPassenger = useRef();
 
+  const [showModalInfo, setShowModalInfo] = useState(false);
   const email = getUser()
   const [driver, setDriverData] = useState([]);
   const [passenger, setPassengerData] = useState([]);
   const [total, setTotalData] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [dataToModal, setDataToModal] = useState({});
 
   const requestConfig = {
     headers: {
@@ -84,6 +85,20 @@ const HistorialViajes = () => {
       });
   }
 
+  const lastCardElementAll = useCallback(node => {
+    if (observer.current) observer.current.disconnect()
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])]).length < total.length) {
+        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])])
+        setPageNumber(pageNumber + 1)
+        setCardsNumber(cardsNumber + 5)
+      } else {
+        setVisible(true)
+      }
+    })
+    if (node) observer.current.observe(node)
+  })
+
   const lastCardElementDriver = useCallback(node => {
     if (observerDriver.current) observerDriver.current.disconnect()
     observerDriver.current = new IntersectionObserver(entries => {
@@ -112,6 +127,15 @@ const HistorialViajes = () => {
     if (node) observerPassenger.current.observe(node)
   })
 
+  const handleClose = () => {
+    setShowModalInfo(false);
+  };
+
+  function handleTravelInfo(user) {
+    setDataToModal(user)
+    setShowModalInfo(true)
+  }
+
   return (
     <div>
     <TabsSection tabsProps={{
@@ -120,15 +144,15 @@ const HistorialViajes = () => {
       tabs: [
         {
           id: 'tab1',
-          label: 'Historial de viajes',
+          label: 'Todos',
           panelContent: (
             <div className="wrapper">
             <CardsStackSection>
-            {(driver) &&
-              ((((sliceIntoChunks(driver, 5)[pageNumberDriver]) !== undefined) ? [... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])] : []))
+            {(total) &&
+              ((((sliceIntoChunks(total, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])] : []))
                 .map((user, index) => (
-                  ([... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])].length === index + 1) ? (
-                    <div ref={lastCardElementDriver}>
+                  ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
+                    <div ref={lastCardElementAll}>
                       <TripCard
                         href={'#'}
                         itinerary={
@@ -143,7 +167,7 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => console.log(total)}> Información del viaje </Button>
+                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                             </ul>
                         }
@@ -178,7 +202,7 @@ const HistorialViajes = () => {
         },
         {
           id: 'tab2',
-          label: 'Historial de viajes donde soy conductor',
+          label: 'Conductor',
           panelContent: (
             <div className="wrapper">
             <CardsStackSection>
@@ -236,7 +260,7 @@ const HistorialViajes = () => {
         },
         {
           id: 'tab3',
-          label: 'Historial de viajes donde soy pasajero',
+          label: 'Pasajero',
           panelContent: (
             <div className="wrapper">
             <CardsStackSection>
@@ -295,6 +319,7 @@ const HistorialViajes = () => {
       ],
     }}
     />
+    {(showModalInfo === true) ? <ModalTravelInfo setModal={setModal} handlePrevModalClose={handleClose} data={dataToModal} /> : <></>}
   </div>
   );
 };
