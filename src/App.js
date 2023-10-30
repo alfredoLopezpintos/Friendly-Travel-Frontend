@@ -23,7 +23,7 @@ import { ChangeData } from "./components/pages/ChangeData";
 import { getExpire, resetUserSession } from "./components/service/AuthService";
 import moment from 'moment'
 import LeaveWarning from "./LeaveWarning";
-import MisViajes from "./MisViajes";
+import HistorialViajes from "./HistorialViajes";
 
 function App() {
 
@@ -53,8 +53,8 @@ function App() {
         <Switch>
           <AuthenticatedRoute
               authed={(getToken() !== null)}
-              path="/misViajes" 
-              component={MisViajes}
+              path="/TravelHistory" 
+              component={HistorialViajes}
             />
           <AuthenticatedRoute
               authed={(getToken() !== null)}
