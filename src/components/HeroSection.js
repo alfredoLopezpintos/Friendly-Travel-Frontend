@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "../App.css";
-import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
+import { SearchForm, SearchFormDisplay } from '@rodrisu/friendly-ui/build/searchForm';
 import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
 import { weekdaysShort, weekdaysLong, months } from "../components/DatePickerProps";
 import { AutoCompleteUy } from "../components/AutoCompleteUy";
@@ -9,6 +9,8 @@ import "./HeroSection.css";
 import { formValidate } from "../components/Utilities";
 import { useLocation } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { BaseSection, SectionContentSize } from '@rodrisu/friendly-ui/build/layout/section/baseSection';
+import { MediaSizeProvider } from '@rodrisu/friendly-ui/build/_utils/mediaSizeProvider';
 
 function HeroSection() {
   const history = useHistory();
@@ -41,6 +43,8 @@ function HeroSection() {
       <h1 style={{"userSelect": "none"}}>TU VIAJE TE ESPERA</h1>
       <p style={{"userSelect": "none"}}>¿Qué estás esperando?</p>
       <div className="hero-btns">
+      <MediaSizeProvider>
+      <BaseSection contentSize={SectionContentSize.LARGE}>
         <SearchForm
               onSubmit={handleFormSubmit}
               className="form-inline"
@@ -52,7 +56,7 @@ function HeroSection() {
               autocompleteFromPlaceholder="Desde"
               autocompleteToPlaceholder="Hasta"
               renderDatePickerComponent={props => <DatePicker {...props}
-                numberOfMonths={2}
+                numberOfMonths={1}
                 orientation={DatePickerOrientation.HORIZONTAL}
                 locale="es-UY"
                 weekdaysShort={weekdaysShort('es-UY')}
@@ -83,7 +87,10 @@ function HeroSection() {
                 format: value => `$ ${value}`,
                 confirmLabel: 'Aceptar',
               }}
+              display={SearchFormDisplay.SMALL}
             />
+            </BaseSection>
+            </MediaSizeProvider>
       </div>
     </div>
   );

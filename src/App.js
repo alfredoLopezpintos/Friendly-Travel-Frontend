@@ -23,6 +23,7 @@ import { ChangeData } from "./components/pages/ChangeData";
 import { getExpire, resetUserSession } from "./components/service/AuthService";
 import moment from 'moment'
 import LeaveWarning from "./LeaveWarning";
+import MisViajes from "./MisViajes";
 
 function App() {
 
@@ -50,6 +51,11 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
+          <AuthenticatedRoute
+              authed={(getToken() !== null)}
+              path="/misViajes" 
+              component={MisViajes}
+            />
           <AuthenticatedRoute
               authed={(getToken() !== null)}
               path="/redirecting" 

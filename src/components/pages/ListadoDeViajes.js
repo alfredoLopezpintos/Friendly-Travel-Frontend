@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../App.css";
 import "./ListadoDeViajes.css";
-import { formValidate } from "../Utilities";
+import { formValidate, sliceIntoChunks } from "../Utilities";
 import { getToken } from "../service/AuthService";
 import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
@@ -107,15 +107,6 @@ export default function ListadoDeViajes() {
     setPrevViajes([])
     setPageNumber(0)
     setCardsNumber(5)
-  }
-
-  function sliceIntoChunks(arr, chunkSize) {
-    const res = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      let chunk = arr.slice(i, i + chunkSize);
-      res.push(chunk);
-    }
-    return res;
   }
 
   async function handleAppointment(data) {

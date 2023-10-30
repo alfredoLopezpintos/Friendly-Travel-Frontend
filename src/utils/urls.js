@@ -12,5 +12,6 @@ export const URLS = {
     POST_CHANGE_PASS: configData.AWS_REST_ENDPOINT + "/passwords/change",
     POST_CHANGE_PASS_FIRST_TIME: configData.AWS_REST_ENDPOINT + "/login/new-password",
     PUT_RESERVE_TRAVEL: configData.AWS_REST_ENDPOINT + "/trips",
-    DELETE_USER: configData.AWS_REST_ENDPOINT + "/users"
+    DELETE_USER: configData.AWS_REST_ENDPOINT + "/users",
+    USER_HISTORY: configData.AWS_REST_ENDPOINT + "/users"
 }
