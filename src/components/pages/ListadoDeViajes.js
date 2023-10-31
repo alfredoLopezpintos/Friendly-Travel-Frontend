@@ -26,7 +26,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import { SearchForm } from '@rodrisu/friendly-ui/build/searchForm';
+import { SearchForm, SearchFormDisplay } from '@rodrisu/friendly-ui/build/searchForm';
 import { AutoCompleteUy } from "../AutoCompleteUy";
 import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
 import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/cardsStackSection';
@@ -36,6 +36,9 @@ import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { weekdaysShort, weekdaysLong, months } from "../DatePickerProps.js";
 import { useLocation, useHistory } from 'react-router-dom';
 import ModalInfo from '../ModalReservarViaje';
+import { BaseSection, SectionContentSize } from '@rodrisu/friendly-ui/build/layout/section/baseSection';
+import { MediaSizeProvider } from '@rodrisu/friendly-ui/build/_utils/mediaSizeProvider';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 registerLocale("es", es);
 
 export default function ListadoDeViajes() {
@@ -264,6 +267,8 @@ export default function ListadoDeViajes() {
     "flex-direction": "column",
     "align-items": "center"}}
         >
+      <MediaSizeProvider>
+        <BaseSection contentSize={SectionContentSize.LARGE}>
           <SearchForm
             onSubmit={handleFormSubmit}
             className="form-inline"
@@ -275,7 +280,7 @@ export default function ListadoDeViajes() {
             autocompleteFromPlaceholder="Desde"
             autocompleteToPlaceholder="Hasta"
             renderDatePickerComponent={props => <DatePicker {...props}
-              numberOfMonths={2}
+              numberOfMonths={1}
               orientation={DatePickerOrientation.HORIZONTAL}
               locale="es-UY"
               weekdaysShort={weekdaysShort('es-UY')}
@@ -306,7 +311,10 @@ export default function ListadoDeViajes() {
               format: value => `$ ${value}`,
               confirmLabel: 'Aceptar',
             }}
+            display={SearchFormDisplay.SMALL}
           />
+            </BaseSection>
+          </MediaSizeProvider>
         </div>
         <br />
         <br />
@@ -385,7 +393,7 @@ export default function ListadoDeViajes() {
                             getToken() !== null ? (
                               <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                                 <li style={{ marginRight: '10px' }}>
-                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
+                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar <WhatsAppIcon style={{"margin-left": "7px", "margin-right": "0px"}} /></Button>
                                 </li>
                                 <li>
                                   <Button onClick={() => handleAppointment(user)} status="green"> Reservar </Button>
