@@ -13,6 +13,7 @@ import { TabsSection } from '@rodrisu/friendly-ui/build/layout/section/tabsSecti
 import { ItemAction } from '@rodrisu/friendly-ui/build/itemAction'
 import { TabStatus } from '@rodrisu/friendly-ui/build/tabs'
 import { BaseSection } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
+import TextItem from "../TextItem";
 import ModalTravelInfo from '../ModalTravelInfo';
 
 const HistorialViajes = () => {
@@ -312,6 +313,11 @@ const HistorialViajes = () => {
                 ))
             }
           </CardsStackSection>
+          <div style={{"textAlign": "center"}}>
+            <div className="load-more-message-container">
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay viajes para mostrar" /></>}
+            </div>
+          </div>
           </div>
           ),
           badgeContent: '',
