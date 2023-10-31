@@ -53,7 +53,7 @@ function App() {
         <Switch>
           <AuthenticatedRoute
               authed={(getToken() !== null)}
-              path="/TravelHistory" 
+              path="/travelHistory" 
               component={HistorialViajes}
             />
           <AuthenticatedRoute

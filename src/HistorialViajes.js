@@ -137,7 +137,7 @@ const HistorialViajes = () => {
   }
 
   return (
-    <div>
+    <div className="wrapper">
     <TabsSection tabsProps={{
       activeTabId: 'tab1',
       status: TabStatus.FIXED,
@@ -225,7 +225,7 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => console.log(user)}> Información del viaje </Button>
+                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                             </ul>
                         }
@@ -283,7 +283,7 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => console.log(user)}> Información del viaje </Button>
+                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                             </ul>
                         }

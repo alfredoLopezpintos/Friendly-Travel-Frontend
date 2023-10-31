@@ -13,13 +13,13 @@ import { Button } from '@rodrisu/friendly-ui/build/button';
 import { URLS } from "../utils/urls";
 import { getToken, resetUserSession, getUser } from "./service/AuthService";
 import { toast } from "react-toastify";
-import { red } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import { useHistory } from "react-router-dom";
-import ReportIcon from '@mui/icons-material/Report';
+import InfoIcon from '@mui/icons-material/Info';
+import './ModalTravelInfo.css'
 
 export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }) {
     const [displayModal2, setDisplayModal2] = useState(true);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const history = useHistory();
 
     const handleClose = () => {
@@ -28,44 +28,6 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
         handlePrevModalClose()
         setDisplayModal2(false);
     };
-
-    const requestConfig = {
-        headers: {
-          Authorization: JSON.parse(getToken()),
-          "Content-Type": "application/json",
-        },
-      };
-
-    const handleDelete = async () => {
-
-        const deleteUserEndPoint =
-        // URLS.DELETE_USER + "/" + getUser().replace(/@/g, '%40');
-        URLS.DELETE_USER + "/" + getUser();
-
-        toast.promise((axios.delete(deleteUserEndPoint, requestConfig)
-            .then(() => {
-                resetUserSession();
-                history.push('/', { data: { message: "Cuenta eliminada con éxito" } });
-            }
-            ).catch((error) => {
-                console.error(error);
-                toast.error(error.response.data.message)
-            }))
-            ,
-            {
-              pending: {
-                render() {
-                  return "Cargando"
-                },
-                icon: true,
-              },
-              error: {
-                render({ data }) {
-                  return toast.error('Error')
-                }
-              }
-            });
-    }
 
     return (
         <>
@@ -88,30 +50,37 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
                             justifyContent: "center",
                             alignItems: "center",
                         }}>
-                            <ReportIcon sx={{ color: red[500] }} fontSize="large" />
+                            <InfoIcon sx={{ color: blue[500] }} fontSize="large" />
                         </div>
+                        <div className="textContainer" style={{ textAlign: 'center' }}>
                         <h2 style={{
                             "padding": "10px",
                             "paddingBottom": "25px",
                             "textAlign": "center",
-                            "userSelect": "none"
+                            "userSelect": "none",
                         }}>
-                            {'¿Está seguro que desea eliminar la cuenta?'}
-                            <br />
-                            {'Esta acción es permanente y no se puede deshacer.'}
+                        {'Origen del viaje:' + data.origin}
+                        <br />
+                        {'Destino del viaje: ' + data.destination}
+                        <br />
+                        {'Duración aproximada: ' + data.duration}
+                        <br />
+                        {'Distancia aproximada: ' + data.distance}
+                        <br />
+                        {'Cantidad de asientos reservados: ' + data.passengersQuantity}
+                        <br />
+                        {'Precio: ' + data.price}
+                        <br />
+                        {'Fecha: ' + data.tripDate}
+                        <br />
+                        {'Correo del chofer: ' + data.userDriver}
+                        <br />
+                        {'Matrícula del vehículo: ' + data.vehicle}
+                        <br />
                         </h2>
+                        </div>
                         <br />
                     </Grid>
-                    <DialogActions>
-                    <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                        <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleClose()} status="green"> Cancelar </Button>
-                        </li>
-                        <li>
-                            <Button onClick={() => handleDelete()} status="warning"> Aceptar </Button>
-                        </li>
-                    </ul>
-                    </DialogActions>
                 </DialogContent>
             </Dialog>
         </>

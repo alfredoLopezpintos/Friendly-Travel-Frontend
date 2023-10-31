@@ -9,6 +9,7 @@ import { Drawer, DropdownButton, Menu, TopBar } from '@rodrisu/friendly-ui/build
 import { ItemAction } from '@rodrisu/friendly-ui/build/itemAction'
 import { CrossDiscIcon } from '@rodrisu/friendly-ui/build/icon/crossDiscIcon'
 import { InfoIcon } from '@rodrisu/friendly-ui/build/icon/infoIcon'
+import { CalendarIcon } from '@rodrisu/friendly-ui/build/icon/calendarIcon'
 import { HomeIcon } from '@rodrisu/friendly-ui/build/icon/homeIcon'
 import { CrewIcon } from '@rodrisu/friendly-ui/build/icon/crew'
 import { BubbleIcon } from '@rodrisu/friendly-ui/build/icon/bubbleIcon'
@@ -141,6 +142,10 @@ function Navbar() {
             history.push("/map")
             setDrawerOpened(false)
           }} />
+          <ItemAction action="Historial de viajes" leftAddon={<CalendarIcon />} onClick={() => {
+            history.push("/travelHistory")
+            setDrawerOpened(false)
+          }} />
           <ItemAction action="Opciones" leftAddon={<InfoIcon />} onClick={() => {
             history.push("/changeData")
             setDrawerOpened(false)
@@ -184,6 +189,10 @@ function Navbar() {
               <Menu>
                 <ItemAction action="Crear Viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
                   history.push("/map")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Historial de viajes" leftAddon={<CalendarIcon />} onClick={() => {
+                  history.push("/travelHistory")
                   setDrawerOpened(false)
                 }} />
                 <ItemAction action="Opciones" leftAddon={<InfoIcon />} onClick={() => {
