@@ -205,7 +205,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visible && <><br /><br /><br /><br /> <TextItem text="No hay viajes para mostrar" /></>}
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>
@@ -274,7 +274,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visible && <><br /><br /><br /><br /> <TextItem text="No hay viajes para mostrar" /></>}
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>
@@ -343,7 +343,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visible && <><br /><br /><br /><br /> <TextItem text="No hay viajes para mostrar" /></>}
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>
