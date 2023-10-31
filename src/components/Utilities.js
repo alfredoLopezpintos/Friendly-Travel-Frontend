@@ -27,6 +27,15 @@ export function isNumber(str) {
   return !isNaN(str);
 };
 
+export function sliceIntoChunks(arr, chunkSize) {
+  const res = [];
+  for (let i = 0; i < arr.length; i += chunkSize) {
+    let chunk = arr.slice(i, i + chunkSize);
+    res.push(chunk);
+  }
+  return res;
+}
+
 export function transformDate(dateObj) {
   const month = dateObj.getUTCMonth() + 1; //months from 1-12
   var day = dateObj.getUTCDate();

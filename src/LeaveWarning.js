@@ -4,6 +4,7 @@ import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { ButtonGroup } from '@rodrisu/friendly-ui/build/buttonGroup';
 import { ArrowIcon } from '@rodrisu/friendly-ui/build/icon/arrowIcon';
 import { color } from '@rodrisu/friendly-ui/build/_utils/branding';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const LeaveWarning = () => {
   const history = useHistory();
@@ -54,7 +55,8 @@ const LeaveWarning = () => {
       <ButtonGroup isInline>
         <Button status={ButtonStatus.SECONDARY} onClick={handleCancel}>Cancelar</Button>
         <Button status={ButtonStatus.GREEN} onClick={handleClick}>
-          <ArrowIcon right iconColor={color.white} />Aceptar
+          <WhatsAppIcon style={{"margin-left": "0px", "margin-right": "7px"}} />
+          Aceptar
         </Button>
       </ButtonGroup>
     </div>
