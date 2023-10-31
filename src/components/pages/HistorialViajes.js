@@ -1,19 +1,19 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import axios from "axios";
-import { URLS } from "./utils/urls";
+import { URLS } from "../../utils/urls";
 import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/cardsStackSection';
-import { sliceIntoChunks } from './components/Utilities';
+import { sliceIntoChunks } from '../Utilities';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
 import { Button } from '@rodrisu/friendly-ui/build/button';
 import { toast } from "react-toastify";
-import { getToken, getUser } from "./components/service/AuthService";
+import { getToken, getUser } from "../service/AuthService";
 import './HistorialViajes.css'
 import { TabsSection } from '@rodrisu/friendly-ui/build/layout/section/tabsSection'
 import { ItemAction } from '@rodrisu/friendly-ui/build/itemAction'
 import { TabStatus } from '@rodrisu/friendly-ui/build/tabs'
 import { BaseSection } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
-import ModalTravelInfo from './components/ModalTravelInfo';
+import ModalTravelInfo from '../ModalTravelInfo';
 
 const HistorialViajes = () => {
 

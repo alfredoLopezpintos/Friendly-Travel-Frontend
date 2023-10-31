@@ -52,7 +52,7 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
                         }}>
                             <InfoIcon sx={{ color: blue[500] }} fontSize="large" />
                         </div>
-                        <div className="textContainer" style={{ textAlign: 'center' }}>
+                        <div style={{ textAlign: 'center' }}>
                         <h2 style={{
                             "padding": "10px",
                             "paddingBottom": "25px",
