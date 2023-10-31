@@ -59,7 +59,7 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
                             "textAlign": "center",
                             "userSelect": "none",
                         }}>
-                        {'Origen del viaje:' + data.origin}
+                        {'Origen del viaje: ' + data.origin}
                         <br />
                         {'Destino del viaje: ' + data.destination}
                         <br />

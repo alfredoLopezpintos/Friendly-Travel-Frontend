@@ -15,6 +15,7 @@ import { TabStatus } from '@rodrisu/friendly-ui/build/tabs'
 import { BaseSection } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
 import TextItem from "../TextItem";
 import ModalTravelInfo from '../ModalTravelInfo';
+import { Title } from '@rodrisu/friendly-ui/build/title'
 
 const HistorialViajes = () => {
 
@@ -139,6 +140,11 @@ const HistorialViajes = () => {
 
   return (
     <div className="wrapper">
+            <br />
+      <Title headingLevel={1}>
+        Historial de Viajes
+      </Title>
+      <br />
     <TabsSection tabsProps={{
       activeTabId: 'tab1',
       status: TabStatus.FIXED,
