@@ -190,13 +190,24 @@ const HistorialViajes = () => {
                           value: `${user.passengersQuantity} pasajero(s)`,
                         }}
                         mainTitle={user.tripDate}
-                        button={ (<br />) }
+                        button={                             
+                        <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                          <li style={{ marginRight: '10px' }}>
+                            <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                          </li>
+                        </ul> 
+                      }
                       />
                     </div>
                   )
                 ))
             }
           </CardsStackSection>
+          <div style={{"textAlign": "center"}}>
+            <div className="load-more-message-container">
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay viajes para mostrar" /></>}
+            </div>
+          </div>
           </div>
           ),
           badgeContent: '',
@@ -248,13 +259,24 @@ const HistorialViajes = () => {
                           value: `${user.passengersQuantity} pasajero(s)`,
                         }}
                         mainTitle={user.tripDate}
-                        button={ (<br />) }
+                        button={ 
+                          <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                            <li style={{ marginRight: '10px' }}>
+                              <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                            </li>
+                          </ul>
+                        }
                       />
                     </div>
                   )
                 ))
             }
           </CardsStackSection>
+          <div style={{"textAlign": "center"}}>
+            <div className="load-more-message-container">
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay viajes para mostrar" /></>}
+            </div>
+          </div>
           </div>
           ),
           badgeContent: '',
@@ -306,7 +328,13 @@ const HistorialViajes = () => {
                           value: `${user.passengersQuantity} pasajero(s)`,
                         }}
                         mainTitle={user.tripDate}
-                        button={ (<br />) }
+                        button={ 
+                          <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                            <li style={{ marginRight: '10px' }}>
+                              <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                            </li>
+                          </ul>
+                        }
                       />
                     </div>
                   )
