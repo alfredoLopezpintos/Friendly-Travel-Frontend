@@ -64,10 +64,17 @@ const HistorialViajes = () => {
 
     toast.promise(axios.get(viajesGetEndPoint, requestConfig)
       .then((response) => {
+        // ESTO ES SUMAMENTE INEFICIENTE. DEBIDO A QUE E BACKEND NO TRAE LOS DATOS DE FORMA APROPIADA SE REDUCE LA EFICIENCIA PARA ORDENAR LOS DATOS
+        let temporalData = []
+        for(let i = 0; i < response.data.DRIVER.length; i++) {
+          temporalData = [...temporalData, {...temporalData, ...{ ...response.data.DRIVER[i], "esChofer": true }}]
+        }
+        // -------------------------------
         setDriverData(response.data.DRIVER)
         setPassengerData(response.data.PASSENGER)
+
         // Ordena los viajes de mas reciente a mas antiguo
-        setTotalData([...response.data.DRIVER ,...response.data.PASSENGER].sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())))
+        setTotalData([...temporalData, ...response.data.PASSENGER].sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())))
       }).catch((error) => {
         console.error(error);
       })
@@ -161,6 +168,7 @@ const HistorialViajes = () => {
                   ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
                     <div ref={lastCardElementAll}>
                       <TripCard
+                        tag={(user.esChofer) ? "Conductor" : ""}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -183,6 +191,7 @@ const HistorialViajes = () => {
                   ) : (
                     <div>
                       <TripCard
+                        tag={(user.esChofer) ? "Conductor" : ""}
                         href={'#'}
                         itinerary={
                           <Itinerary>
