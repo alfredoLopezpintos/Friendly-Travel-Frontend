@@ -168,7 +168,7 @@ const MisViajes = () => {
                         ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
                           <div ref={lastCardElementAll}>
                             <TripCard
-                              tag={(user.esChofer) ? "Conductor" : ""}
+                              tag={(user.esChofer) ? "Conductor" : "Pasajero"}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
@@ -176,7 +176,7 @@ const MisViajes = () => {
                                   <Address label={user.destination} />
                                 </Itinerary>
                               }
-                              price={`$ ${user.price}`}
+                              price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
                               originalPrice={{}}
                               mainTitle={user.tripDate}
                               button={
@@ -191,19 +191,16 @@ const MisViajes = () => {
                         ) : (
                           <div>
                             <TripCard
-                              tag={(user.esChofer) ? "Conductor" : ""}
+                              tag={(user.esChofer) ? "Conductor" : "Pasajero"}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
-                                  <Address label={user.origin} subLabel={user.duration} />
-                                  <Address label={user.destination} subLabel={user.distance} />
+                                  <Address label={user.origin} />
+                                  <Address label={user.destination} />
                                 </Itinerary>
                               }
-                              price={`$ ${user.price}`}
-                              originalPrice={{
-                                label: 'availablePlaces',
-                                value: `${user.passengersQuantity} pasajero(s)`,
-                              }}
+                              price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                              originalPrice={{}}
                               mainTitle={user.tripDate}
                               button={
                                 <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
@@ -246,7 +243,7 @@ const MisViajes = () => {
                                   <Address label={user.destination} />
                                 </Itinerary>
                               }
-                              price={`$ ${user.price}`}
+                              price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
                               originalPrice={{}}
                               mainTitle={user.tripDate}
                               button={
@@ -264,15 +261,12 @@ const MisViajes = () => {
                               href={'#'}
                               itinerary={
                                 <Itinerary>
-                                  <Address label={user.origin} subLabel={user.duration} />
-                                  <Address label={user.destination} subLabel={user.distance} />
+                                  <Address label={user.origin} />
+                                  <Address label={user.destination} />
                                 </Itinerary>
                               }
-                              price={`$ ${user.price}`}
-                              originalPrice={{
-                                label: 'availablePlaces',
-                                value: `${user.passengersQuantity} pasajero(s)`,
-                              }}
+                              price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                              originalPrice={{}}
                               mainTitle={user.tripDate}
                               button={
                                 <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
@@ -315,7 +309,7 @@ const MisViajes = () => {
                                   <Address label={user.destination} />
                                 </Itinerary>
                               }
-                              price={`$ ${user.price}`}
+                              price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
                               originalPrice={{}}
                               mainTitle={user.tripDate}
                               button={
@@ -333,15 +327,12 @@ const MisViajes = () => {
                               href={'#'}
                               itinerary={
                                 <Itinerary>
-                                  <Address label={user.origin} subLabel={user.duration} />
-                                  <Address label={user.destination} subLabel={user.distance} />
+                                  <Address label={user.origin} />
+                                  <Address label={user.destination} />
                                 </Itinerary>
                               }
-                              price={`$ ${user.price}`}
-                              originalPrice={{
-                                label: 'availablePlaces',
-                                value: `${user.passengersQuantity} pasajero(s)`,
-                              }}
+                              price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                              originalPrice={{}}
                               mainTitle={user.tripDate}
                               button={
                                 <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
