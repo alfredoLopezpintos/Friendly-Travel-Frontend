@@ -16,6 +16,7 @@ import { BubbleIcon } from '@rodrisu/friendly-ui/build/icon/bubbleIcon'
 import { QuestionIcon } from '@rodrisu/friendly-ui/build/icon/questionIcon'
 import { AloneInTheBackIcon } from '@rodrisu/friendly-ui/build/icon/aloneInTheBackIcon'
 import { ProfileIcon } from '@rodrisu/friendly-ui/build/icon/profileIcon'
+import { CarIcon } from '@rodrisu/friendly-ui/build/icon/carIcon'
 import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 
 function Navbar() {
@@ -138,8 +139,12 @@ function Navbar() {
       </DropdownButton>
       <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
         <Menu>
-          <ItemAction action="Crear Viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
+          <ItemAction action="Crear viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
             history.push("/map")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Mis viajes" leftAddon={<CarIcon />} onClick={() => {
+            history.push("/misViajes")
             setDrawerOpened(false)
           }} />
           <ItemAction action="Historial de viajes" leftAddon={<CalendarIcon />} onClick={() => {
@@ -159,11 +164,11 @@ function Navbar() {
             history.push("/about")
             setDrawerOpened(false)
           }} />
-          <ItemAction action="Listado de Viajes" leftAddon={<BubbleIcon />} onClick={() => {
+          <ItemAction action="Listado de viajes" leftAddon={<BubbleIcon />} onClick={() => {
             history.push("/viajes")
             setDrawerOpened(false)
           }} />
-          <ItemAction action="Preguntas Frecuentes" leftAddon={<QuestionIcon />} onClick={() => {
+          <ItemAction action="Preguntas frecuentes" leftAddon={<QuestionIcon />} onClick={() => {
             history.push("/faqsPage")
             setDrawerOpened(false)
           }} />
@@ -187,8 +192,12 @@ function Navbar() {
             />
             <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
               <Menu>
-                <ItemAction action="Crear Viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
+                <ItemAction action="Crear viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
                   history.push("/map")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Mis viajes" leftAddon={<CarIcon />} onClick={() => {
+                  history.push("/misViajes")
                   setDrawerOpened(false)
                 }} />
                 <ItemAction action="Historial de viajes" leftAddon={<CalendarIcon />} onClick={() => {
