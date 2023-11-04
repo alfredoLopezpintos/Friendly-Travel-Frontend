@@ -25,6 +25,7 @@ import moment from 'moment'
 import LeaveWarning from "./LeaveWarning";
 import HistorialViajes from "./components/pages/HistorialViajes";
 import MisViajes from "./components/pages/MisViajes";
+import ReviewTravel from "./ReviewTravel";
 
 function App() {
 
@@ -52,7 +53,7 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-        <AuthenticatedRoute
+          <AuthenticatedRoute
               authed={(getToken() !== null)}
               path="/misViajes" 
               component={MisViajes}
@@ -61,6 +62,11 @@ function App() {
               authed={(getToken() !== null)}
               path="/travelHistory" 
               component={HistorialViajes}
+            />
+          <AuthenticatedRoute
+              authed={(getToken() !== null)}
+              path="/reviewTravel" 
+              component={ReviewTravel}
             />
           <AuthenticatedRoute
               authed={(getToken() !== null)}

@@ -97,3 +97,15 @@ export function formValidate(origin, destination, date, price, seats) {
     return true;
   }
 }
+
+// export function ReputationFormValidate(passengers, passengersQuantity, userDriver) {
+
+//   if (passengers == [] ||
+//     passengersQuantity == 0 ||
+//     userDriver == null) {
+//     toast.error("La búsqueda debe tener por lo menos origen, destino y fecha");
+//     return false;
+//   } else {
+//     return true;
+//   }
+// }

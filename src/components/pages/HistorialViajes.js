@@ -15,6 +15,7 @@ import { TabStatus } from '@rodrisu/friendly-ui/build/tabs'
 import { BaseSection } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
 import TextItem from "../TextItem";
 import ModalTravelInfo from '../ModalTravelInfo';
+import { useHistory } from "react-router-dom";
 import { Title } from '@rodrisu/friendly-ui/build/title'
 
 const HistorialViajes = () => {
@@ -44,6 +45,7 @@ const HistorialViajes = () => {
   const [total, setTotalData] = useState([]);
   const [modal, setModal] = useState(false);
   const [dataToModal, setDataToModal] = useState({});
+  const history = useHistory();
 
   const requestConfig = {
     headers: {
@@ -145,6 +147,23 @@ const HistorialViajes = () => {
     setShowModalInfo(true)
   }
 
+  function handleReview(user) {
+    if(user.esChofer) {
+      var dataToSend = { passengers: user.passengers,
+        passengersQuantity: user.passengersQuantity }
+
+      history.push('/reviewTravel', { data: dataToSend });
+    } else {
+      var dataToSend = { passengers: user.passengers,
+        passengersQuantity: user.passengersQuantity,
+        userDriver: user.userDriver }
+      
+      history.push('/reviewTravel', { data: dataToSend });
+    }
+    // setDataToModal(user)
+    // setShowModalInfo(true)
+  }
+
   return (
     <div className="wrapper">
             <br />
@@ -168,6 +187,7 @@ const HistorialViajes = () => {
                   ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
                     <div ref={lastCardElementAll}>
                       <TripCard
+                        driver={user.userDriver}
                         tag={(user.esChofer) ? "Conductor" : "Pasajero"}
                         href={'#'}
                         itinerary={
@@ -184,6 +204,9 @@ const HistorialViajes = () => {
                               <li style={{ marginRight: '10px' }}>
                                 <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                              </li>
                             </ul>
                         }
                       />
@@ -191,6 +214,7 @@ const HistorialViajes = () => {
                   ) : (
                     <div>
                       <TripCard
+                        driver={user.userDriver}
                         tag={(user.esChofer) ? "Conductor" : "Pasajer"}
                         href={'#'}
                         itinerary={
@@ -206,6 +230,9 @@ const HistorialViajes = () => {
                         <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                           <li style={{ marginRight: '10px' }}>
                             <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                          </li>
+                          <li style={{ marginRight: '10px' }}>
+                            <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
                           </li>
                         </ul> 
                       }
@@ -236,6 +263,7 @@ const HistorialViajes = () => {
                   ([... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])].length === index + 1) ? (
                     <div ref={lastCardElementDriver}>
                       <TripCard
+                        driver={user.userDriver}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -251,6 +279,9 @@ const HistorialViajes = () => {
                               <li style={{ marginRight: '10px' }}>
                                 <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                              </li>
                             </ul>
                         }
                       />
@@ -258,6 +289,7 @@ const HistorialViajes = () => {
                   ) : (
                     <div>
                       <TripCard
+                        driver={user.userDriver}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -272,6 +304,9 @@ const HistorialViajes = () => {
                           <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                             <li style={{ marginRight: '10px' }}>
                               <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                            </li>
+                            <li style={{ marginRight: '10px' }}>
+                              <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
                             </li>
                           </ul>
                         }
@@ -302,6 +337,7 @@ const HistorialViajes = () => {
                   ([... new Set([...prevViajesPassenger, ...sliceIntoChunks(passenger, 5)[pageNumberPassenger]])].length === index + 1) ? (
                     <div ref={lastCardElementPassenger}>
                       <TripCard
+                        driver={user.userDriver}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -317,6 +353,9 @@ const HistorialViajes = () => {
                               <li style={{ marginRight: '10px' }}>
                                 <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                              </li>
                             </ul>
                         }
                       />
@@ -324,6 +363,7 @@ const HistorialViajes = () => {
                   ) : (
                     <div>
                       <TripCard
+                        driver={user.userDriver}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -338,6 +378,9 @@ const HistorialViajes = () => {
                           <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                             <li style={{ marginRight: '10px' }}>
                               <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                            </li>
+                            <li style={{ marginRight: '10px' }}>
+                              <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
                             </li>
                           </ul>
                         }

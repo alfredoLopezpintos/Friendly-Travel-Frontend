@@ -42,7 +42,7 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
             },
             requestConfig)
             .then((response) => {
-                console.log(response)
+                // console.log(response)
                 toast.success("Viaje Reservado con éxito")
                 handleClose()
             }

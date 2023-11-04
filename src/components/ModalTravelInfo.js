@@ -23,7 +23,7 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
     const history = useHistory();
 
     const handleClose = () => {
-        console.log(data)
+        // console.log(data)
         setModal(false);
         handlePrevModalClose()
         setDisplayModal2(false);

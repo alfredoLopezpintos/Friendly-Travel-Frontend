@@ -206,7 +206,7 @@ function TravelPreviewer() {
       duration: duration,
       vehicle: data.AUTOCOMPLETE_VEHICLE !== undefined ? data.AUTOCOMPLETE_VEHICLE.item.labelInfo : "",
     };
-    console.log(bodyToSendToBackend);
+    // console.log(bodyToSendToBackend);
 
     if (formValidate(bodyToSendToBackend.origin,
       bodyToSendToBackend.destination,
