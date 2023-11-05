@@ -148,6 +148,11 @@ const HistorialViajes = () => {
   }
 
   function handleReview(user) {
+
+    
+    console.log(user) // PRECISO EL TRIPID <---------------
+
+
     if(user.esChofer) {
       var dataToSend = { passengers: user.passengers,
         passengersQuantity: user.passengersQuantity }
