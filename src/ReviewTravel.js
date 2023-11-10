@@ -90,15 +90,16 @@ const ReviewTravel = () => {
   // };
 
   useEffect(() => {
-    setPassengers([{
-      userDriver: {
-        firstName: "Pedro GuaGa",
-        email: "nose@gmail.com"
-      }
-    }])
-    // setPassengersQuantity(receivedData.passengersQuantity)
-    // setPassengers(receivedData.passengers)
-    setPassengersQuantity(1)
+    // setPassengers([{
+    //   userDriver: {
+    //     firstName: "Pedro GuaGa",
+    //     email: "nose@gmail.com",
+
+    //   }
+    // }])
+    setPassengersQuantity(receivedData.passengersQuantity)
+    setPassengers(receivedData.passengers)
+    // setPassengersQuantity(1)
     fetchReview()
   }, [])
 

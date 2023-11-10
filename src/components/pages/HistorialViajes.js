@@ -148,20 +148,17 @@ const HistorialViajes = () => {
   }
 
   function handleReview(user) {
-
-    
-    console.log(user) // PRECISO EL TRIPID <---------------
-
-
     if(user.esChofer) {
       var dataToSend = { passengers: user.passengers,
-        passengersQuantity: user.passengersQuantity }
+        passengersQuantity: user.passengersQuantity,
+        tripId: user.tripId }
 
       history.push('/reviewTravel', { data: dataToSend });
     } else {
       var dataToSend = { passengers: user.passengers,
         passengersQuantity: user.passengersQuantity,
-        userDriver: user.userDriver }
+        userDriver: user.userDriver,
+        tripId: user.tripId }
       
       history.push('/reviewTravel', { data: dataToSend });
     }
@@ -220,7 +217,7 @@ const HistorialViajes = () => {
                     <div>
                       <TripCard
                         driver={user.userDriver}
-                        tag={(user.esChofer) ? "Conductor" : "Pasajer"}
+                        tag={(user.esChofer) ? "Conductor" : "Pasajero"}
                         href={'#'}
                         itinerary={
                           <Itinerary>

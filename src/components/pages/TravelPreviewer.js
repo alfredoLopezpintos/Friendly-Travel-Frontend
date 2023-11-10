@@ -199,7 +199,8 @@ function TravelPreviewer() {
     const bodyToSendToBackend = {
       origin: data.AUTOCOMPLETE_FROM !== undefined ? data.AUTOCOMPLETE_FROM.item : "",
       destination: data.AUTOCOMPLETE_TO !== undefined ? data.AUTOCOMPLETE_TO.item : "",
-      tripDate: data.DATEPICKER,
+      // tripDate: data.DATEPICKER,
+      tripDate: new Date("2020-06-11"),
       availablePlaces: data.STEPPER,
       price: data.PRICE,
       distance: distance,
