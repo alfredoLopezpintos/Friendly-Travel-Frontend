@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Button } from '@rodrisu/friendly-ui/build/button';
 import axios from "axios";
 import { URLS } from "./utils/urls";
@@ -41,13 +41,9 @@ const customIcons = {
   }
 }
 
-function IconContainer(props) {
-  const { value, ...other } = props
-  return <span {...other}>{customIcons[value].icon}</span>
-}
-
 const ReviewTravel = () => {
   const location = useLocation();
+  const history = useHistory();
   const receivedData = location.state?.data ||
   {
     passengersQuantity: undefined,
@@ -87,6 +83,9 @@ const ReviewTravel = () => {
   })
 
   useEffect(() => {
+    if((receivedData.tripId == undefined)) {
+      history.push("/")
+    }
     setTravelId(receivedData.tripId)
     setPassengers(receivedData.passengers)
     setUserDriver(receivedData.userDriver)
@@ -140,13 +139,11 @@ const ReviewTravel = () => {
                   button={
                     <Rating
                     name="highlight-selected-only"
-                    defaultValue={3}
-                    IconContainerComponent={IconContainer}
                     getLabelText={(value) => customIcons[value].label}
                     highlightSelectedOnly
                     sx = {{
                       "*": {
-                        fontSize: "3.5rem"
+                        fontSize: "2.5rem"
                       },
                       "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
                         color: "theme.palette.action.disabled",
@@ -173,13 +170,11 @@ const ReviewTravel = () => {
                     button={
                       <Rating
                       name="highlight-selected-only"
-                      defaultValue={3}
-                      IconContainerComponent={IconContainer}
                       getLabelText={(value) => customIcons[value].label}
                       highlightSelectedOnly
                       sx = {{
                         "*": {
-                          fontSize: "3.5rem"
+                          fontSize: "2.5rem"
                         },
                         "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
                           color: "theme.palette.action.disabled",
@@ -205,13 +200,11 @@ const ReviewTravel = () => {
                   button={
                     <Rating
                     name="highlight-selected-only"
-                    defaultValue={3}
-                    IconContainerComponent={IconContainer}
                     getLabelText={(value) => customIcons[value].label}
                     highlightSelectedOnly
                     sx = {{
                       "*": {
-                        fontSize: "3.5rem"
+                        fontSize: "2.5rem"
                       },
                       "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
                         color: "theme.palette.action.disabled",
