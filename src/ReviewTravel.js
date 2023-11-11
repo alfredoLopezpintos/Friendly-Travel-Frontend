@@ -16,6 +16,7 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied"
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined"
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied"
+import TextItem from "./components/TextItem";
 
 const customIcons = {
   1: {
@@ -50,11 +51,13 @@ const ReviewTravel = () => {
   const receivedData = location.state?.data ||
   {
     passengersQuantity: undefined,
-    passengers: undefined
+    passengers: undefined,
+    tripId: undefined
   };
 
   const [passengers, setPassengers] = React.useState([]);
-  const [passengersQuantity, setPassengersQuantity] = React.useState(0);
+  const [driver, setUserDriver] = React.useState({});
+  const [travelId, setTravelId] = React.useState(0);
   const requestConfig = {
     headers: {
       Authorization: JSON.parse(getToken()),
@@ -62,11 +65,12 @@ const ReviewTravel = () => {
     },
   };
 
-
   const [prevViajes, setPrevViajes] = React.useState([]);
   const [pageNumber, setPageNumber] = React.useState(0);
   const [cardsNumber, setCardsNumber] = React.useState(5);
   const observer = useRef();
+  const [visible, setVisible] = React.useState(false);  
+  const [reviewCount, setReviewCount] = React.useState(0);  
 
   const lastCardElement = useCallback(node => {
     if (observer.current) observer.current.disconnect()
@@ -82,79 +86,90 @@ const ReviewTravel = () => {
     if (node) observer.current.observe(node)
   })
 
-  // const handleReview = () => {
-  //   ((((sliceIntoChunks(passengers, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])] : []))
-  //   .map((user, index) => (
-  //     ([... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])].length === index + 1) ? console.log(user.userDriver) : console.log("NO")
-  //   ))
-  // };
-
   useEffect(() => {
-    // setPassengers([{
-    //   userDriver: {
-    //     firstName: "Pedro GuaGa",
-    //     email: "nose@gmail.com",
+    console.log(receivedData.passengers)
 
-    //   }
-    // }])
-    setPassengersQuantity(receivedData.passengersQuantity)
+    setTravelId(receivedData.tripId)
     setPassengers(receivedData.passengers)
-    // setPassengersQuantity(1)
-    fetchReview()
+    setUserDriver(receivedData.userDriver)
   }, [])
 
-  async function fetchReview(email, value, id) {
-    if((email && value && id) !== undefined) {
+  async function fetchReview(email, value) {
+    if((email && value) !== undefined) {
       const reviewGetEndPoint =
         URLS.USER_HISTORY + "/" +
         email +
         "/ratings"
 
-      console.log(id)
-      // console.log(value)
-
-      // toast.promise(axios.post(reviewGetEndPoint, {score: value, tripId: id} ,requestConfig)
-      //   .then((response) => {
-      //     console.log(response)
-      //     // if (
-      //     //   response.data.message ===
-      //     //   "Usuario calificado correctamente."
-      //     // ) {
-      //     //   setViajes();
-      //     //   toast.error("No hay viajes que cumplan con las condiciones seleccionadas.");
-      //     // } else {
-      //     //   toast.error(response);
-      //     // }
-      //   }).catch((error) => {
-      //     console.error(error);
-      //   })
-      //   ,
-      //   {
-      //     pending: {
-      //       render() {
-      //         return "Cargando"
-      //       },
-      //       icon: true,
-      //     },
-      //     error: {
-      //       render({ data }) {
-      //         toast.error(data.response.data.message);
-      //       }
-      //     }
-      //   });
+      toast.promise(axios.post(reviewGetEndPoint, {score: value, tripId: travelId} ,requestConfig)
+        .then((response) => {
+          if (
+            response.data.message ===
+            "Usuario calificado correctamente."
+          ) {
+            // setViajes();
+            toast.success("Usuario calificado con éxito");
+          } else {
+            toast.error(response);
+          }
+        }).catch((error) => {
+          toast.error(error.response.data.message);
+        })
+        ,
+        {
+          pending: {
+            render() {
+              return "Cargando"
+            },
+            icon: true,
+          },
+          error: {
+            render({ data }) {
+              toast.error(data.response.data.message);
+            }
+          }
+        });
     }
   }
 
   return (
     <div className="wrapper">
       <CardsStackSection>
+        <TripCard
+                  driver={driver}
+                  href={'#'}
+                  originalPrice={{}}
+                  button={
+                    <Rating
+                    name="highlight-selected-only"
+                    defaultValue={3}
+                    IconContainerComponent={IconContainer}
+                    getLabelText={(value) => customIcons[value].label}
+                    highlightSelectedOnly
+                    sx = {{
+                      "*": {
+                        fontSize: "3.5rem"
+                      },
+                      "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
+                        color: "theme.palette.action.disabled",
+                    
+                      }
+                    }}
+                    onChange={(event, newValue) => {
+                      if(newValue != null) {
+                        fetchReview(driver.email, newValue);
+                      }
+                    }}
+                  />
+                  }
+                />
         {(passengers) &&
           ((((sliceIntoChunks(passengers, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])] : []))
             .map((user, index) => (
               ([... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])].length === index + 1) ? (
                 <div ref={lastCardElement}>
-                  <TripCard
-                    driver={user.userDriver}
+                  {(user.email != getUser()) ? ((reviewCount >= 1) ? setReviewCount(reviewCount + 1) : <></>) && <TripCard
+                    driver={user}
                     href={'#'}
                     originalPrice={{}}
                     button={
@@ -174,45 +189,56 @@ const ReviewTravel = () => {
                         }
                       }}
                       onChange={(event, newValue) => {
-                        fetchReview(user.userDriver.email, newValue, user); // CAMBIAR ESTO POR SOLO TRIPID NO USER
+                        if(newValue != null) {
+                          fetchReview(user.email, newValue);
+                        }
                       }}
                     />
                     }
-                  />
+                  /> : ((driver.email == getUser()) && (reviewCount == 0)) ?
+                  <div style={{"textAlign": "center"}}>
+                    <div className="load-more-message-container">
+                      <><br /><br /><br /><br /> <TextItem text="No hay usuarios para mostrar" /></>
+                    </div>
+                  </div> : <></>}
                 </div>
+                
               ) : (
                 <div>
-                  <TripCard
-                    driver={user.userDriver}
-                    href={'#'}
-                    originalPrice={{}}
-                    price={
-                      <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                        <li style={{ marginRight: '10px' }}>
-                          <Rating
-                            name="highlight-selected-only"
-                            defaultValue={3}
-                            IconContainerComponent={IconContainer}
-                            getLabelText={(value) => customIcons[value].label}
-                            highlightSelectedOnly
-                            sx = {{
-                              "*": {
-                                fontSize: "3.5rem"
-                              },
-                              "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
-                                color: "theme.palette.action.disabled",
-                            
-                              }
-                            }}
-                            onChange={(event, newValue) => {
-                              fetchReview(user.userDriver.email, newValue, user); // CAMBIAR ESTO POR SOLO TRIPID NO USER
-                            }}
-                          />
-                        </li>
-                      </ul>
-                    }
+                {(user.email != getUser()) ? ((reviewCount >= 1) ? setReviewCount(reviewCount + 1) : <></>) && <TripCard
+                  driver={user}
+                  href={'#'}
+                  originalPrice={{}}
+                  button={
+                    <Rating
+                    name="highlight-selected-only"
+                    defaultValue={3}
+                    IconContainerComponent={IconContainer}
+                    getLabelText={(value) => customIcons[value].label}
+                    highlightSelectedOnly
+                    sx = {{
+                      "*": {
+                        fontSize: "3.5rem"
+                      },
+                      "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
+                        color: "theme.palette.action.disabled",
+                    
+                      }
+                    }}
+                    onChange={(event, newValue) => {
+                      if(newValue != null) {
+                        fetchReview(user.email, newValue);
+                      }
+                    }}
                   />
-                </div>
+                  }
+                /> : ((driver.email == getUser()) && (reviewCount == 0)) ?
+                <div style={{"textAlign": "center"}}>
+                  <div className="load-more-message-container">
+                    <><br /><br /><br /><br /> <TextItem text="No hay usuarios para mostrar" /></>
+                  </div>
+                </div> : <></>}
+              </div>
               )
             ))
         }
