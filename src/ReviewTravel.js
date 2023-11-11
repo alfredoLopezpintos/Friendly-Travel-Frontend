@@ -87,8 +87,6 @@ const ReviewTravel = () => {
   })
 
   useEffect(() => {
-    console.log(receivedData.passengers)
-
     setTravelId(receivedData.tripId)
     setPassengers(receivedData.passengers)
     setUserDriver(receivedData.userDriver)
@@ -168,7 +166,7 @@ const ReviewTravel = () => {
             .map((user, index) => (
               ([... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])].length === index + 1) ? (
                 <div ref={lastCardElement}>
-                  {(user.email != getUser()) ? ((reviewCount >= 1) ? setReviewCount(reviewCount + 1) : <></>) && <TripCard
+                  {(user.email != getUser()) ? <TripCard
                     driver={user}
                     href={'#'}
                     originalPrice={{}}
@@ -195,17 +193,12 @@ const ReviewTravel = () => {
                       }}
                     />
                     }
-                  /> : ((driver.email == getUser()) && (reviewCount == 0)) ?
-                  <div style={{"textAlign": "center"}}>
-                    <div className="load-more-message-container">
-                      <><br /><br /><br /><br /> <TextItem text="No hay usuarios para mostrar" /></>
-                    </div>
-                  </div> : <></>}
+                  /> : <></>}
                 </div>
                 
               ) : (
                 <div>
-                {(user.email != getUser()) ? ((reviewCount >= 1) ? setReviewCount(reviewCount + 1) : <></>) && <TripCard
+                {(user.email != getUser()) ? <TripCard
                   driver={user}
                   href={'#'}
                   originalPrice={{}}
@@ -232,12 +225,7 @@ const ReviewTravel = () => {
                     }}
                   />
                   }
-                /> : ((driver.email == getUser()) && (reviewCount == 0)) ?
-                <div style={{"textAlign": "center"}}>
-                  <div className="load-more-message-container">
-                    <><br /><br /><br /><br /> <TextItem text="No hay usuarios para mostrar" /></>
-                  </div>
-                </div> : <></>}
+                /> : <></>}
               </div>
               )
             ))

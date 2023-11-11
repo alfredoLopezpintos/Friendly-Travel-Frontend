@@ -55,6 +55,7 @@ const HistorialViajes = () => {
   };
 
   useEffect(() => {
+
     fetchHistory()
   }, []);
 
@@ -66,6 +67,7 @@ const HistorialViajes = () => {
 
     toast.promise(axios.get(viajesGetEndPoint, requestConfig)
       .then((response) => {
+        console.log(response)
         // ESTO ES SUMAMENTE INEFICIENTE. DEBIDO A QUE E BACKEND NO TRAE LOS DATOS DE FORMA APROPIADA SE REDUCE LA EFICIENCIA PARA ORDENAR LOS DATOS
         let temporalData = []
         for(let i = 0; i < response.data.DRIVER.length; i++) {
@@ -151,6 +153,7 @@ const HistorialViajes = () => {
     if(user.esChofer) {
       var dataToSend = { passengers: user.passengers,
         passengersQuantity: user.passengersQuantity,
+        userDriver: user.userDriver,
         tripId: user.tripId }
 
       history.push('/reviewTravel', { data: dataToSend });
@@ -159,7 +162,7 @@ const HistorialViajes = () => {
         passengersQuantity: user.passengersQuantity,
         userDriver: user.userDriver,
         tripId: user.tripId }
-      
+
       history.push('/reviewTravel', { data: dataToSend });
     }
     // setDataToModal(user)

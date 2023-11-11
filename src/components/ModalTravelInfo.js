@@ -23,7 +23,6 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
     const history = useHistory();
 
     const handleClose = () => {
-        // console.log(data)
         setModal(false);
         handlePrevModalClose()
         setDisplayModal2(false);
@@ -73,7 +72,7 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
                         <br />
                         {'Fecha: ' + data.tripDate}
                         <br />
-                        {'Correo del chofer: ' + data.userDriver}
+                        {'Correo del chofer: ' + data.userDriver.email}
                         <br />
                         {'Matrícula del vehículo: ' + data.vehicle}
                         <br />
