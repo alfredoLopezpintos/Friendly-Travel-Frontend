@@ -4,42 +4,11 @@ import { Button } from '@rodrisu/friendly-ui/build/button';
 import axios from "axios";
 import { URLS } from "./utils/urls";
 import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/cardsStackSection';
-import { sliceIntoChunks } from './components/Utilities';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { toast } from "react-toastify";
 import { getToken, getUser } from "./components/service/AuthService";
-
-import { styled } from "@mui/material/styles"
 import Rating from "@mui/material/Rating"
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied"
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied"
-import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied"
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined"
-import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied"
 import TextItem from "./components/TextItem";
-
-const customIcons = {
-  1: {
-    icon: <SentimentVeryDissatisfiedIcon color="error" />,
-    label: "Very Dissatisfied"
-  },
-  2: {
-    icon: <SentimentDissatisfiedIcon color="error" />,
-    label: "Dissatisfied"
-  },
-  3: {
-    icon: <SentimentSatisfiedIcon color="warning" />,
-    label: "Neutral"
-  },
-  4: {
-    icon: <SentimentSatisfiedAltIcon color="success" />,
-    label: "Satisfied"
-  },
-  5: {
-    icon: <SentimentVerySatisfiedIcon color="success" />,
-    label: "Very Satisfied"
-  }
-}
 
 const ReviewTravel = () => {
   const location = useLocation();
@@ -48,11 +17,11 @@ const ReviewTravel = () => {
   {
     passengersQuantity: undefined,
     passengers: undefined,
-    tripId: undefined
+    tripId: undefined,
+    userDriver: undefined
   };
 
   const [passengers, setPassengers] = React.useState([]);
-  const [driver, setUserDriver] = React.useState({});
   const [travelId, setTravelId] = React.useState(0);
   const requestConfig = {
     headers: {
@@ -61,34 +30,13 @@ const ReviewTravel = () => {
     },
   };
 
-  const [prevViajes, setPrevViajes] = React.useState([]);
-  const [pageNumber, setPageNumber] = React.useState(0);
-  const [cardsNumber, setCardsNumber] = React.useState(5);
-  const observer = useRef();
-  const [visible, setVisible] = React.useState(false);  
-  const [reviewCount, setReviewCount] = React.useState(0);  
-
-  const lastCardElement = useCallback(node => {
-    if (observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])]).length < passengers.length) {
-        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])])
-        setPageNumber(pageNumber + 1)
-        setCardsNumber(cardsNumber + 5)
-      } else {
-        // setVisible(true)
-      }
-    })
-    if (node) observer.current.observe(node)
-  })
-
   useEffect(() => {
     if((receivedData.tripId == undefined)) {
-      history.push("/")
+      history.push("/travelHistory")
+    } else {
+      setTravelId(receivedData.tripId)    
+      setPassengers([...receivedData.passengers, { ...receivedData.userDriver, esChofer: true }])
     }
-    setTravelId(receivedData.tripId)
-    setPassengers(receivedData.passengers)
-    setUserDriver(receivedData.userDriver)
   }, [])
 
   async function fetchReview(email, value) {
@@ -104,7 +52,6 @@ const ReviewTravel = () => {
             response.data.message ===
             "Usuario calificado correctamente."
           ) {
-            // setViajes();
             toast.success("Usuario calificado con éxito");
           } else {
             toast.error(response);
@@ -132,37 +79,10 @@ const ReviewTravel = () => {
   return (
     <div className="wrapper">
       <CardsStackSection>
-        <TripCard
-                  driver={driver}
-                  href={'#'}
-                  originalPrice={{}}
-                  button={
-                    <Rating
-                    name="highlight-selected-only"
-                    getLabelText={(value) => customIcons[value].label}
-                    highlightSelectedOnly
-                    sx = {{
-                      "*": {
-                        fontSize: "2.5rem"
-                      },
-                      "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
-                        color: "theme.palette.action.disabled",
-                    
-                      }
-                    }}
-                    onChange={(event, newValue) => {
-                      if(newValue != null) {
-                        fetchReview(driver.email, newValue);
-                      }
-                    }}
-                  />
-                  }
-                />
         {(passengers) &&
-          ((((sliceIntoChunks(passengers, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])] : []))
+          (passengers)
             .map((user, index) => (
-              ([... new Set([...prevViajes, ...sliceIntoChunks(passengers, 5)[pageNumber]])].length === index + 1) ? (
-                <div ref={lastCardElement}>
+                <div>
                   {(user.email != getUser()) ? <TripCard
                     driver={user}
                     href={'#'}
@@ -170,7 +90,6 @@ const ReviewTravel = () => {
                     button={
                       <Rating
                       name="highlight-selected-only"
-                      getLabelText={(value) => customIcons[value].label}
                       highlightSelectedOnly
                       sx = {{
                         "*": {
@@ -188,39 +107,14 @@ const ReviewTravel = () => {
                       }}
                     />
                     }
-                  /> : <></>}
+                  /> : (passengers.length == 1) ?                  
+                  <div style={{"textAlign": "center"}}>
+                  <div className="load-more-message-container">
+                    <><br /><br /><br /><br /> <TextItem text="No hay pasajeros para mostrar" /></>
+                  </div>
                 </div>
-                
-              ) : (
-                <div>
-                {(user.email != getUser()) ? <TripCard
-                  driver={user}
-                  href={'#'}
-                  originalPrice={{}}
-                  button={
-                    <Rating
-                    name="highlight-selected-only"
-                    getLabelText={(value) => customIcons[value].label}
-                    highlightSelectedOnly
-                    sx = {{
-                      "*": {
-                        fontSize: "2.5rem"
-                      },
-                      "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
-                        color: "theme.palette.action.disabled",
-                    
-                      }
-                    }}
-                    onChange={(event, newValue) => {
-                      if(newValue != null) {
-                        fetchReview(user.email, newValue);
-                      }
-                    }}
-                  />
-                  }
-                /> : <></>}
-              </div>
-              )
+                  : <></>}
+                </div>
             ))
         }
       </CardsStackSection>
