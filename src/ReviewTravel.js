@@ -33,9 +33,12 @@ const ReviewTravel = () => {
   useEffect(() => {
     if((receivedData.tripId == undefined)) {
       history.push("/travelHistory")
-    } else {
+    } else if (receivedData.passengers === undefined) {
       setTravelId(receivedData.tripId)    
-      setPassengers([...receivedData.passengers, { ...receivedData.userDriver, esChofer: true }])
+      setPassengers([{ ...receivedData.userDriver, esChofer: true }])
+    } else {
+      // setPassengers([...receivedData.passengers, { ...receivedData.userDriver, esChofer: true }])
+      setPassengers([...receivedData.passengers])
     }
   }, [])
 
@@ -79,8 +82,7 @@ const ReviewTravel = () => {
   return (
     <div className="wrapper">
       <CardsStackSection>
-        {(passengers) &&
-          (passengers)
+        {(passengers)
             .map((user, index) => (
                 <div>
                   {(user.email != getUser()) ? <TripCard
@@ -107,13 +109,7 @@ const ReviewTravel = () => {
                       }}
                     />
                     }
-                  /> : (passengers.length == 1) ?                  
-                  <div style={{"textAlign": "center"}}>
-                  <div className="load-more-message-container">
-                    <><br /><br /><br /><br /> <TextItem text="No hay pasajeros para mostrar" /></>
-                  </div>
-                </div>
-                  : <></>}
+                  /> : <></>}
                 </div>
             ))
         }

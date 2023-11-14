@@ -72,7 +72,7 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
                         <br />
                         {'Fecha: ' + data.tripDate}
                         <br />
-                        {'Correo del chofer: ' + data.userDriver.email}
+                        {'Correo del chofer: ' + ((data.userDriver.email != undefined) ? data.userDriver.email : data.userDriver) }
                         <br />
                         {'Matrícula del vehículo: ' + data.vehicle}
                         <br />

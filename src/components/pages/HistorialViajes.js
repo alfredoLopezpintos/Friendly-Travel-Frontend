@@ -149,15 +149,15 @@ const HistorialViajes = () => {
   }
 
   function handleReview(user) {
-    if(user.esChofer) {
+    if((user.esChofer) || (user.userDriver.email == getUser())) {
       var dataToSend = { passengers: user.passengers,
         passengersQuantity: user.passengersQuantity,
-        userDriver: user.userDriver,
+        userDriver: undefined,
         tripId: user.tripId }
 
       history.push('/reviewTravel', { data: dataToSend });
     } else {
-      var dataToSend = { passengers: user.passengers,
+      var dataToSend = { passengers: undefined,
         passengersQuantity: user.passengersQuantity,
         userDriver: user.userDriver,
         tripId: user.tripId }
@@ -209,7 +209,7 @@ const HistorialViajes = () => {
                                 <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
                               </li>
                             </ul>
                         }
@@ -236,7 +236,7 @@ const HistorialViajes = () => {
                             <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                           </li>
                           <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                            <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
                           </li>
                         </ul> 
                       }
@@ -284,7 +284,7 @@ const HistorialViajes = () => {
                                 <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
                               </li>
                             </ul>
                         }
@@ -310,7 +310,7 @@ const HistorialViajes = () => {
                               <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                              <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
                             </li>
                           </ul>
                         }
@@ -358,7 +358,7 @@ const HistorialViajes = () => {
                                 <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
                               </li>
                             </ul>
                         }
@@ -384,7 +384,7 @@ const HistorialViajes = () => {
                               <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} status="green"> Calificar Viaje </Button>
+                              <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
                             </li>
                           </ul>
                         }
