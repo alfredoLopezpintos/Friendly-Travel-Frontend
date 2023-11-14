@@ -85,8 +85,6 @@ export default function ListadoDeViajes() {
     receivedData.asientos = (formValues.STEPPER !== undefined) ? formValues.STEPPER : receivedData.asientos;
     receivedData.precio = (formValues.PRICE !== undefined) ? formValues.PRICE : receivedData.precio;
 
-    // console.log(receivedData)
-
     fetchViajes(receivedData.desde,
       receivedData.hasta,
       receivedData.fecha,
@@ -376,6 +374,7 @@ export default function ListadoDeViajes() {
                     ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
                       <div ref={lastCardElement}>
                         <TripCard
+                          driver={user.driver}
                           href={'#'}
                           itinerary={
                             <Itinerary>
@@ -383,7 +382,7 @@ export default function ListadoDeViajes() {
                               <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
-                          price={`$ ${user.price}`}
+                          price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
                           originalPrice={{
                             label: 'availablePlaces',
                             value: `${user.availablePlaces} asiento(s)`,
@@ -412,7 +411,7 @@ export default function ListadoDeViajes() {
                               <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
                             </Itinerary>
                           }
-                          price={`$ ${user.price}`}
+                          price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
                           originalPrice={{
                             label: 'availablePlaces',
                             value: `${user.availablePlaces} asiento(s)`,
