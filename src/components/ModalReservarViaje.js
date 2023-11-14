@@ -14,10 +14,12 @@ import { Button } from '@rodrisu/friendly-ui/build/button';
 import { URLS } from "../utils/urls";
 import { getToken } from "./service/AuthService";
 import { toast } from "react-toastify";
+import { Stepper } from '@rodrisu/friendly-ui/build/stepper'
 
 export default function ModalReservarViaje({ setModal, handlePrevModalClose, data }) {
     const [displayModal2, setDisplayModal2] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [asientos, setAsientos] = useState(1)
     const handleClose = () => {
         setModal(false);
         handlePrevModalClose()
@@ -31,6 +33,10 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
         },
       };
 
+    const handleStepperChange = (value) => {
+        setAsientos(value.value)
+    }
+
     const handleAccept = () => {
         const appointmentPutEndPoint =
         URLS.PUT_RESERVE_TRAVEL + "/" + data.tripId;
@@ -38,11 +44,10 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
         toast.promise((axios.put(appointmentPutEndPoint, 
             {
             //   "places": JSON.parse(data.availablePlaces)
-              "places": JSON.parse(1)
+              "places": JSON.parse(asientos)
             },
             requestConfig)
             .then((response) => {
-                // console.log(response)
                 toast.success("Viaje Reservado con éxito")
                 handleClose()
             }
@@ -111,7 +116,19 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
                             "textAlign": "center",
                             "userSelect": "none"
                         }}>
-                            {'Cantidad de asientos a reservar: ' + 1}
+                            {'Cantidad de asientos a reservar: '}
+                            <Stepper
+                                name="Asientos"
+                                min={1}
+                                max={4}
+                                step={1}
+                                value={1}
+                                increaseLabel="Aumentar"
+                                decreaseLabel="Reducir"
+                                format={value => `${value} asiento/s`}
+                                onChange={value => handleStepperChange(value)}
+                                title="Edita los asientos"
+                                />
                         </h3>
                     </Grid>
                     <DialogActions>
