@@ -34,10 +34,11 @@ const ReviewTravel = () => {
     if((receivedData.tripId == undefined)) {
       history.push("/travelHistory")
     } else if (receivedData.passengers === undefined) {
-      setTravelId(receivedData.tripId)    
+      setTravelId(receivedData.tripId)
       setPassengers([{ ...receivedData.userDriver, esChofer: true }])
     } else {
       // setPassengers([...receivedData.passengers, { ...receivedData.userDriver, esChofer: true }])
+      setTravelId(receivedData.tripId)
       setPassengers([...receivedData.passengers])
     }
   }, [])
@@ -48,6 +49,8 @@ const ReviewTravel = () => {
         URLS.USER_HISTORY + "/" +
         email +
         "/ratings"
+
+      console.log(travelId)
 
       toast.promise(axios.post(reviewGetEndPoint, {score: value, tripId: travelId} ,requestConfig)
         .then((response) => {
