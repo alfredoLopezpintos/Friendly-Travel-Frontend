@@ -404,6 +404,7 @@ export default function ListadoDeViajes() {
                     ) : (
                       <div>
                         <TripCard
+                          driver={user.driver}
                           href={'#'}
                           itinerary={
                             <Itinerary>
@@ -421,7 +422,7 @@ export default function ListadoDeViajes() {
                             getToken() !== null ? (
                               <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                                 <li style={{ marginRight: '10px' }}>
-                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar </Button>
+                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar <WhatsAppIcon style={{"margin-left": "7px", "margin-right": "0px"}} /></Button>
                                 </li>
                                 <li>
                                   <Button onClick={() => handleAppointment(user)} status="green"> Reservar </Button>

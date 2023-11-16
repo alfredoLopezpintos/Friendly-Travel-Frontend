@@ -168,7 +168,7 @@ const MisViajes = () => {
                         ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
                           <div ref={lastCardElementAll}>
                             <TripCard
-                              driver={user.driver}
+                              driver={user.userDriver}
                               tag={(user.esChofer) ? "Conductor" : "Pasajero"}
                               href={'#'}
                               itinerary={
@@ -192,7 +192,7 @@ const MisViajes = () => {
                         ) : (
                           <div>
                             <TripCard
-                              driver={user.driver}
+                              driver={user.userDriver}
                               tag={(user.esChofer) ? "Conductor" : "Pasajero"}
                               href={'#'}
                               itinerary={
@@ -238,7 +238,7 @@ const MisViajes = () => {
                         ([... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])].length === index + 1) ? (
                           <div ref={lastCardElementDriver}>
                             <TripCard
-                              driver={user.driver}
+                              driver={user.userDriver}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
@@ -261,7 +261,7 @@ const MisViajes = () => {
                         ) : (
                           <div>
                             <TripCard
-                              driver={user.driver}
+                              driver={user.userDriver}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
@@ -306,7 +306,7 @@ const MisViajes = () => {
                         ([... new Set([...prevViajesPassenger, ...sliceIntoChunks(passenger, 5)[pageNumberPassenger]])].length === index + 1) ? (
                           <div ref={lastCardElementPassenger}>
                             <TripCard
-                              driver={user.driver}
+                              driver={user.userDriver}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
@@ -329,7 +329,7 @@ const MisViajes = () => {
                         ) : (
                           <div>
                             <TripCard
-                              driver={user.driver}
+                              driver={user.userDriver}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
