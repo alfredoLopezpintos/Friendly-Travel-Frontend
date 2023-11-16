@@ -7,6 +7,20 @@
   align-items: center;
 }
 
+hr {
+  width: 90%;
+  /* Set the hr color */
+  color: #333;  /* old IE */
+  background-color: #333;  /* Modern Browsers */
+}
+
+.row.copy {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  align-items: stretch;
+}
+
 .footer-a{
   float: left;
 }
@@ -15,8 +29,16 @@
   float: right;
 }
 
+.text-align {
+  text-align: right;
+}
+
 .ul-container {
   list-style-type: none;
+}
+
+.li-footer {
+  margin: 10px 0;
 }
 
 footer * {
@@ -51,7 +73,7 @@ footer * {
 
 .row.primary {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 2fr;
+  grid-template-columns: 2fr 2fr;
   align-items: stretch;
 }
 
