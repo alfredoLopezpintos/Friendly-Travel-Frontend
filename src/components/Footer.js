@@ -18,8 +18,8 @@ function Footer() {
               ¡Únete a la aventura y comienza a viajar con Friendly-Travel!
             </p>
           </div>
-          <div className="row copy">
-            <div className="">
+          <div className="row copy mapaContacto">
+            <div className="column mapaDelSitio">
                 <h3>Mapa del sitio</h3>
                 <br />
                 <ul className="ul-container">
@@ -28,10 +28,7 @@ function Footer() {
                   <li className="li-footer">Acerca de Carpooling</li>
                 </ul>
             </div>
-            <div className="">
-
-            </div>
-            <div className="">
+            <div className="column">
                 <h3>Contacto</h3>
                 <br />
                 <ul className="ul-container">
