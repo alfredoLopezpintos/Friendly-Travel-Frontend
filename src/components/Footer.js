@@ -14,13 +14,13 @@ function Footer() {
               </svg>
             </div>
             <br />
-            <p>
+            <p className="text-color">
               ¡Únete a la aventura y comienza a viajar con Friendly-Travel!
             </p>
           </div>
           <div className="row copy mapaContacto">
             <div className="column mapaDelSitio">
-              <h3>Mapa del sitio</h3>
+              <h3 className="text-color">Mapa del sitio</h3>
               <br />
               <ul className="ul-container">
                 <li className="li-footer">
@@ -35,7 +35,7 @@ function Footer() {
               </ul>
             </div>
             <div className="column">
-              <h3>Contacto</h3>
+              <h3 className="text-color">Contacto</h3>
               <br />
               <ul className="ul-container">
                 <li className="li-footer">diego.rosales@estudiantes.utec.edu.uy</li>
@@ -50,7 +50,7 @@ function Footer() {
       <hr className="hr-footer" />
       <div className="row copy" style={{ color: 'white' }}>
         <div className="row footer-a">
-          <p>Copyright &copy; 2023 Todos los derechos reservados.</p>
+          <p className="text-color">Copyright &copy; 2023 Todos los derechos reservados.</p>
         </div>
         <div className="row footer-b text-align">
           <Link className="politicas-priv" to="/policy">Términos de usuario y condiciones de uso | Políticas de privacidad.</Link>
