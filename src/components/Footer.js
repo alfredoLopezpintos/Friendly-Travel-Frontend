@@ -20,34 +20,40 @@ function Footer() {
           </div>
           <div className="row copy mapaContacto">
             <div className="column mapaDelSitio">
-                <h3>Mapa del sitio</h3>
-                <br />
-                <ul className="ul-container">
-                  <li className="li-footer">Preguntas frecuentes</li>
-                  <li className="li-footer">Quienes somos</li>
-                  <li className="li-footer">Acerca de Carpooling</li>
-                </ul>
+              <h3>Mapa del sitio</h3>
+              <br />
+              <ul className="ul-container">
+                <li className="li-footer">
+                  <Link className="li-footer" to="/faqsPage">Preguntas frecuentes</Link>
+                </li>
+                <li className="li-footer">
+                  <Link className="li-footer" to="/about">Quienes somos</Link>
+                </li>
+                <li className="li-footer">
+                  <Link className="li-footer" to="/carpool">Acerca de Carpooling</Link>
+                </li>
+              </ul>
             </div>
             <div className="column">
-                <h3>Contacto</h3>
-                <br />
-                <ul className="ul-container">
-                  <li className="li-footer">diego.rosales@estudiantes.utec.edu.uy</li>
-                  <li className="li-footer">rodrigo.serron@estudiantes.utec.edu.uy</li>
-                  <li className="li-footer">alfredo.lopezpintos@estudiantes.utec.edu.uy</li>
-                </ul>
+              <h3>Contacto</h3>
+              <br />
+              <ul className="ul-container">
+                <li className="li-footer">diego.rosales@estudiantes.utec.edu.uy</li>
+                <li className="li-footer">rodrigo.serron@estudiantes.utec.edu.uy</li>
+                <li className="li-footer">alfredo.lopezpintos@estudiantes.utec.edu.uy</li>
+              </ul>
             </div>
           </div>
         </div>
       </footer>
       <br />
-      <hr />
+      <hr className="hr-footer" />
       <div className="row copy" style={{ color: 'white' }}>
         <div className="row footer-a">
           <p>Copyright &copy; 2023 Todos los derechos reservados.</p>
         </div>
         <div className="row footer-b text-align">
-          <p>Términos de usuario y condiciones de uso | Políticas de privacidad.</p>
+          <Link className="politicas-priv" to="/policy">Términos de usuario y condiciones de uso | Políticas de privacidad.</Link>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 .footer-container {
   background-color: #172A3A;
-  padding: 2rem 0 2rem 0;
+  padding: 2rem 0 0 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,7 +11,7 @@
   width: 220px !important;
 }
 
-hr {
+.hr-footer {
   width: 90%;
   /* Set the hr color */
   color: #333;  /* old IE */
@@ -43,13 +43,13 @@ hr {
 
 .li-footer {
   margin: 10px 0;
+  color: #fff;
+  text-decoration: none;
 }
 
-footer * {
-  font-family: "Poppins", sans-serif;
-  box-sizing: border-box;
-  border: none;
-  outline: none;
+.politicas-priv {
+  color: #fff;
+  text-decoration: none;
 }
 
 .column {
@@ -75,8 +75,6 @@ footer * {
   grid-template-columns: 2fr 2fr;
   align-items: stretch;
 }
-
-
 
 .website-copyright {
   color: #fff;
