@@ -72,6 +72,11 @@ div > .kirk-textField-wrapper--hasFocus {
   transition: 0.7s !important;
 }
 
+.registerLink {
+  color: #172A3A;
+  text-decoration: none;
+}
+
 .big_logo i {
   font-size: 100px;
   color: rgb(26, 23, 23) 100%;

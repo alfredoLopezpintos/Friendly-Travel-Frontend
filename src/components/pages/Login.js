@@ -86,7 +86,19 @@ const Login = () => {
   };
 
   function handleEmailChange(event) {
-    setEmail(event.target.value);
+    console.log(event.value)
+    setEmail(event.value);
+    // setEmail(event.target.value);
+    // if (!event.target.validity.valid) {
+    //   setErrorMessage("Por favor ingrese un email válido");
+    // } else {
+    //   setErrorMessage("Error");
+    // }
+  }
+
+  function handlePassChange(event) {
+    console.log(event.value)
+    setPassword(event.value);
     // if (!event.target.validity.valid) {
     //   setErrorMessage("Por favor ingrese un email válido");
     // } else {
@@ -97,66 +109,33 @@ const Login = () => {
   return (
     <>
       <div>
+      <form onSubmit={submitHandler}>
         <div style={{ "padding-top": "50px" }} className="grid align__item">
           <div className="register text">
             <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Iniciar sesión</h2>
             <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
-            <TextField className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu correo electrónico" onChange={() => null} />
+            <TextField className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
             <br />
-            <div>
+            <div type="password">
               <p style={{ "text-align": "left", "color": "#172A3A" }}>Contraseña</p>
-              <TextField className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu contraseña" onChange={() => null} />
-              <h5 style={{ "text-align": "right", "color": "#172A3A" }}>¿Olvidaste tu contraseña?</h5>
+              <TextField type="password" className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu contraseña" onChange={(data) => handlePassChange(data)} />
+              <ModalChangePass />
             </div>
             <br />
-            <Button className="submitBtn" onClick={() => console.log("A")}> Aceptar </Button>
+            <Button type="submit" className="submitBtn"> Aceptar </Button>
             <br />
             <br />
-            <form
-              onSubmit={submitHandler}
-              className="form"
-              data-testid="login-form"
-            >
-              <div className="form__field" data-testid="email-input">
-                <input
-                  value={email}
-                  onChange={handleEmailChange}
-                  type="email"
-                  placeholder="info@mailaddress.com"
-                  onInvalid={(event) => {
-                    event.target.setCustomValidity(
-                      "Por favor ingrese un email válido"
-                    );
-                  }}
-                  onInput={(event) => {
-                    event.target.setCustomValidity("");
-                  }}
-                />
-              </div>
-
-              <div className="form__field" data-testid="password-input">
-                <input
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  type="password"
-                  placeholder="••••••••••••"
-                />
-              </div>
-              <div className="form__field" data-testid="submit-button">
-                <input type="submit" value="Aceptar" />
-              </div>
-              {errorMessage && <span className="message">{errorMessage}</span>}
-              <br />
-            </form>
             <span style={{ "color": "#777E90" }}>
-              ¿Aún no tienes cuenta? <Link to="/register">Regístrate</Link>
+              ¿Aún no tienes cuenta? <Link className="registerLink" to="/register">Regístrate</Link>
             </span>
             <br />
-            <span>
+            <br />
+            {/* <span>
               ¿Olvidaste tu contraseña? <br /> <ModalChangePass />
-            </span>
+            </span> */}
           </div>
         </div>
+      </form>
       </div>
       {(shouldRedirect) ? (history.push('/changePass', { data: email })) : (<></>)
         //  && (
