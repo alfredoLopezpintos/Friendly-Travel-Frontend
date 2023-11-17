@@ -7,6 +7,9 @@ import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import { URLS } from "../../utils/urls";
 import ModalChangePass from '../../components/ModalChangePass';
+import { TextFieldsSection } from '@rodrisu/friendly-ui/build/layout/section/textFieldsSection'
+import { TextField } from '@rodrisu/friendly-ui/build/textField'
+import { Button } from '@rodrisu/friendly-ui/build/button';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +27,7 @@ const Login = () => {
       toast.error("Usuario y/o contraseña no pueden estar vacíos");
       return;
     }
-    
+
     setErrorMessage(null);
     const requestBody = {
       email: email,
@@ -94,17 +97,19 @@ const Login = () => {
   return (
     <>
       <div>
-        <div className="grid align__item">
-          <div className="register">
-            <div className="big_logo">
-              <img
-                src={require("../../assets/images/logo2.png")}
-                alt="travel logo"
-                width={200}
-              ></img>
+        <div style={{"padding-top": "50px"}} className="grid align__item">
+          <div className="register text">
+            <h2 style={{"text-align": "left", "padding-bottom": "50px", "color": "#172A3A"}} className="">Iniciar sesión</h2>
+            <p style={{"text-align": "left", "color": "#172A3A"}}>Correo electrónico</p>
+            <TextField className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu correo electrónico" onChange={() => null} />
+            <br />
+            <div>
+              <p style={{"text-align": "left", "color": "#172A3A"}}>Contraseña</p>
+              <TextField className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu contraseña" onChange={() => null} />
             </div>
             <br />
-            <h2>Iniciar sesión</h2>
+            <Button className="submitBtn" onClick={() => console.log("A")}> Aceptar </Button>
+            <br />
             <br />
             <form
               onSubmit={submitHandler}
@@ -143,24 +148,24 @@ const Login = () => {
               <br />
             </form>
             <span>
-              ¿Aún no tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+              ¿Aún no tienes cuenta? <Link to="/register">Regístrate</Link>
             </span>
             <br />
             <span>
-              ¿Olvidaste tu contraseña? <br /> <ModalChangePass  />
-            </span>            
+              ¿Olvidaste tu contraseña? <br /> <ModalChangePass />
+            </span>
           </div>
         </div>
       </div>
       {(shouldRedirect) ? (history.push('/changePass', { data: email })) : (<></>)
-      //  && (
-      //   <Redirect
-      //     to={{
-      //       pathname: "/changePass",
-      //       state: { endpointResponse },
-      //     }}
-      //   />
-      // )
+        //  && (
+        //   <Redirect
+        //     to={{
+        //       pathname: "/changePass",
+        //       state: { endpointResponse },
+        //     }}
+        //   />
+        // )
       }
     </>
   );
