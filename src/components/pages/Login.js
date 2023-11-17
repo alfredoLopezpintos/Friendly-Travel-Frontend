@@ -7,6 +7,9 @@ import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import { URLS } from "../../utils/urls";
 import ModalChangePass from '../../components/ModalChangePass';
+import { TextFieldsSection } from '@rodrisu/friendly-ui/build/layout/section/textFieldsSection'
+import { TextField } from '@rodrisu/friendly-ui/build/textField'
+import { Button } from '@rodrisu/friendly-ui/build/button';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +27,7 @@ const Login = () => {
       toast.error("Usuario y/o contraseña no pueden estar vacíos");
       return;
     }
-    
+
     setErrorMessage(null);
     const requestBody = {
       email: email,
@@ -83,7 +86,19 @@ const Login = () => {
   };
 
   function handleEmailChange(event) {
-    setEmail(event.target.value);
+    console.log(event.value)
+    setEmail(event.value);
+    // setEmail(event.target.value);
+    // if (!event.target.validity.valid) {
+    //   setErrorMessage("Por favor ingrese un email válido");
+    // } else {
+    //   setErrorMessage("Error");
+    // }
+  }
+
+  function handlePassChange(event) {
+    console.log(event.value)
+    setPassword(event.value);
     // if (!event.target.validity.valid) {
     //   setErrorMessage("Por favor ingrese un email válido");
     // } else {
@@ -94,73 +109,43 @@ const Login = () => {
   return (
     <>
       <div>
-        <div className="grid align__item">
-          <div className="register">
-            <div className="big_logo">
-              <img
-                src={require("../../assets/images/logo2.png")}
-                alt="travel logo"
-                width={200}
-              ></img>
+      <form onSubmit={submitHandler}>
+        <div style={{ "padding-top": "50px" }} className="grid align__item">
+          <div className="register text">
+            <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Iniciar sesión</h2>
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
+            <TextField className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
+            <br />
+            <div type="password">
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Contraseña</p>
+              <TextField type="password" className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu contraseña" onChange={(data) => handlePassChange(data)} />
+              <ModalChangePass />
             </div>
             <br />
-            <h2>Iniciar sesión</h2>
+            <Button type="submit" className="submitBtn"> Aceptar </Button>
             <br />
-            <form
-              onSubmit={submitHandler}
-              className="form"
-              data-testid="login-form"
-            >
-              <div className="form__field" data-testid="email-input">
-                <input
-                  value={email}
-                  onChange={handleEmailChange}
-                  type="email"
-                  placeholder="info@mailaddress.com"
-                  onInvalid={(event) => {
-                    event.target.setCustomValidity(
-                      "Por favor ingrese un email válido"
-                    );
-                  }}
-                  onInput={(event) => {
-                    event.target.setCustomValidity("");
-                  }}
-                />
-              </div>
-
-              <div className="form__field" data-testid="password-input">
-                <input
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  type="password"
-                  placeholder="••••••••••••"
-                />
-              </div>
-              <div className="form__field" data-testid="submit-button">
-                <input type="submit" value="Aceptar" />
-              </div>
-              {errorMessage && <span className="message">{errorMessage}</span>}
-              <br />
-            </form>
-            <span>
-              ¿Aún no tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+            <br />
+            <span style={{ "color": "#777E90" }}>
+              ¿Aún no tienes cuenta? <Link className="registerLink" to="/register">Regístrate</Link>
             </span>
             <br />
-            <span>
-              ¿Olvidaste tu contraseña? <br /> <ModalChangePass  />
-            </span>            
+            <br />
+            {/* <span>
+              ¿Olvidaste tu contraseña? <br /> <ModalChangePass />
+            </span> */}
           </div>
         </div>
+      </form>
       </div>
       {(shouldRedirect) ? (history.push('/changePass', { data: email })) : (<></>)
-      //  && (
-      //   <Redirect
-      //     to={{
-      //       pathname: "/changePass",
-      //       state: { endpointResponse },
-      //     }}
-      //   />
-      // )
+        //  && (
+        //   <Redirect
+        //     to={{
+        //       pathname: "/changePass",
+        //       state: { endpointResponse },
+        //     }}
+        //   />
+        // )
       }
     </>
   );

@@ -4,6 +4,10 @@
   flex-direction: row;
 }
 
+body {
+  background-color: #EDF2F7 !important;
+}
+
 .align__item--start {
   align-self: flex-start;
 }
@@ -36,7 +40,7 @@
 
 .grid {
   margin: 0 auto;
-  max-width: 25rem;
+  max-width: 35rem;
   width: 100%;
 }
 
@@ -48,10 +52,29 @@
   margin-bottom: 1em;
 }
 
-.register input {
-  border: 1px solid #242c37;
-  border-radius: 5px;
-  background-color: transparent;
+.textField {
+  padding-inline: 0 !important;
+}
+
+.submitBtn {
+  background-color: #172A3A !important;
+  color: #FCFCFD !important;
+  display: block;
+  width: 100%;
+}
+
+div > .kirk-textField-wrapper--hasFocus {
+  border: 2px solid #172A3A !important;
+}
+
+.submitBtn:hover {
+  background-color: #0E273D !important;
+  transition: 0.7s !important;
+}
+
+.registerLink {
+  color: #172A3A;
+  text-decoration: none;
 }
 
 .big_logo i {
