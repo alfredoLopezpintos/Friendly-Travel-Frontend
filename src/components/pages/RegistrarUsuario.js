@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
 import { toast } from "react-toastify";
-import "./RegistrarUsuario.css";
+// import "./RegistrarUsuario.css";
 import { registerLocale } from "react-datepicker";
 import { transformDate2 } from "../Utilities";
 import { Button } from "@material-ui/core";
@@ -18,6 +18,7 @@ import {
   isValidPhoneNumber
 } from "../../utils/ValidationFunctions";
 import { URLS } from "../../utils/urls";
+import { TextField } from '@rodrisu/friendly-ui/build/textField'
 registerLocale("es", es);
 
 export default function RegistrarUsuario() {
@@ -127,17 +128,26 @@ export default function RegistrarUsuario() {
   return (
     <>
       <div>
-        <div className="grid align__item">
-          <div className="register">
-            <div className="big_logo">
-              <img
-                src={require("../../assets/images/logo2.png")}
-                alt="travel logo"
-                width={200}
-              ></img>
-            </div>
+        <div style={{ "padding-top": "50px" }} className="grid align__item">
+          <div className="register text">
+            <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Registrarse</h2>
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Nombre</p>
+            <TextField type="text" className="textField" name="nombre" placeholder="Escribe aquí tu nombre" onChange={(data) => null} />
             <br />
-            <h2> Registrar usuario </h2>
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Apelldo</p>
+            <TextField type="text" className="textField" name="apellido" placeholder="Escribe aquí tu apellido" onChange={(data) => null} />
+            <br />
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
+            <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => null} />
+            <br />
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Fecha de nacimiento</p>
+            <TextField type="date" className="textField" name="birthdate" placeholder="Selecciona tu fecha de nacimiento" onChange={(data) => null} />
+            <br />
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Cédula de identidad</p>
+            <TextField type="number" className="textField" name="ci" placeholder="Escribe aquí tu cédula de identidad" onChange={(data) => null} />
+            <br />
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Teléfono de contacto</p>
+            <TextField type="tel" className="textField" name="phone" placeholder="Escribe aquí tu teléfono" onChange={(data) => null} />
             <br />
             <form onSubmit={handleSubmit(onSubmit, onError)} className="form" data-testid="form">
               <div>
@@ -219,14 +229,14 @@ export default function RegistrarUsuario() {
                 ) : (
                   <div>
                     <div><img src={image} alt="Uploaded file" className="uploaded-image" /></div>
-                      <div>
-                        <Button
+                    <div>
+                      <Button
                         variant="outlined"
                         component="span"
                         fullWidth={true}
                         style={{ marginBottom: "10px", boxShadow: "none" }}
                         onClick={removeImage}>Quitar foto</Button>
-                      </div>
+                    </div>
                   </div>
                 )}
                 <div className="form__field">

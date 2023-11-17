@@ -7,7 +7,6 @@ import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
 import { URLS } from "../../utils/urls";
 import ModalChangePass from '../../components/ModalChangePass';
-import { TextFieldsSection } from '@rodrisu/friendly-ui/build/layout/section/textFieldsSection'
 import { TextField } from '@rodrisu/friendly-ui/build/textField'
 import { Button } from '@rodrisu/friendly-ui/build/button';
 
@@ -109,33 +108,31 @@ const Login = () => {
   return (
     <>
       <div>
-      <form onSubmit={submitHandler}>
-        <div style={{ "padding-top": "50px" }} className="grid align__item">
-          <div className="register text">
-            <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Iniciar sesión</h2>
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
-            <TextField className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
-            <br />
-            <div type="password">
+        <form onSubmit={submitHandler}>
+          <div style={{ "padding-top": "50px" }} className="grid align__item">
+            <div className="register text">
+              <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Iniciar sesión</h2>
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
+              <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
+              <br />
               <p style={{ "text-align": "left", "color": "#172A3A" }}>Contraseña</p>
               <TextField type="password" className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu contraseña" onChange={(data) => handlePassChange(data)} />
               <ModalChangePass />
-            </div>
-            <br />
-            <Button type="submit" className="submitBtn"> Aceptar </Button>
-            <br />
-            <br />
-            <span style={{ "color": "#777E90" }}>
-              ¿Aún no tienes cuenta? <Link className="registerLink" to="/register">Regístrate</Link>
-            </span>
-            <br />
-            <br />
-            {/* <span>
+              <br />
+              <Button type="submit" className="submitBtn"> Aceptar </Button>
+              <br />
+              <br />
+              <span style={{ "color": "#777E90" }}>
+                ¿Aún no tienes cuenta? <Link className="registerLink" to="/register">Regístrate</Link>
+              </span>
+              <br />
+              <br />
+              {/* <span>
               ¿Olvidaste tu contraseña? <br /> <ModalChangePass />
             </span> */}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
       </div>
       {(shouldRedirect) ? (history.push('/changePass', { data: email })) : (<></>)
         //  && (
