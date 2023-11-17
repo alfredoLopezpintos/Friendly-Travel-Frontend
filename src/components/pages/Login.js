@@ -97,15 +97,16 @@ const Login = () => {
   return (
     <>
       <div>
-        <div style={{"padding-top": "50px"}} className="grid align__item">
+        <div style={{ "padding-top": "50px" }} className="grid align__item">
           <div className="register text">
-            <h2 style={{"text-align": "left", "padding-bottom": "50px", "color": "#172A3A"}} className="">Iniciar sesión</h2>
-            <p style={{"text-align": "left", "color": "#172A3A"}}>Correo electrónico</p>
+            <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Iniciar sesión</h2>
+            <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
             <TextField className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu correo electrónico" onChange={() => null} />
             <br />
             <div>
-              <p style={{"text-align": "left", "color": "#172A3A"}}>Contraseña</p>
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Contraseña</p>
               <TextField className="textField" name="firstInputSecondRow" placeholder="Escribe aquí tu contraseña" onChange={() => null} />
+              <h5 style={{ "text-align": "right", "color": "#172A3A" }}>¿Olvidaste tu contraseña?</h5>
             </div>
             <br />
             <Button className="submitBtn" onClick={() => console.log("A")}> Aceptar </Button>
@@ -147,7 +148,7 @@ const Login = () => {
               {errorMessage && <span className="message">{errorMessage}</span>}
               <br />
             </form>
-            <span>
+            <span style={{ "color": "#777E90" }}>
               ¿Aún no tienes cuenta? <Link to="/register">Regístrate</Link>
             </span>
             <br />
