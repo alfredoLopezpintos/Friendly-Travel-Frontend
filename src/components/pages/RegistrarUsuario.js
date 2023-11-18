@@ -4,13 +4,14 @@ import moment from "moment";
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import "./Login.css";
 import { toast } from "react-toastify";
 // import "./RegistrarUsuario.css";
 import { registerLocale } from "react-datepicker";
 import { transformDate2 } from "../Utilities";
 import { Button } from "@material-ui/core";
+import { Button as ButtonSbmt }  from '@rodrisu/friendly-ui/build/button';
 import { useImageUploader } from "../service/ImageUploader";
 import {
   isValidDocument,
@@ -23,11 +24,20 @@ registerLocale("es", es);
 
 export default function RegistrarUsuario() {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data, e) => postData(data, e);
+  // const onSubmit = (data, e) => postData(data, e);
+  const onSubmit = () => postData(
+    { email: email, name: name, surname: surname, birthDate: date, documentId: ci, phoneNumber: phone }
+  );
   const onError = (errors, e) => console.log(errors, e);
   const history = useHistory();
   const [isChecked, setIsChecked] = useState(false);
   const { image, onFileChange, removeImage, uploadImage } = useImageUploader();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurName] = useState("");
+  const [date, setDate] = useState("");
+  const [ci, setCI] = useState("");
+  const [phone, setPhone] = useState("");
 
   function formValidate(data) {
     if (
@@ -91,7 +101,6 @@ export default function RegistrarUsuario() {
   }
 
   function postData(data, e) {
-    // console.log(data);
     if (formValidate(data)) {
       toast.promise(
         uploadImageAndRegisterUser(data),
@@ -120,6 +129,27 @@ export default function RegistrarUsuario() {
     setIsChecked(event.target.checked);
   };
 
+
+  function handleEmailChange(event) {
+    setEmail(event.value);
+  }
+  function handleNameChange(event) {
+    setName(event.value);
+  }
+  function handleSurNameChange(event) {
+    setSurName(event.value);
+  }
+  function handleDateChange(event) {
+    setDate(event.value);
+  }
+  function handleCIChange(event) {
+    setCI(event.value);
+  }
+  function handlePhoneChange(event) {
+    setPhone(event.value);
+  }
+
+
   async function redirect(data, e) {
     toast.success("Usuario creado correctamente");
     history.push("/login");
@@ -130,27 +160,27 @@ export default function RegistrarUsuario() {
       <div>
         <div style={{ "padding-top": "50px" }} className="grid align__item">
           <div className="register text">
-            <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Registrarse</h2>
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Nombre</p>
-            <TextField type="text" className="textField" name="nombre" placeholder="Escribe aquí tu nombre" onChange={(data) => null} />
-            <br />
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Apelldo</p>
-            <TextField type="text" className="textField" name="apellido" placeholder="Escribe aquí tu apellido" onChange={(data) => null} />
-            <br />
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
-            <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => null} />
-            <br />
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Fecha de nacimiento</p>
-            <TextField type="date" className="textField" name="birthdate" placeholder="Selecciona tu fecha de nacimiento" onChange={(data) => null} />
-            <br />
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Cédula de identidad</p>
-            <TextField type="number" className="textField" name="ci" placeholder="Escribe aquí tu cédula de identidad" onChange={(data) => null} />
-            <br />
-            <p style={{ "text-align": "left", "color": "#172A3A" }}>Teléfono de contacto</p>
-            <TextField type="tel" className="textField" name="phone" placeholder="Escribe aquí tu teléfono" onChange={(data) => null} />
-            <br />
-            <form onSubmit={handleSubmit(onSubmit, onError)} className="form" data-testid="form">
-              <div>
+            <form onSubmit={handleSubmit(onSubmit, onError)} data-testid="form">
+              <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Registrarse</h2>
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Nombre</p>
+              <TextField type="text" className="textField" name="nombre" placeholder="Escribe aquí tu nombre" onChange={(data) => handleNameChange(data)} />
+              <br />
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Apelldo</p>
+              <TextField type="text" className="textField" name="apellido" placeholder="Escribe aquí tu apellido" onChange={(data) => handleSurNameChange(data)} />
+              <br />
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
+              <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
+              <br />
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Fecha de nacimiento</p>
+              <TextField type="date" className="textField" name="birthdate" placeholder="Selecciona tu fecha de nacimiento" onChange={(data) => handleDateChange(data)} />
+              <br />
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Cédula de identidad</p>
+              <TextField type="number" className="textField" name="ci" placeholder="Escribe aquí tu cédula de identidad" onChange={(data) => handleCIChange(data)} />
+              <br />
+              <p style={{ "text-align": "left", "color": "#172A3A" }}>Teléfono de contacto</p>
+              <TextField type="tel" className="textField" name="phone" placeholder="Escribe aquí tu teléfono, ej: 099111333" onChange={(data) => handlePhoneChange(data)} />
+              <br />
+              {/* <div>
                 <label>Nombre</label>
                 <div className="form__field">
                   <input
@@ -203,55 +233,53 @@ export default function RegistrarUsuario() {
                     placeholder="Número de teléfono, ej. 099111333"
                     type="number"
                   />
-                </div>
-                <label htmlFor="ci-photo">Foto frontal de la C.I.</label>
-                {!image ? (
+  </div>*/}
+              <p style={{ "text-align": "left", "color": "#172A3A", "padding-bottom": "6px"}}>Foto frontal de tu C.I</p>
+              {!image ? (
+                <div>
                   <div>
-                    <div>
-                      <input
-                        type="file"
-                        id="ci-photo"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={onFileChange}
-                      />
-                      <label htmlFor="ci-photo">
-                        <Button
-                          variant="outlined"
-                          component="span"
-                          fullWidth={true}
-                          style={{ marginBottom: "10px", boxShadow: "none" }}>
-                          Subir foto
-                        </Button>
-                      </label>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div><img src={image} alt="Uploaded file" className="uploaded-image" /></div>
-                    <div>
+                    <input
+                      type="file"
+                      id="ci-photo"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={onFileChange}
+                    />
+                    <label htmlFor="ci-photo">
                       <Button
+                      className="photoBtn"
                         variant="outlined"
                         component="span"
-                        fullWidth={true}
-                        style={{ marginBottom: "10px", boxShadow: "none" }}
-                        onClick={removeImage}>Quitar foto</Button>
-                    </div>
+                        style={{ marginBottom: "6px", boxShadow: "none" }}>
+                        Subir foto
+                      </Button>
+                    </label>
                   </div>
-                )}
-                <div className="form__field">
-                  <label id="checkBox" className="container">
-                    Confirmo haber leído y estar de acuerdo con las
-                    <a href="/policy"> políticas de uso de FriendlyTravel</a>
-                    <input type="checkbox" onChange={handleCheckBoxChange} />
-                    <span className="checkmark"></span>
-                  </label>
                 </div>
-                <br />
-                <div className="form__field">
-                  <input type="submit" value="Aceptar" />
+              ) : (
+                <div>
+                  <div><img src={image} alt="Uploaded file" className="uploaded-image" /></div>
+                  <div>
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      style={{ marginBottom: "10px", boxShadow: "none" }}
+                      onClick={removeImage}>Quitar foto</Button>
+                  </div>
                 </div>
+              )}
+              <br />
+              <div className="politicas">
+                <label id="checkBox" className="container">
+                <Link className="politicasLetra" to="/policy">
+                  Confirmo haber leído y estar de acuerdo con las
+                  políticas de uso de FriendlyTravel</Link>
+                  <input type="checkbox" onChange={handleCheckBoxChange} />
+                  <span className="checkmark"></span>
+                </label>
               </div>
+              <br />
+              <ButtonSbmt type="submit" className="submitBtn"> Aceptar </ButtonSbmt>
             </form>
           </div>
         </div>

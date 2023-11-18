@@ -85,7 +85,6 @@ const Login = () => {
   };
 
   function handleEmailChange(event) {
-    console.log(event.value)
     setEmail(event.value);
     // setEmail(event.target.value);
     // if (!event.target.validity.valid) {
@@ -96,13 +95,7 @@ const Login = () => {
   }
 
   function handlePassChange(event) {
-    console.log(event.value)
     setPassword(event.value);
-    // if (!event.target.validity.valid) {
-    //   setErrorMessage("Por favor ingrese un email válido");
-    // } else {
-    //   setErrorMessage("Error");
-    // }
   }
 
   return (
@@ -127,9 +120,6 @@ const Login = () => {
               </span>
               <br />
               <br />
-              {/* <span>
-              ¿Olvidaste tu contraseña? <br /> <ModalChangePass />
-            </span> */}
             </div>
           </div>
         </form>
