@@ -30,6 +30,7 @@ export function ChangeData() {
 
   const handleClose = () => {
     setDisplayModal(false);
+    if(result === "Se envió un correo con el código necesario para cambiar su contraseña") history.push("/changePass");
   };
 
   const requestConfig = {
@@ -88,7 +89,7 @@ export function ChangeData() {
         (
           <>
             <div className="cards">
-              <div className="cards__container">
+              <div style={{"margin-bottom": "9rem"}} className="cards__container">
                 <div className="boxTest">
                   <h1>Opciones</h1>
                   <div className="divider"></div>
@@ -115,7 +116,6 @@ export function ChangeData() {
               </div>
             </div>
             {(showModalDelete === true) ? <ModalDeleteData setModal={setModal2} handlePrevModalClose={handleClose2} /> : <></>}
-            <Footer />
           </>
         )}
     </>
