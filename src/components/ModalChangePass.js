@@ -42,7 +42,7 @@ export default function ModalChangePass() {
         },
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit2 = async (e) => {
         e.preventDefault();
 
         if (!(email.trim() === "")) {
@@ -92,7 +92,7 @@ export default function ModalChangePass() {
                     </button> */}
                     <h5 onClick={handleClickOpen} style={{ "text-align": "right", "color": "#172A3A", "cursor": "pointer" }}>¿Olvidaste tu contraseña?</h5>
                     <Dialog open={displayModal} onClose={handleClose} data-testid="form">
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit2}>
                             <DialogTitle style={{"userSelect": "none"}}>Solicitud de cambio de contraseña</DialogTitle>
                             <DialogContent>
                                 <Grid container direction="column" alignItems="stretch" spacing={1}>
@@ -114,7 +114,8 @@ export default function ModalChangePass() {
                                 <Button onClick={handleClose} color="primary">
                                     Cancelar
                                 </Button>
-                                <Button type="submit" color="primary" disabled={isSubmitting}>
+                                {/* <Button type="submit" color="primary" disabled={isSubmitting}> */}
+                                <Button onClick={handleSubmit2} color="primary" disabled={isSubmitting}>
                                     {isSubmitting ? 'Cargando...' : 'Enviar'}
                                 </Button>
                             </DialogActions>
