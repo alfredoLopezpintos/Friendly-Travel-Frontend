@@ -58,13 +58,13 @@ export default function ChangePass() {
   }
 
   async function fetchNewPass(data, e) {
-    console.log({email: data.email, newPassword: data.newPassword1})
+    const dataToSend = (receivedData !== undefined) ? {email: data.email, password: changePassFirstTime(data), newPassword: data.newPassword1} : {email: data.email, code: changePassFirstTime(data), newPassword: data.newPassword1}
     if (formValidate(data)) {
       const changePassPostEndpoint = (receivedData !== undefined) ? URLS.POST_CHANGE_PASS_FIRST_TIME :
         URLS.POST_CHANGE_PASS;
 
       const response =
-        toast.promise(axios.post(changePassPostEndpoint, {email: data.email, code: changePassFirstTime(data), newPassword: data.newPassword1})
+        toast.promise(axios.post(changePassPostEndpoint, dataToSend)
           .then(() => {
             redirect();
           }).catch((error) => {
