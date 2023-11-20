@@ -11,6 +11,7 @@ import {
     Grid,
     FormHelperText
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import { getToken } from "./service/AuthService";
 import { toast } from "react-toastify";
 import ModalInfo from '../components/ModalInfo';
@@ -19,6 +20,7 @@ import {
   } from "../utils/ValidationFunctions";
 
 export default function ModalChangePass() {
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [result, setResult] = useState(null);
@@ -33,6 +35,7 @@ export default function ModalChangePass() {
     
       const handleClose = () => {
         setDisplayModal(false);
+        if(result === 'Si su email se encuentra registrado, recibirá un correo con las instrucciones para recuperar la cuenta.') history.push("/changePass");
       };
 
     const requestConfig = {

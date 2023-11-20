@@ -85,7 +85,6 @@ function FaqsPage() {
           ))}
         </div>
       </div>
-      <Footer />
     </>
   );
 }
