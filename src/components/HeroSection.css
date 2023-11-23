@@ -49,9 +49,9 @@ video {
   margin-left: 4px;
 }
 
-.form-inline {
+/* .form-inline {
   width: 500px;
-}
+} */
 
 @media screen and (max-width: 960px) {
   .hero-container > h1 {
