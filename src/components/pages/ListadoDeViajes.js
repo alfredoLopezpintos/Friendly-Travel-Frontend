@@ -259,8 +259,9 @@ export default function ListadoDeViajes() {
   }
 
   return (
-    <div style={{ "display": "grid", "grid-template-columns": "0.5fr 2fr" }}>
-      <aside style={{"padding-top": "2rem", "padding-left": "2rem"}}>
+    <div style={{ "display": "grid", "grid-template-columns": "0.5fr 500px 700px 0.5fr" }}>
+      <div></div>
+      <aside style={{ "padding-top": "2rem", "padding-left": "2rem" }}>
         {(modal === true) ? <ModalInfo setModal={setModal} handlePrevModalClose={handleClose}
           data={modalData} /> : <></>}
         <div style={{
@@ -328,8 +329,8 @@ export default function ListadoDeViajes() {
             "align-items": "center"
           }} className="gradient-list">
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              <nav style={{ "color": "#004346" }} aria-label="main mailbox folders">
-                <h2>Ordenar por:</h2>
+              <h2 style={{ "color": "#172A3A" }}>Ordenar por:</h2>
+              <nav style={{ "color": "#172A3A" }} aria-label="main mailbox folders">
                 <List>
                   <RadioGroup value={radioValue} onChange={handleChange} style={{ "padding": "20px" }}>
                     {[5, 6, 7].map((value) => {
@@ -343,7 +344,7 @@ export default function ListadoDeViajes() {
                               sx={{
                                 color: "#708C91",
                                 '&.Mui-checked': {
-                                  color: "#09BC8A",
+                                  color: "#172A3A",
                                 }
                               }}
                               value={value}
@@ -355,9 +356,9 @@ export default function ListadoDeViajes() {
                         >
                           <ListItemButton>
                             {
-                              (value === 5) ? <ListItemText sx={{"font-weight": "bold"}} primary="Salida más temprana" /> :
-                                (value === 6) ? <ListItemText sx={{"font-weight": "bold"}} primary="Precio más bajo" /> :
-                                  (value === 7) ? <ListItemText sx={{"font-weight": "bold"}} primary="Mayor cantidad de asientos" /> :
+                              (value === 5) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Salida más temprana" /> :
+                                (value === 6) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Precio más bajo" /> :
+                                  (value === 7) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Mayor cantidad de asientos" /> :
                                     <></>
                             }
 
@@ -373,84 +374,83 @@ export default function ListadoDeViajes() {
           </div>
         )}
       </aside>
-      <main>
-        <div>
-          <div className="wrapper">
-            <CardsStackSection>
-              {viajes &&
-                ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
-                  .map((user, index) => (
-                    ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
-                      <div ref={lastCardElement}>
-                        <TripCard
-                          driver={user.driver}
-                          href={'#'}
-                          itinerary={
-                            <Itinerary>
-                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
-                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
-                            </Itinerary>
-                          }
-                          price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
-                          originalPrice={{
-                            label: 'availablePlaces',
-                            value: `${user.availablePlaces} asiento(s)`,
-                          }}
-                          mainTitle={user.tripDate}
-                          button={
-                            getToken() !== null ? (
-                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginRight: '10px' }}>
-                                  <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar <WhatsAppIcon style={{ "margin-left": "7px", "margin-right": "0px" }} /></Button>
-                                </li>
-                                <li>
-                                  <Button onClick={() => handleAppointment(user)}> Reservar </Button>
-                                </li>
-                              </ul>) : (<br />)
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <TripCard
-                          href={'#'}
-                          itinerary={
-                            <Itinerary>
-                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
-                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
-                            </Itinerary>
-                          }
-                          price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
-                          originalPrice={{
-                            label: 'availablePlaces',
-                            value: `${user.availablePlaces} asiento(s)`,
-                          }}
-                          mainTitle={user.tripDate}
-                          button={
-                            getToken() !== null ? (
-                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginRight: '10px' }}>
-                                  <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar </Button>
-                                </li>
-                                <li>
-                                  <Button onClick={() => handleAppointment(user)}> Reservar </Button>
-                                </li>
-                              </ul>) : (<br />)
-                          }
-                        />
-                      </div>
-                    )
-                  ))
-              }
-            </CardsStackSection>
-            <div style={{ "textAlign": "center" }}>
-              <div className="load-more-message-container">
-                {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
-              </div>
+      <main style={{ "max-width": "850px", "width": "100%" }}>
+        <div style={{"padding-top": "1rem", "max-width": "650px"}}>
+          <CardsStackSection>
+            {viajes &&
+              ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
+                .map((user, index) => (
+                  ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
+                    <div ref={lastCardElement}>
+                      <TripCard
+                        driver={user.driver}
+                        href={'#'}
+                        itinerary={
+                          <Itinerary>
+                            <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                            <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
+                          </Itinerary>
+                        }
+                        price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                        originalPrice={{
+                          label: 'availablePlaces',
+                          value: `${user.availablePlaces} asiento(s)`,
+                        }}
+                        mainTitle={user.tripDate}
+                        button={
+                          getToken() !== null ? (
+                            <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar <WhatsAppIcon style={{ "margin-left": "7px", "margin-right": "0px" }} /></Button>
+                              </li>
+                              <li>
+                                <Button onClick={() => handleAppointment(user)}> Reservar </Button>
+                              </li>
+                            </ul>) : (<br />)
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <TripCard
+                        href={'#'}
+                        itinerary={
+                          <Itinerary>
+                            <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                            <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
+                          </Itinerary>
+                        }
+                        price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                        originalPrice={{
+                          label: 'availablePlaces',
+                          value: `${user.availablePlaces} asiento(s)`,
+                        }}
+                        mainTitle={user.tripDate}
+                        button={
+                          getToken() !== null ? (
+                            <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar </Button>
+                              </li>
+                              <li>
+                                <Button onClick={() => handleAppointment(user)}> Reservar </Button>
+                              </li>
+                            </ul>) : (<br />)
+                        }
+                      />
+                    </div>
+                  )
+                ))
+            }
+          </CardsStackSection>
+          <div style={{ "textAlign": "center" }}>
+            <div className="load-more-message-container">
+              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
         </div>
       </main>
+      <div></div>
     </div>
   );
 }

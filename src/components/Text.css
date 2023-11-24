@@ -24,6 +24,10 @@ h1 {
   margin: 50px 0 45px;
 }
 
+h1 {
+  color: #172A3A;
+}
+
 .text__items {
   margin-bottom: 24px;
 }
@@ -88,7 +92,7 @@ h1 {
 }
 
 .text__item__text {
-  color: #004346;
+  color: #172A3A;
   font-size: 18px;
   line-height: 24px;
 }

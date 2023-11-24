@@ -103,7 +103,7 @@ const Login = () => {
       <div>
         <form onSubmit={submitHandler}>
           <div style={{ "padding-top": "50px" }} className="grid align__item">
-            <div className="register text">
+            <div className="register formNew">
               <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Iniciar sesión</h2>
               <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
               <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />

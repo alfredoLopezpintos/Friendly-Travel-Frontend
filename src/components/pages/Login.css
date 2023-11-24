@@ -44,6 +44,10 @@ body {
   width: 100%;
 }
 
+.formNew {
+  background-color: #fff !important;
+}
+
 .register {
   text-align: center;
   padding: 4rem 2rem;

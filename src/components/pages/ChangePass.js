@@ -116,7 +116,7 @@ export default function ChangePass() {
     <>
       <div>
         <div style={{ "padding-top": "50px" }} className="grid align__item">
-          <div className="register text">
+          <div className="register formNew">
             <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
               <br />
               <h2 style={{ "text-align": "left", "padding-bottom": "25px", "color": "#172A3A" }} className="">Cambiar la contraseña</h2>

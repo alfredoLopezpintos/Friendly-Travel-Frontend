@@ -159,7 +159,7 @@ export default function RegistrarUsuario() {
     <>
       <div>
         <div style={{ "padding-top": "50px" }} className="grid align__item">
-          <div className="register text">
+          <div className="register formNew">
             <form onSubmit={handleSubmit(onSubmit, onError)} data-testid="form">
               <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Registrarse</h2>
               <p style={{ "text-align": "left", "color": "#172A3A" }}>Nombre</p>

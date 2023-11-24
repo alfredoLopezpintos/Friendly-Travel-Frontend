@@ -121,6 +121,12 @@
   justify-content: space-between;
 }
 
+@media screen and (min-width: 800px) {
+  aside {
+    width: 480px;
+  }
+}
+
 .btn-submit {
   max-height: 40px;
   margin-top: 1rem;
