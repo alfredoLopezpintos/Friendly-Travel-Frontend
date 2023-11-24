@@ -374,8 +374,8 @@ export default function ListadoDeViajes() {
           </div>
         )}
       </aside>
-      <main style={{ "max-width": "850px", "width": "100%" }}>
-        <div style={{"padding-top": "1rem", "max-width": "650px"}}>
+      <main style={{ "max-width": "850px", "width": "100%", "overflow-y": "scroll", "max-height": "800px" }}>
+        <div style={{ "padding-top": "1rem", "max-width": "650px" }}>
           <CardsStackSection>
             {viajes &&
               ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
@@ -430,7 +430,7 @@ export default function ListadoDeViajes() {
                           getToken() !== null ? (
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar </Button>
+                                <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar <WhatsAppIcon style={{ "margin-left": "7px", "margin-right": "0px" }} /></Button>
                               </li>
                               <li>
                                 <Button onClick={() => handleAppointment(user)}> Reservar </Button>
@@ -446,6 +446,10 @@ export default function ListadoDeViajes() {
           <div style={{ "textAlign": "center" }}>
             <div className="load-more-message-container">
               {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+              {!visible && <>
+                <br /><br /><br /><br />
+                <p>Encuentra tu próximo viaje </p>
+              </>}
             </div>
           </div>
         </div>
