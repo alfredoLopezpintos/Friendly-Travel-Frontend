@@ -322,7 +322,7 @@ export default function ListadoDeViajes() {
         <br />
         <br />
 
-        {viajes !== undefined && viajes.length > 0 && (
+        {(viajes !== undefined && viajes.length > 0) ? (
           <div style={{
             display: "flex",
             "flex-direction": "column",
@@ -372,7 +372,52 @@ export default function ListadoDeViajes() {
               </nav>
             </Box>
           </div>
-        )}
+        ) :
+
+          <div style={{
+            display: "flex",
+            "flex-direction": "column",
+            "align-items": "center"
+          }} className="gradient-list">
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <h2 style={{ "color": "#172A3A" }}>Ordenar por:</h2>
+              <nav style={{ "color": "#172A3A" }} aria-label="main mailbox folders">
+                <List>
+                  <RadioGroup value={radioValue} style={{ "padding": "20px" }}>
+                    {[5, 6, 7].map((value) => {
+                      const labelId = `checkbox-list-secondary-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          secondaryAction={
+                            <Radio
+                              disabled
+                              edge="end"
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          }
+                          disablePadding
+                        >
+                          <ListItemButton disabled>
+                            {
+                              (value === 5) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Salida más temprana" /> :
+                                (value === 6) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Precio más bajo" /> :
+                                  (value === 7) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Mayor cantidad de asientos" /> :
+                                    <></>
+                            }
+
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </RadioGroup>
+                </List>
+                <Divider />
+              </nav>
+            </Box>
+          </div>
+
+        }
       </aside>
       <main style={{ "max-width": "850px", "width": "100%", "overflow-y": "scroll", "max-height": "800px" }}>
         <div style={{ "padding-top": "1rem", "max-width": "650px" }}>
@@ -447,8 +492,12 @@ export default function ListadoDeViajes() {
             <div className="load-more-message-container">
               {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
               {!visible && <>
-                <br /><br /><br /><br />
-                <p>Encuentra tu próximo viaje </p>
+                <img
+                  style={{"padding-top": "20%"}}
+                  src={require("../../assets/images/SearchLogo.png")}
+                  alt="travel logo"
+                  width={250}
+                ></img> &nbsp;
               </>}
             </div>
           </div>
