@@ -4,7 +4,8 @@ import "../Cards.css";
 import Footer from "../Footer";
 import { useHistory } from "react-router-dom";
 import "./ChangeData.css"
-import { Button } from "../Button";
+// import { Button } from "../Button";
+import { Button }  from '@rodrisu/friendly-ui/build/button';
 import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo';
 import ModalInfo from '../../components/ModalInfo';
 import {
@@ -89,13 +90,14 @@ export function ChangeData() {
         (
           <>
             <div className="cards">
-              <div style={{"margin-bottom": "9rem"}} className="cards__container">
+              <div className="cards__container">
                 <div className="boxTest">
-                  <h1>Opciones</h1>
+                  <h1 style={{"color": "#004346"}}>Panel de Usuario</h1>
                   <div className="divider"></div>
-                  <h2>Modificar datos</h2>
+                  <h2 style={{"color": "#004346"}}>Modificar datos</h2>
                   <br />
-                  <Button className="btns"
+                  <Button 
+                    className="btns"
                     buttonStyle="btn--test"
                     buttonSize="btn--large"
                     onClick={handlePass}>
@@ -104,9 +106,10 @@ export function ChangeData() {
                   <br />
                   <ModalRegistrarVehiculo />
                   <div className="divider" />
-                  <h2>Datos de usuario</h2>
+                  <h2 style={{"color": "#004346"}}>Datos de usuario</h2>
                   <br />
-                  <Button className="btns"
+                  <Button 
+                    className="btns"
                     buttonStyle="btn--test"
                     buttonSize="btn--large"
                     onClick={handleDeleteData}>

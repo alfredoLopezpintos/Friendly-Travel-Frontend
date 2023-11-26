@@ -54,6 +54,22 @@ body {
   width: 640px !important;
 }
 
+.cards {
+  background: #EDF2F7;
+}
+
+.btns {
+  display: block !important;
+  width: 50%;
+}
+
+.cards__container {
+  background-color: #fff;
+  padding-bottom: 8rem;
+  width: 70%;
+  border-radius: 11px;
+}
+
 @media screen and (max-width: 768px) {
   .boxTest {
     margin-inline: 0px !important;

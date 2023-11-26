@@ -25,14 +25,15 @@
 
 .navRoute {
   display: block;
-  color: #000929;
+  color: #004346;
   text-align: center;
   padding: 0 25px;
   text-decoration: none;
 }
 
 .SignIn {
-  background-color: #004346 !important;
+  background-color: #09BC8A !important;
+  border-radius: 11px !important;
 }
 
 .SignIn:hover {
@@ -73,12 +74,12 @@
 /* Change the link color to #111 (black) on hover */
 .navRoute:hover {
   cursor: pointer;
-  color: #FFFFFF;
+  color: #09BC8A;
   transition: 0.2s;
 }
 
 .navbar-container>header {
-  background-color: #09BC8A;
+  background-color: #EDF2F7;
 }
 
 .navbar-container {
@@ -97,7 +98,7 @@
   display: flex;
   align-items: center;
 
-  color: #172A3A;
+  color: #004346;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;

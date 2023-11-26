@@ -159,25 +159,25 @@ export default function RegistrarUsuario() {
     <>
       <div>
         <div style={{ "padding-top": "50px" }} className="grid align__item">
-          <div className="register text">
+          <div className="register formNew">
             <form onSubmit={handleSubmit(onSubmit, onError)} data-testid="form">
-              <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#172A3A" }} className="">Registrarse</h2>
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Nombre</p>
+              <h2 style={{ "text-align": "left", "padding-bottom": "50px", "color": "#004346" }} className="">Registrarse</h2>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Nombre</p>
               <TextField type="text" className="textField" name="nombre" placeholder="Escribe aquí tu nombre" onChange={(data) => handleNameChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Apelldo</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Apelldo</p>
               <TextField type="text" className="textField" name="apellido" placeholder="Escribe aquí tu apellido" onChange={(data) => handleSurNameChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Correo electrónico</p>
               <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Fecha de nacimiento</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Fecha de nacimiento</p>
               <TextField type="date" className="textField" name="birthdate" placeholder="Selecciona tu fecha de nacimiento" onChange={(data) => handleDateChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Cédula de identidad</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Cédula de identidad</p>
               <TextField type="number" className="textField" name="ci" placeholder="Escribe aquí tu cédula de identidad" onChange={(data) => handleCIChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Teléfono de contacto</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Teléfono de contacto</p>
               <TextField type="tel" className="textField" name="phone" placeholder="Escribe aquí tu teléfono, ej: 099111333" onChange={(data) => handlePhoneChange(data)} />
               <br />
               {/* <div>
@@ -234,7 +234,7 @@ export default function RegistrarUsuario() {
                     type="number"
                   />
   </div>*/}
-              <p style={{ "text-align": "left", "color": "#172A3A", "padding-bottom": "6px"}}>Foto frontal de tu C.I</p>
+              <p style={{ "text-align": "left", "color": "#004346", "padding-bottom": "6px"}}>Foto frontal de tu C.I</p>
               {!image ? (
                 <div>
                   <div>

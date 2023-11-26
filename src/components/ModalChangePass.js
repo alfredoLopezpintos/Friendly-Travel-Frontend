@@ -93,7 +93,7 @@ export default function ModalChangePass() {
                     {/* <button onClick={handleClickOpen}>
                         Reestablece tu contraseña
                     </button> */}
-                    <h5 onClick={handleClickOpen} style={{ "text-align": "right", "color": "#172A3A", "cursor": "pointer" }}>¿Olvidaste tu contraseña?</h5>
+                    <h5 onClick={handleClickOpen} style={{ "text-align": "right", "color": "#004346", "cursor": "pointer" }}>¿Olvidaste tu contraseña?</h5>
                     <Dialog open={displayModal} onClose={handleClose} data-testid="form">
                         <form onSubmit={handleSubmit2}>
                             <DialogTitle style={{"userSelect": "none"}}>Solicitud de cambio de contraseña</DialogTitle>

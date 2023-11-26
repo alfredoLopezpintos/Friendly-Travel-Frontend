@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
-import { Button } from '@rodrisu/friendly-ui/build/button';
+import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { URLS } from "../utils/urls";
 import { getToken } from "./service/AuthService";
 import { toast } from "react-toastify";
@@ -99,13 +99,14 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
                             justifyContent: "center",
                             alignItems: "center",
                         }}>
-                            <InfoIcon color="primary" fontSize="large" />
+                            <InfoIcon sx={{"color": "#09BC8A"}} fontSize="large" />
                         </div>
                         <h2 style={{
                             "padding": "10px",
                             "paddingBottom": "25px",
                             "textAlign": "center",
-                            "userSelect": "none"
+                            "userSelect": "none",
+                            "color": "rgb(23, 42, 58)"
                         }}>
                             {'¿Desea reservar el viaje desde: ' + data.origin.city + ' hasta '+
                             data.destination.city + ' el día ' + data.tripDate + '?'}
@@ -114,7 +115,8 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
                             "padding": "10px",
                             "paddingBottom": "25px",
                             "textAlign": "center",
-                            "userSelect": "none"
+                            "userSelect": "none",
+                            "color": "rgb(23, 42, 58)"
                         }}>
                             {'Cantidad de asientos a reservar: '}
                             <Stepper
@@ -134,10 +136,10 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
                     <DialogActions>
                     <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                         <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleClose()}> Cancelar </Button>
+                            <Button onClick={() => handleClose()} status={ButtonStatus.SECONDARY}> Cancelar </Button>
                         </li>
                         <li>
-                            <Button onClick={() => handleAccept()} status="green"> Aceptar </Button>
+                            <Button onClick={() => handleAccept()} status={ButtonStatus.PRIMARY}> Aceptar </Button>
                         </li>
                     </ul>
                     </DialogActions>

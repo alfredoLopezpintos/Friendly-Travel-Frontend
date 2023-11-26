@@ -44,6 +44,10 @@ body {
   width: 100%;
 }
 
+.formNew {
+  background-color: #fff !important;
+}
+
 .register {
   text-align: center;
   padding: 4rem 2rem;
@@ -52,16 +56,21 @@ body {
   margin-bottom: 1em;
 }
 
+.MuiButton-outlined {
+  border: none !important;
+  padding: none !important;
+}
+
 .textField {
   padding-inline: 0 !important;
 }
 
 .photoBtn {
-  background-color: #172A3A !important;
+  background-color: #09BC8A !important;
   color: #FCFCFD !important;
   display: block;
   width: 100%;
-  border-radius: 6px !important;
+  border-radius: 1px solid !important;
 }
 
 .politicas {
@@ -94,29 +103,30 @@ body {
   text-decoration: underline;
 }
 
-.photoBtn:hover {
+/* .photoBtn:hover {
   background-color: #0E273D !important;
   transition: 0.7s !important;
-}
+} */
 
 .submitBtn {
-  background-color: #172A3A !important;
-  color: #FCFCFD !important;
+  /* background-color: #172A3A !important;
+  color: #FCFCFD !important; */
   display: block !important;
   width: 100%;
 }
 
 div > .kirk-textField-wrapper--hasFocus {
-  border: 2px solid #172A3A !important;
+  border: 2px solid #004346 !important;
 }
-
+/* 
 .submitBtn:hover {
   background-color: #0E273D !important;
   transition: 0.7s !important;
-}
+} */
 
 .registerLink {
-  color: #172A3A;
+  /* color: #172A3A; */
+  color: #004346;
   text-decoration: none;
 }
 

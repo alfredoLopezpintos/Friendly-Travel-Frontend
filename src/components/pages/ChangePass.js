@@ -116,21 +116,21 @@ export default function ChangePass() {
     <>
       <div>
         <div style={{ "padding-top": "50px" }} className="grid align__item">
-          <div className="register text">
+          <div className="register formNew">
             <form onSubmit={handleSubmit(onSubmit, onError)} className="form">
               <br />
-              <h2 style={{ "text-align": "left", "padding-bottom": "25px", "color": "#172A3A" }} className="">Cambiar la contraseña</h2>
+              <h2 style={{ "text-align": "left", "padding-bottom": "25px", "color": "#004346" }} className="">Cambiar la contraseña</h2>
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Correo electrónico</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Correo electrónico</p>
               <TextField type="email" className="textField" name="email" placeholder="Escribe aquí tu correo electrónico" onChange={(data) => handleEmailChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Código recibido por correo</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Código recibido por correo</p>
               <TextField type="text" className="textField" name="code" placeholder="Escribe aquí tu código" onChange={(data) => handleCodeChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Nueva contraseña</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Nueva contraseña</p>
               <TextField type="password" className="textField" name="newPassword" placeholder="Escribe aquí tu nueva contraseña" onChange={(data) => handlePassChange(data)} />
               <br />
-              <p style={{ "text-align": "left", "color": "#172A3A" }}>Confirme la nueva contraseña</p>
+              <p style={{ "text-align": "left", "color": "#004346" }}>Confirme la nueva contraseña</p>
               <TextField type="password" className="textField" name="newPasswordAgain" placeholder="Escribe de nuevo tu nueva contraseña" onChange={(data) => handlePassChangeAgain(data)} />
               <br />
               <Button type="submit" className="submitBtn"> Aceptar </Button>

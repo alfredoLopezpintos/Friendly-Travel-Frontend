@@ -50,13 +50,13 @@ function Navbar() {
     onClick={() => {
       history.push("/login");
     }}
-    className="SignIn"
+    // className="SignIn"
   >
     <div className="Text">Iniciar Sesión</div>
   </Button>)
 
   const leftAction = (
-    <Button isBubble status={ButtonStatus.UNSTYLED} onClick={() => { }} aria-label="back">
+    <Button isBubble status={ButtonStatus.PRIMARY} onClick={() => { }} aria-label="back">
       <ArrowIcon iconColor={color.blue} />
     </Button>
   )

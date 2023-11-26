@@ -23,7 +23,7 @@ header {
 	justify-content: center;
 	align-content: center;
 	padding: 15px;
-	background-color: #3c3c3c;
+	background-color: #172A3A;
 	border-bottom: 3px solid #56E3B8;
 }
 
@@ -53,7 +53,7 @@ header h1 {
 	position: relative;
 	font-size: 20px;
 	padding-right: 80px;
-
+	color: #004346;
 	transition: all 0.4s ease;
 }
 
@@ -75,6 +75,7 @@ header h1 {
 }
 
 .faqs .faq .faq-answer {
+	color: #172A3A;
 	opacity: 0;
 	max-height: 0;
 	overflow-y: hidden;

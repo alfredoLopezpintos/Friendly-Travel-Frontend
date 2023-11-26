@@ -61,20 +61,22 @@ export default function ListadoDeViajes() {
   };
 
   const location = useLocation();
-  const receivedData = location.state?.data || 
-                      { desde: undefined,
-                      hasta: undefined,
-                      fecha: undefined,
-                      asientos: undefined,
-                      precio: undefined };
+  const receivedData = location.state?.data ||
+  {
+    desde: undefined,
+    hasta: undefined,
+    fecha: undefined,
+    asientos: undefined,
+    precio: undefined
+  };
 
-  useEffect(()=>{
-    if((receivedData.desde !== undefined) && (receivedData.hasta !== undefined) && (receivedData.fecha !== undefined)) {
+  useEffect(() => {
+    if ((receivedData.desde !== undefined) && (receivedData.hasta !== undefined) && (receivedData.fecha !== undefined)) {
       fetchViajes(receivedData.desde,
-                  receivedData.hasta,
-                  receivedData.fecha,
-                  receivedData.precio, 
-                  receivedData.asientos);
+        receivedData.hasta,
+        receivedData.fecha,
+        receivedData.precio,
+        receivedData.asientos);
     }
   }, [])
 
@@ -88,7 +90,7 @@ export default function ListadoDeViajes() {
     fetchViajes(receivedData.desde,
       receivedData.hasta,
       receivedData.fecha,
-      receivedData.precio, 
+      receivedData.precio,
       receivedData.asientos);
   };
 
@@ -127,13 +129,13 @@ export default function ListadoDeViajes() {
           origin: response.data.origin,
           destination: response.data.destination
         };
-        
+
         const queryString = Object.keys(data)
           .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
           .join('&');
-        
+
         const redirectUrl = `/redirecting?${queryString}`;
-        
+
         window.open(redirectUrl, '_blank');
       }
       ).catch((error) => {
@@ -257,191 +259,253 @@ export default function ListadoDeViajes() {
   }
 
   return (
-    <>
-      <main>
-      {(modal === true) ? <ModalInfo setModal={setModal} handlePrevModalClose={handleClose}
-                                        data={modalData} /> : <></>}
-        <div style={{display: "flex",
-    "flex-direction": "column",
-    "align-items": "center"}}
+    <div className="everythingWrapper" style={{ "display": "grid", "grid-template-columns": "0.5fr 500px 700px 0.5fr" }}>
+      <div></div>
+      <aside style={{ "padding-top": "2rem", "padding-left": "2rem" }}>
+        {(modal === true) ? <ModalInfo setModal={setModal} handlePrevModalClose={handleClose}
+          data={modalData} /> : <></>}
+        <div style={{
+          display: "flex",
+          "flex-direction": "column",
+          "align-items": "center"
+        }}
         >
-      <MediaSizeProvider>
-        <BaseSection contentSize={SectionContentSize.LARGE}>
-          <SearchForm
-            onSubmit={handleFormSubmit}
-            className="form-inline"
-            initialFrom={ receivedData.desde }
-            initialTo={ receivedData.hasta}
-            disabledFrom={false}
-            disabledTo={false}
-            showVehicleField={false}
-            autocompleteFromPlaceholder="Desde"
-            autocompleteToPlaceholder="Hasta"
-            renderDatePickerComponent={props => <DatePicker {...props}
-              numberOfMonths={1}
-              orientation={DatePickerOrientation.HORIZONTAL}
-              locale="es-UY"
-              weekdaysShort={weekdaysShort('es-UY')}
-              weekdaysLong={weekdaysLong('es-UY')}
-              months={months('es-UY')}
-            />
-            }
-            renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
-            renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
-            datepickerProps={{
-              defaultValue: ((receivedData.fecha !== undefined) ? receivedData.fecha : new Date().toISOString()),
-              format: value => new Date(value).toLocaleDateString(),
-            }}
-            stepperProps={{
-              defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : 1),
-              min: 1,
-              max: 4,
-              title: 'Elija la cantidad de asientos que desea reservar',
-              increaseLabel: 'Incrementar la cantidad de asientos en 1',
-              decreaseLabel: 'Decrementar la cantidad de asientos en 1',
-              format: value => `${value} asiento(s)`,
-              confirmLabel: 'Aceptar',
-            }}
-            priceProps={{
-              defaultValue: ((receivedData.precio !== undefined) ? receivedData.precio : ""),
-              min: 0,
-              title: 'Precio',
-              format: value => `$ ${value}`,
-              confirmLabel: 'Aceptar',
-            }}
-            display={SearchFormDisplay.SMALL}
-          />
+          <MediaSizeProvider>
+            <BaseSection contentSize={SectionContentSize.LARGE}>
+              <SearchForm
+                onSubmit={handleFormSubmit}
+                className="form-inline"
+                initialFrom={receivedData.desde}
+                initialTo={receivedData.hasta}
+                disabledFrom={false}
+                disabledTo={false}
+                showVehicleField={false}
+                autocompleteFromPlaceholder="Desde"
+                autocompleteToPlaceholder="Hasta"
+                renderDatePickerComponent={props => <DatePicker {...props}
+                  numberOfMonths={1}
+                  orientation={DatePickerOrientation.HORIZONTAL}
+                  locale="es-UY"
+                  weekdaysShort={weekdaysShort('es-UY')}
+                  weekdaysLong={weekdaysLong('es-UY')}
+                  months={months('es-UY')}
+                />
+                }
+                renderAutocompleteFrom={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
+                renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
+                datepickerProps={{
+                  defaultValue: ((receivedData.fecha !== undefined) ? receivedData.fecha : new Date().toISOString()),
+                  format: value => new Date(value).toLocaleDateString(),
+                }}
+                stepperProps={{
+                  defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : 1),
+                  min: 1,
+                  max: 4,
+                  title: 'Elija la cantidad de asientos que desea reservar',
+                  increaseLabel: 'Incrementar la cantidad de asientos en 1',
+                  decreaseLabel: 'Decrementar la cantidad de asientos en 1',
+                  format: value => `${value} asiento(s)`,
+                  confirmLabel: 'Aceptar',
+                }}
+                priceProps={{
+                  defaultValue: ((receivedData.precio !== undefined) ? receivedData.precio : ""),
+                  min: 0,
+                  title: 'Precio',
+                  format: value => `$ ${value}`,
+                  confirmLabel: 'Aceptar',
+                }}
+                display={SearchFormDisplay.SMALL}
+              />
             </BaseSection>
           </MediaSizeProvider>
         </div>
         <br />
         <br />
-        <div>
-          <div className="wrapper">
-            {viajes !== undefined && viajes.length > 0 && (
-              <div className="gradient-list">
-                <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                  <nav aria-label="main mailbox folders">
-                    <h2>Ordenar por:</h2>
-                    <List>
-                      <RadioGroup value={radioValue} onChange={handleChange}>
-                        {[5, 6, 7].map((value) => {
-                          const labelId = `checkbox-list-secondary-label-${value}`;
-                          return (
-                            <ListItem
-                              key={value}
-                              onClick={handleToggle(value)}
-                              secondaryAction={
-                                <Radio
-                                  value={value}
-                                  edge="end"
-                                  inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                              }
-                              disablePadding
-                            >
-                              <ListItemButton>
-                                <ListItemIcon>
-                                  {
-                                    (value === 5) ? <AccessTimeIcon /> :
-                                      (value === 6) ? <PaidIcon /> :
-                                        (value === 7) ? <AirlineSeatReclineNormalIcon /> :
-                                          <></>
-                                  }
-                                </ListItemIcon>
-                                {
-                                  (value === 5) ? <ListItemText primary="Salida más temprana" /> :
-                                    (value === 6) ? <ListItemText primary="Precio más bajo" /> :
-                                      (value === 7) ? <ListItemText primary="Mayor cantidad de asientos" /> :
-                                        <></>
-                                }
 
-                              </ListItemButton>
-                            </ListItem>
-                          );
-                        })}
-                      </RadioGroup>
-                    </List>
-                    <Divider />
-                  </nav>
-                </Box>
-              </div>
-            )}
-            <CardsStackSection>
-              {viajes &&
-                ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
-                  .map((user, index) => (
-                    ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
-                      <div ref={lastCardElement}>
-                        <TripCard
-                          driver={user.driver}
-                          href={'#'}
-                          itinerary={
-                            <Itinerary>
-                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
-                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
-                            </Itinerary>
+        {(viajes !== undefined && viajes.length > 0) ? (
+          <div style={{
+            display: "flex",
+            "flex-direction": "column",
+            "align-items": "center"
+          }} className="gradient-list">
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <h2 style={{ "color": "#172A3A" }}>Ordenar por:</h2>
+              <nav style={{ "color": "#172A3A" }} aria-label="main mailbox folders">
+                <List>
+                  <RadioGroup value={radioValue} onChange={handleChange} style={{ "padding": "20px" }}>
+                    {[5, 6, 7].map((value) => {
+                      const labelId = `checkbox-list-secondary-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          onClick={handleToggle(value)}
+                          secondaryAction={
+                            <Radio
+                              sx={{
+                                color: "#708C91",
+                                '&.Mui-checked': {
+                                  color: "#172A3A",
+                                }
+                              }}
+                              value={value}
+                              edge="end"
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
                           }
-                          price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
-                          originalPrice={{
-                            label: 'availablePlaces',
-                            value: `${user.availablePlaces} asiento(s)`,
-                          }}
-                          mainTitle={user.tripDate}
-                          button={
-                            getToken() !== null ? (
-                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginRight: '10px' }}>
-                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar <WhatsAppIcon style={{"margin-left": "7px", "margin-right": "0px"}} /></Button>
-                                </li>
-                                <li>
-                                  <Button onClick={() => handleAppointment(user)} status="green"> Reservar </Button>
-                                </li>
-                              </ul>) : (<br />)
+                          disablePadding
+                        >
+                          <ListItemButton>
+                            {
+                              (value === 5) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Salida más temprana" /> :
+                                (value === 6) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Precio más bajo" /> :
+                                  (value === 7) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Mayor cantidad de asientos" /> :
+                                    <></>
+                            }
+
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </RadioGroup>
+                </List>
+                <Divider />
+              </nav>
+            </Box>
+          </div>
+        ) :
+
+          <div style={{
+            display: "flex",
+            "flex-direction": "column",
+            "align-items": "center"
+          }} className="gradient-list">
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <h2 style={{ "color": "#172A3A" }}>Ordenar por:</h2>
+              <nav style={{ "color": "#172A3A" }} aria-label="main mailbox folders">
+                <List>
+                  <RadioGroup value={radioValue} style={{ "padding": "20px" }}>
+                    {[5, 6, 7].map((value) => {
+                      const labelId = `checkbox-list-secondary-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          secondaryAction={
+                            <Radio
+                              disabled
+                              edge="end"
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
                           }
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <TripCard
-                          driver={user.driver}
-                          href={'#'}
-                          itinerary={
-                            <Itinerary>
-                              <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
-                              <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
-                            </Itinerary>
-                          }
-                          price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
-                          originalPrice={{
-                            label: 'availablePlaces',
-                            value: `${user.availablePlaces} asiento(s)`,
-                          }}
-                          mainTitle={user.tripDate}
-                          button={
-                            getToken() !== null ? (
-                              <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginRight: '10px' }}>
-                                  <Button onClick={() => handleContacto(user.tripId)}> Contactar <WhatsAppIcon style={{"margin-left": "7px", "margin-right": "0px"}} /></Button>
-                                </li>
-                                <li>
-                                  <Button onClick={() => handleAppointment(user)} status="green"> Reservar </Button>
-                                </li>
-                              </ul>) : (<br />)
-                          }
-                        />
-                      </div>
-                    )
-                  ))
-              }
-            </CardsStackSection>
+                          disablePadding
+                        >
+                          <ListItemButton disabled>
+                            {
+                              (value === 5) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Salida más temprana" /> :
+                                (value === 6) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Precio más bajo" /> :
+                                  (value === 7) ? <ListItemText sx={{ "font-weight": "bold" }} primary="Mayor cantidad de asientos" /> :
+                                    <></>
+                            }
+
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </RadioGroup>
+                </List>
+                <Divider />
+              </nav>
+            </Box>
+          </div>
+
+        }
+      </aside>
+      <main style={{ "max-width": "850px", "width": "100%", "overflow-y": "scroll", "max-height": "800px" }}>
+        <div className="mainSubContainer" style={{ "padding-top": "1rem" }}>
+          <CardsStackSection>
+            {viajes &&
+              ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
+                .map((user, index) => (
+                  ([... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])].length === index + 1) ? (
+                    <div ref={lastCardElement}>
+                      <TripCard
+                        driver={user.driver}
+                        href={'#'}
+                        itinerary={
+                          <Itinerary>
+                            <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                            <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
+                          </Itinerary>
+                        }
+                        price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                        originalPrice={{
+                          label: 'availablePlaces',
+                          value: `${user.availablePlaces} asiento(s)`,
+                        }}
+                        mainTitle={user.tripDate}
+                        button={
+                          getToken() !== null ? (
+                            <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar <WhatsAppIcon style={{ "margin-left": "7px", "margin-right": "0px" }} /></Button>
+                              </li>
+                              <li>
+                                <Button onClick={() => handleAppointment(user)}> Reservar </Button>
+                              </li>
+                            </ul>) : (<br />)
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <TripCard
+                        driver={user.driver}
+                        href={'#'}
+                        itinerary={
+                          <Itinerary>
+                            <Address label={user.origin.label} subLabel={user.origin.labelInfo} />
+                            <Address label={user.destination.label} subLabel={user.destination.labelInfo} />
+                          </Itinerary>
+                        }
+                        price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+                        originalPrice={{
+                          label: 'availablePlaces',
+                          value: `${user.availablePlaces} asiento(s)`,
+                        }}
+                        mainTitle={user.tripDate}
+                        button={
+                          getToken() !== null ? (
+                            <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+                              <li style={{ marginRight: '10px' }}>
+                                <Button onClick={() => handleContacto(user.tripId)} status={ButtonStatus.SECONDARY}> Contactar <WhatsAppIcon style={{ "margin-left": "7px", "margin-right": "0px" }} /></Button>
+                              </li>
+                              <li>
+                                <Button onClick={() => handleAppointment(user)}> Reservar </Button>
+                              </li>
+                            </ul>) : (<br />)
+                        }
+                      />
+                    </div>
+                  )
+                ))
+            }
+          </CardsStackSection>
+          <div style={{ "textAlign": "center" }}>
             <div className="load-more-message-container">
               {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+              {!visible && <>
+                <img
+                  className="EncuentraTuViaje"
+                  style={{"padding-top": "20%"}}
+                  src={require("../../assets/images/SearchLogo.png")}
+                  alt="travel logo"
+                  width={250}
+                ></img> &nbsp;
+              </>}
             </div>
           </div>
         </div>
       </main>
-    </>
+      <div></div>
+    </div>
   );
 }
-

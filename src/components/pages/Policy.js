@@ -4,7 +4,7 @@ import Footer from "../Footer";
 export default function Policy() {
   return (
     <div>
-      <div className="form-box">
+      <div style={{ "color": "#172A3A" }} className="form-box">
         <p>
         <br />
         Políticas de seguridad de los datos, privacidad y responsabilidad legal
@@ -55,6 +55,7 @@ export default function Policy() {
         </p>
         
       </div>
+      <br />
       <br />
       <Footer /> 
     </div>   

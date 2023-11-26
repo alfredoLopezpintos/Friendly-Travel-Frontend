@@ -18,7 +18,9 @@ import {
 import { checkPlate, checkVehicleYear, checkSeats } from "../utils/ValidationFunctions";
 import { getToken } from "./service/AuthService";
 import { useImageUploader } from "./service/ImageUploader";
-import { Button as Button2 } from "../components/Button";
+// import { Button as Button2 } from "../components/Button";
+import { Button as Button2 }  from '@rodrisu/friendly-ui/build/button';
+import "./pages/ChangeData.css"
 
 export default function ModalRegistrarVehiculo() {
     const [manufacturer, setManufacturer] = useState('');
@@ -158,7 +160,8 @@ export default function ModalRegistrarVehiculo() {
 
     return (
         <>
-            <Button2 className="btns"
+            <Button2 
+              className="btns"
               buttonStyle="btn--test"
               buttonSize="btn--large"
               onClick={handleClickOpen}>
