@@ -458,6 +458,7 @@ export default function ListadoDeViajes() {
                   ) : (
                     <div>
                       <TripCard
+                        driver={user.driver}
                         href={'#'}
                         itinerary={
                           <Itinerary>

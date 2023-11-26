@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
-import { Button } from '@rodrisu/friendly-ui/build/button';
+import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { URLS } from "../utils/urls";
 import { getToken, resetUserSession, getUser } from "./service/AuthService";
 import { toast } from "react-toastify";
@@ -104,7 +104,7 @@ export default function ModalDeleteData({ setModal, handlePrevModalClose }) {
                     <DialogActions>
                     <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                         <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleClose()} status="green"> Cancelar </Button>
+                            <Button onClick={() => handleClose()} status={ButtonStatus.SECONDARY}> Cancelar </Button>
                         </li>
                         <li>
                             <Button onClick={() => handleDelete()} status="warning"> Aceptar </Button>

@@ -49,14 +49,14 @@ export default function ModalTravelInfo({ setModal, handlePrevModalClose, data }
                             justifyContent: "center",
                             alignItems: "center",
                         }}>
-                            <InfoIcon sx={{ color: blue[500] }} fontSize="large" />
+                            <InfoIcon sx={{ color: "#09BC8A" }} fontSize="large" />
                         </div>
                         <div style={{ textAlign: 'center' }}>
                         <h2 style={{
-                            "padding": "10px",
-                            "paddingBottom": "25px",
-                            "textAlign": "center",
+                            "padding": "25px 55px 25px",
+                            "textAlign": "left",
                             "userSelect": "none",
+                            "color": "#172A3A"
                         }}>
                         {'Origen del viaje: ' + data.origin}
                         <br />
