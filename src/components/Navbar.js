@@ -63,7 +63,10 @@ function Navbar() {
 
   const rightAction = (
     <>
-      <Link style={{ "userSelect": "none" }} to="/" className="navbar-logo" onClick={closeMobileMenu}>
+      <Link style={{ "userSelect": "none" }} to="/" className="navbar-logo" onClick={() => {
+          // closeMobileMenu
+          setDrawerOpened(false)
+        }}>
         <img
           src={require("../assets/images/Friendly-Logo-new.png")}
           alt="travel logo"
@@ -84,9 +87,16 @@ function Navbar() {
         }}
       >
         <ul className="navRouteContainer">
-          <li className="navRoute" onClick={() => { history.push("/about") }}>Sobre nosotros</li>
-          <li className="navRoute" onClick={() => { history.push("/viajes") }}>Listado de viajes</li>
-          <li className="navRoute" onClick={() => { history.push("/faqsPage") }}>Preguntas frecuentes</li>
+          <li className="navRoute" onClick={() => { 
+            history.push("/about")
+            setDrawerOpened(false)
+          }}>Sobre nosotros</li>
+          <li className="navRoute" onClick={() => { history.push("/viajes")
+            setDrawerOpened(false)
+          }}>Listado de viajes</li>
+          <li className="navRoute" onClick={() => { history.push("/faqsPage")
+            setDrawerOpened(false)
+          }}>Preguntas frecuentes</li>
         </ul>
 
       </span>
