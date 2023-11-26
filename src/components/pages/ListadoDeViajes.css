@@ -135,11 +135,11 @@ main {
   justify-content: space-between;
 }
 
-@media screen and (min-width: 800px) {
+/* @media screen and (min-width: 800px) {
   aside {
     width: 480px;
   }
-}
+} */
 
 .btn-submit {
   max-height: 40px;
@@ -184,6 +184,45 @@ main {
   }
 }
 
+@media screen and (max-width: 1268px) {
+  .everythingWrapper {
+    grid-template-columns: 0.5fr 500px 600px 0.5fr !important;
+  }
+
+  .mainSubContainer {
+    max-width: 650px;
+  }
+}
+
+@media screen and (max-width: 1168px) {
+  .everythingWrapper {
+    grid-template-columns: 0.5fr 500px 500px 0.5fr !important;
+  }
+
+  .mainSubContainer {
+    max-width: 650px;
+  }
+}
+
+@media screen and (max-width: 1068px) {
+  .everythingWrapper {
+    display: flow !important;
+    grid-template-columns: 0fr 500px 500px 0fr;
+  }
+
+  aside {
+    padding-left: 0 !important;
+  }
+
+  .EncuentraTuViaje {
+    padding-top: 2rem !important;
+  }
+
+  .mainSubContainer {
+    max-width: none;
+  }
+}
+
 /* Style the submit button */
 
 /*.form-inline button*/
@@ -191,7 +230,7 @@ main {
 /* Media Queries for Responsive Design */
 
 /* For screens wider than 768px */
-@media screen and (min-width: 768px) {
+/* @media screen and (min-width: 768px) {
   .wrapper {
     grid-template-columns: 0.5fr 0.8fr;
     column-gap: 100px;
@@ -206,7 +245,7 @@ main {
     margin-left: 440px;
     margin-top: 30px;
   }
-}
+} */
 
 /* */
 

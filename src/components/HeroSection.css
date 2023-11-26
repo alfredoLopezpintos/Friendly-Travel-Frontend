@@ -83,12 +83,12 @@ video {
     display: block;
   }
 
-  .form-inline {
+  /* .form-inline {
     width: 400px;
-  }
+  } */
 }
 
-@media screen and (max-width: 450px) {
+/* @media screen and (max-width: 450px) {
 
   .form-inline {
     width: 350px;
@@ -107,5 +107,5 @@ video {
   .form-inline {
     width: 270px;
   }
-}
+} */
 

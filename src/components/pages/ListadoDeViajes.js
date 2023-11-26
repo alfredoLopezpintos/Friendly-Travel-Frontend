@@ -259,7 +259,7 @@ export default function ListadoDeViajes() {
   }
 
   return (
-    <div style={{ "display": "grid", "grid-template-columns": "0.5fr 500px 700px 0.5fr" }}>
+    <div className="everythingWrapper" style={{ "display": "grid", "grid-template-columns": "0.5fr 500px 700px 0.5fr" }}>
       <div></div>
       <aside style={{ "padding-top": "2rem", "padding-left": "2rem" }}>
         {(modal === true) ? <ModalInfo setModal={setModal} handlePrevModalClose={handleClose}
@@ -420,7 +420,7 @@ export default function ListadoDeViajes() {
         }
       </aside>
       <main style={{ "max-width": "850px", "width": "100%", "overflow-y": "scroll", "max-height": "800px" }}>
-        <div style={{ "padding-top": "1rem", "max-width": "650px" }}>
+        <div className="mainSubContainer" style={{ "padding-top": "1rem" }}>
           <CardsStackSection>
             {viajes &&
               ((((sliceIntoChunks(viajesSorted, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(viajesSorted, 5)[pageNumber]])] : []))
@@ -493,6 +493,7 @@ export default function ListadoDeViajes() {
               {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
               {!visible && <>
                 <img
+                  className="EncuentraTuViaje"
                   style={{"padding-top": "20%"}}
                   src={require("../../assets/images/SearchLogo.png")}
                   alt="travel logo"
