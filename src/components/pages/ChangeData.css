@@ -63,7 +63,11 @@ body {
   width: 50%;
 }
 
-.cards__container {
+.cards__container2 {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin: 0 auto;
   background-color: #fff;
   padding-bottom: 8rem;
   width: 70%;

@@ -95,13 +95,13 @@ function Navbar() {
 
   const mobileMenu = (
     <>
-      <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
+      <DropdownButton onClick={() => setDrawerOpened(!drawerOpened)}>
         <Avatar
           isBubble
           image={require("../assets/images/user.png")}
         />
       </DropdownButton>
-      <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
+      <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
         <Menu>
           <ItemAction action="Inicio" leftAddon={<HomeIcon />} onClick={() => {
             history.push("/")
@@ -131,13 +131,13 @@ function Navbar() {
 
   const mobileMenuExtended = (
     <>
-      <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
+      <DropdownButton onClick={() => setDrawerOpened(!drawerOpened)}>
         <Avatar
           isBubble
           image={require("../assets/images/user.png")}
         />
       </DropdownButton>
-      <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
+      <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
         <Menu>
           <ItemAction action="Crear viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
             history.push("/map")
@@ -190,7 +190,7 @@ function Navbar() {
               centerItem={(windowSize.current[0] < 1000) ? true : centerContent}
               rightItem={((windowSize.current[0] < 1000) ? ((getToken() !== null) ? mobileMenuExtended : mobileMenu) : dropdownButton)}
             />
-            <Drawer zIndex={40} open={drawerOpened} onClose={(): void => setDrawerOpened(false)}>
+            <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
               <Menu>
                 <ItemAction action="Crear viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
                   history.push("/map")
