@@ -109,7 +109,7 @@ export default function ModalReservarViaje({ setModal, handlePrevModalClose, dat
                             "color": "rgb(23, 42, 58)"
                         }}>
                             {'¿Desea reservar el viaje desde: ' + data.origin.city + ' hasta '+
-                            data.destination.city + ' el dia ' + data.tripDate + '?'}
+                            data.destination.city + ' el día ' + data.tripDate + '?'}
                         </h2>
                         <h3 style={{
                             "padding": "10px",

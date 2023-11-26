@@ -21,13 +21,10 @@ import configData from "../../configData.json";
 import { URLS } from "../../utils/urls";
 import { AutoCompleteUy } from "../AutoCompleteUy";
 import { months, weekdaysLong, weekdaysShort } from "../DatePickerProps.js";
-import Footer from "../Footer";
 import MapView from '../MapView';
 import { formValidate } from "../Utilities";
 import { getToken } from "../service/AuthService";
 import "./Login.css";
-
-const nafta = 74.88;
 
 const TopSection = styled.div`
   position: fixed;
@@ -95,6 +92,7 @@ function TravelPreviewer() {
   const [vehiculo, setVehiculo] = useState([]);
   const [originForm, setOriginForm] = useState("");
   const [destinationForm, setDestinationForm] = useState("");
+  const [gasPrice, setGasPrice] = useState(0);
 
   const onError = (errors, e) => console.log(errors, e);
   const history = useHistory();
@@ -192,6 +190,22 @@ function TravelPreviewer() {
     }
 
   }, [originForm, destinationForm]);
+
+  useEffect(() => {
+    axios
+      .get(URLS.GET_GAS_PRICE)
+      .then((response) => {
+        if (response.data) {
+          setGasPrice(response.data.max_price);
+        } else {
+          toast.warning("No fue posible obtener el precio de la nafta.");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Hubo un error al obtener el precio de la nafta.");
+      });
+  }, [URLS.GET_GAS_PRICE, setGasPrice]);  
 
 
   async function handleSubmit(data) {
@@ -318,7 +332,7 @@ function TravelPreviewer() {
   const calculateSuggestedPrice = (formData) => {
     if (distance && vehiculo.length > 0) {
       const distanceInKilometers = parseFloat(distance.replace(" km", "").replace(",", ".")); // Parse the distance
-      const tripCost = (distanceInKilometers / 12) * nafta;
+      const tripCost = (distanceInKilometers / 12) * gasPrice;
       
       
       // const suggestedPrice = tripCost / (formData.STEPPER + 1); //Comentado porque al actualizar la cantidad de asientos, se reinicia el mapa
