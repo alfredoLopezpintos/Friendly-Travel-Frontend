@@ -90,7 +90,7 @@ export function ChangeData() {
         (
           <>
             <div className="cards">
-              <div className="cards__container">
+              <div className="cards__container2">
                 <div className="boxTest">
                   <h1 style={{"color": "#004346"}}>Panel de Usuario</h1>
                   <div className="divider"></div>
