@@ -50,11 +50,11 @@ const LeaveWarning = () => {
 
   return (
     <div className="leave-warning" style={leaveWarningStyle}>
-      <p>Aviso de redireccionamiento. Estás a punto de salir de Friendly-Travel.<br/><br/>¿Estás seguro?</p>
+      <p style={{"color": "#172A3A"}}>Aviso de redireccionamiento. Estás a punto de salir de Friendly-Travel.<br/><br/>¿Estás seguro?</p>
       {/* <br /> */}
       <ButtonGroup isInline>
         <Button status={ButtonStatus.SECONDARY} onClick={handleCancel}>Cancelar</Button>
-        <Button status={ButtonStatus.GREEN} onClick={handleClick}>
+        <Button status={ButtonStatus.PRIMARY} onClick={handleClick}>
           <WhatsAppIcon style={{"margin-left": "0px", "margin-right": "7px"}} />
           Aceptar
         </Button>

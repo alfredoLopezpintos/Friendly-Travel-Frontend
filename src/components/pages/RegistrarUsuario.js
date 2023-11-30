@@ -270,7 +270,7 @@ export default function RegistrarUsuario() {
               )}
               <br />
               <div className="politicas">
-                <label id="checkBox" className="container">
+                <label id="checkBox" style={{"padding-top": "5px"}} className="container">
                 <Link className="politicasLetra" to="/policy">
                   Confirmo haber leído y estar de acuerdo con las
                   políticas de uso de FriendlyTravel</Link>
