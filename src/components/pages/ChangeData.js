@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import "./ChangeData.css"
 // import { Button } from "../Button";
 import { Button }  from '@rodrisu/friendly-ui/build/button';
-import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo';
+// import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo';
 import ModalInfo from '../../components/ModalInfo';
 import {
     isValidEmail
@@ -84,6 +84,10 @@ export function ChangeData() {
     setShowModalDelete(true)
   }
 
+  function handleVehicle() {
+    history.push("/registerVehicle")
+  }
+
   return (
     <>
       {(success === true) ? (<ModalInfo setSuccess={setSuccess} handlePrevModalClose={handleClose} message={result} errorMessage={errorMessage} />) :
@@ -104,7 +108,14 @@ export function ChangeData() {
                     Cambiar contraseña
                   </Button>
                   <br />
-                  <ModalRegistrarVehiculo />
+                  <Button 
+                    className="btns"
+                    buttonStyle="btn--test"
+                    buttonSize="btn--large"
+                    onClick={handleVehicle}>
+                    Agregar vehículo
+                  </Button>
+                  <br />
                   <div className="divider" />
                   <h2 style={{"color": "#004346"}}>Datos de usuario</h2>
                   <br />
