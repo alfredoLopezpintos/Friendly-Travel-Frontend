@@ -88,76 +88,83 @@ export default function ModalTravelInfo({
   }, [isMapsApiLoaded]);
 
   return (
-    <Dialog open={displayModal} onClose={handleClose} data-testid="form">
-      <DialogTitle
-        style={{ display: "flex", justifyContent: "flex-end", padding: 0 }}
-      >
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        <Grid container direction="column" alignItems="stretch" spacing={1}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+    <>
+      {!isMapsApiLoaded ? (
+        <>Loading...</>
+      ) : (
+        <Dialog open={displayModal} onClose={handleClose} data-testid="form">
+          <DialogTitle
+            style={{ display: "flex", justifyContent: "flex-end", padding: 0 }}
           >
-            <InfoIcon sx={{ color: "#09BC8A" }} fontSize="large" />
-          </div>
-
-          <div style={{ textAlign: "center" }}>
-            <h3
-              style={{
-                textAlign: "left",
-                userSelect: "none",
-                color: "#172A3A",
-                width: "300px",
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                color: (theme) => theme.palette.grey[500],
               }}
             >
-              <br />
-              {"Origen del viaje: " + data.origin}
-              <br />
-              {"Destino del viaje: " + data.destination}
-              <br />
-              {"Duración aproximada: " + data.duration}
-              <br />
-              {"Distancia aproximada: " + data.distance}
-              <br />
-              {"Cantidad de asientos reservados: " + data.passengersQuantity}
-              <br />
-              {"Precio: " + data.price}
-              <br />
-              {"Fecha: " + data.tripDate}
-              <br />
-              {"Correo del chofer: " +
-                (data.userDriver.email !== undefined
-                  ? data.userDriver.email
-                  : data.userDriver)}
-              <br />
-              {"Matrícula del vehículo: " + data.vehicle}
-              <br />
-            </h3>
-            <br />
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <MapSection>
-              <MapView
-                directionsResponse={directionsResponse}
-                style={containerStyle}
-              />
-            </MapSection>
-          </div>
-        </Grid>
-      </DialogContent>
-    </Dialog>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            <Grid container direction="column" alignItems="stretch" spacing={1}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <InfoIcon sx={{ color: "#09BC8A" }} fontSize="large" />
+              </div>
+
+              <div style={{ textAlign: "center" }}>
+                <h3
+                  style={{
+                    textAlign: "left",
+                    userSelect: "none",
+                    color: "#172A3A",
+                    width: "300px",
+                  }}
+                >
+                  <br />
+                  {"Origen del viaje: " + data.origin}
+                  <br />
+                  {"Destino del viaje: " + data.destination}
+                  <br />
+                  {"Duración aproximada: " + data.duration}
+                  <br />
+                  {"Distancia aproximada: " + data.distance}
+                  <br />
+                  {"Cantidad de asientos reservados: " +
+                    data.passengersQuantity}
+                  <br />
+                  {"Precio: " + data.price}
+                  <br />
+                  {"Fecha: " + data.tripDate}
+                  <br />
+                  {"Correo del chofer: " +
+                    (data.userDriver.email !== undefined
+                      ? data.userDriver.email
+                      : data.userDriver)}
+                  <br />
+                  {"Matrícula del vehículo: " + data.vehicle}
+                  <br />
+                </h3>
+                <br />
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <MapSection>
+                  <MapView
+                    directionsResponse={directionsResponse}
+                    style={containerStyle}
+                  />
+                </MapSection>
+              </div>
+            </Grid>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 }
