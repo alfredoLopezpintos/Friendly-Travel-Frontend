@@ -3,5 +3,13 @@
   grid-template-columns: 1fr;
   gap: 1rem;
   padding: 1rem;
-  margin-right: 3rem;
+  /* margin-right: 3rem; */
+}
+
+.listadoWrapper {
+  max-width: 850px;
+  overflow-y: scroll;
+  max-height: 630px;
+  margin: 0 auto;
+  /* overflow: hidden; */
 }

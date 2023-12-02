@@ -160,7 +160,7 @@ const MisViajes = () => {
             id: 'tab1',
             label: 'Todos',
             panelContent: (
-              <div className="wrapper">
+              <div className="wrapper listadoWrapper">
                 <CardsStackSection>
                   {(total) &&
                     ((((sliceIntoChunks(total, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])] : []))
