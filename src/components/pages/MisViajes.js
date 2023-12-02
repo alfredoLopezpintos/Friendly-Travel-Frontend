@@ -230,7 +230,7 @@ const MisViajes = () => {
             id: 'tab2',
             label: 'Conductor',
             panelContent: (
-              <div className="wrapper">
+              <div className="wrapper listadoWrapper">
                 <CardsStackSection>
                   {(driver) &&
                     ((((sliceIntoChunks(driver, 5)[pageNumberDriver]) !== undefined) ? [... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])] : []))
@@ -298,7 +298,7 @@ const MisViajes = () => {
             id: 'tab3',
             label: 'Pasajero',
             panelContent: (
-              <div className="wrapper">
+              <div className="wrapper listadoWrapper">
                 <CardsStackSection>
                   {(passenger) &&
                     ((((sliceIntoChunks(passenger, 5)[pageNumberPassenger]) !== undefined) ? [... new Set([...prevViajesPassenger, ...sliceIntoChunks(passenger, 5)[pageNumberPassenger]])] : []))
