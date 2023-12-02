@@ -146,7 +146,7 @@ const MisViajes = () => {
   }
 
   return (
-    <div className="wrapper">
+    <div className="">
       <br />
       <Title headingLevel={1}>
         Mis Viajes
@@ -160,7 +160,7 @@ const MisViajes = () => {
             id: 'tab1',
             label: 'Todos',
             panelContent: (
-              <div className="wrapper">
+              <div className="cardsStackHistory">
                 <CardsStackSection>
                   {(total) &&
                     ((((sliceIntoChunks(total, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])] : []))
