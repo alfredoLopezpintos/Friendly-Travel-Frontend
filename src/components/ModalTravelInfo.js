@@ -107,7 +107,7 @@ export default function ModalTravelInfo({
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            <Grid container direction="column" alignItems="stretch" spacing={1}>
+            <Grid container direction="column" alignItems="stretch" spacing={1} style={{"padding": "8px 24px"}}>
               <div
                 style={{
                   display: "flex",
@@ -153,7 +153,8 @@ export default function ModalTravelInfo({
                 </h3>
                 <br />
               </div>
-              <div style={{ textAlign: "center" }}>
+            </Grid>
+            <div style={{ textAlign: "center" }}>
                 <MapSection>
                   <MapView
                     directionsResponse={directionsResponse}
@@ -161,7 +162,6 @@ export default function ModalTravelInfo({
                   />
                 </MapSection>
               </div>
-            </Grid>
           </DialogContent>
         </Dialog>
       )}
