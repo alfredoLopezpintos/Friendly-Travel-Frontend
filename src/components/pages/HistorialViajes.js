@@ -5,7 +5,7 @@ import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/car
 import { sliceIntoChunks } from '../Utilities';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
-import { Button } from '@rodrisu/friendly-ui/build/button';
+import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { toast } from "react-toastify";
 import { getToken, getUser } from "../service/AuthService";
 import './HistorialViajes.css'
@@ -206,10 +206,10 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                                <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                               </li>
                             </ul>
                         }
@@ -233,10 +233,10 @@ const HistorialViajes = () => {
                         button={                             
                         <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                           <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                            <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                           </li>
                           <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                            <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                           </li>
                         </ul> 
                       }
@@ -281,10 +281,10 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                                <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                               </li>
                             </ul>
                         }
@@ -307,10 +307,10 @@ const HistorialViajes = () => {
                         button={ 
                           <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                              <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                              <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                             </li>
                           </ul>
                         }
@@ -355,10 +355,10 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                                <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                               </li>
                             </ul>
                         }
@@ -381,10 +381,10 @@ const HistorialViajes = () => {
                         button={ 
                           <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                              <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                              <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                             </li>
                           </ul>
                         }
