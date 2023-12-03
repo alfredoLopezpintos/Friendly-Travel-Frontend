@@ -146,7 +146,7 @@ const MisViajes = () => {
   }
 
   return (
-    <div className="wrapper">
+    <div className="">
       <br />
       <Title headingLevel={1}>
         Mis Viajes

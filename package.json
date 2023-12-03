@@ -21,7 +21,7 @@
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
     "@react-google-maps/api": "^2.13.1",
-    "@rodrisu/friendly-ui": "^1.0.72",
+    "@rodrisu/friendly-ui": "^1.0.102",
     "@storybook/addon-knobs": "^7.0.2",
     "@storybook/addons": "^7.4.2",
     "@storybook/core-events": "^7.4.2",
