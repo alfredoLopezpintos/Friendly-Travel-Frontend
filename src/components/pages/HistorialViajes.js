@@ -5,7 +5,7 @@ import { CardsStackSection } from '@rodrisu/friendly-ui/build/layout/section/car
 import { sliceIntoChunks } from '../Utilities';
 import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { Address, Itinerary } from '@rodrisu/friendly-ui/build/itinerary';
-import { Button } from '@rodrisu/friendly-ui/build/button';
+import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 import { toast } from "react-toastify";
 import { getToken, getUser } from "../service/AuthService";
 import './HistorialViajes.css'
@@ -20,11 +20,11 @@ import { Title } from '@rodrisu/friendly-ui/build/title'
 
 const HistorialViajes = () => {
 
-  const [prevViajes, setPrevViajes] = React.useState([]);
-  const [pageNumber, setPageNumber] = React.useState(0);
-  const [cardsNumber, setCardsNumber] = React.useState(5);
-  const [visible, setVisible] = React.useState(false);  
-  const observer = useRef();
+  // const [prevViajes, setPrevViajes] = React.useState([]);
+  // const [pageNumber, setPageNumber] = React.useState(0);
+  // const [cardsNumber, setCardsNumber] = React.useState(5);
+  // const [visible, setVisible] = React.useState(false);
+  // const observer = useRef();
 
   const [prevViajesDriver, setPrevViajesDriver] = React.useState([]);
   const [pageNumberDriver, setPageNumberDriver] = React.useState(0);
@@ -42,7 +42,7 @@ const HistorialViajes = () => {
   const email = getUser()
   const [driver, setDriverData] = useState([]);
   const [passenger, setPassengerData] = useState([]);
-  const [total, setTotalData] = useState([]);
+  // const [total, setTotalData] = useState([]);
   const [modal, setModal] = useState(false);
   const [dataToModal, setDataToModal] = useState({});
   const history = useHistory();
@@ -68,16 +68,16 @@ const HistorialViajes = () => {
     toast.promise(axios.get(viajesGetEndPoint, requestConfig)
       .then((response) => {
         // ESTO ES SUMAMENTE INEFICIENTE. DEBIDO A QUE E BACKEND NO TRAE LOS DATOS DE FORMA APROPIADA SE REDUCE LA EFICIENCIA PARA ORDENAR LOS DATOS
-        let temporalData = []
-        for(let i = 0; i < response.data.DRIVER.length; i++) {
-          temporalData = [...temporalData, {...temporalData, ...{ ...response.data.DRIVER[i], "esChofer": true }}]
-        }
+        // let temporalData = []
+        // for(let i = 0; i < response.data.DRIVER.length; i++) {
+        //   temporalData = [...temporalData, {...temporalData, ...{ ...response.data.DRIVER[i], "esChofer": true }}]
+        // }
         // -------------------------------
         setDriverData(response.data.DRIVER)
         setPassengerData(response.data.PASSENGER)
 
         // Ordena los viajes de mas reciente a mas antiguo
-        setTotalData([...temporalData, ...response.data.PASSENGER].sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())))
+      //   setTotalData([...temporalData, ...response.data.PASSENGER].sort((a, b) => new Date(...a.tripDate.split('-').reverse()) - new Date(...b.tripDate.split('-').reverse())))
       }).catch((error) => {
         console.error(error);
       })
@@ -97,19 +97,19 @@ const HistorialViajes = () => {
       });
   }
 
-  const lastCardElementAll = useCallback(node => {
-    if (observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])]).length < total.length) {
-        setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])])
-        setPageNumber(pageNumber + 1)
-        setCardsNumber(cardsNumber + 5)
-      } else {
-        setVisible(true)
-      }
-    })
-    if (node) observer.current.observe(node)
-  })
+  // const lastCardElementAll = useCallback(node => {
+  //   if (observer.current) observer.current.disconnect()
+  //   observer.current = new IntersectionObserver(entries => {
+  //     if (entries[0].isIntersecting && ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])]).length < total.length) {
+  //       setPrevViajes([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])])
+  //       setPageNumber(pageNumber + 1)
+  //       setCardsNumber(cardsNumber + 5)
+  //     } else {
+  //       setVisible(true)
+  //     }
+  //   })
+  //   if (node) observer.current.observe(node)
+  // })
 
   const lastCardElementDriver = useCallback(node => {
     if (observerDriver.current) observerDriver.current.disconnect()
@@ -170,96 +170,95 @@ const HistorialViajes = () => {
 
   return (
     <div className="wrapper">
-            <br />
-      <Title headingLevel={1}>
-        Historial de Viajes
-      </Title>
-      <br />
+    <br />
+    <Title headingLevel={1}>
+      Historial de Viajes
+    </Title>
     <TabsSection tabsProps={{
       activeTabId: 'tab1',
       status: TabStatus.FIXED,
       tabs: [
+        // {
+        //   id: 'tab1',
+        //   label: 'Todos',
+        //   panelContent: (
+        //     <div className="wrapper listadoWrapper">
+        //     <CardsStackSection>
+        //     {(total) &&
+        //       ((((sliceIntoChunks(total, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])] : []))
+        //         .map((user, index) => (
+        //           ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
+        //             <div ref={lastCardElementAll}>
+        //               <TripCard
+        //                 driver={user.userDriver}
+        //                 tag={(user.esChofer) ? "Conductor" : "Pasajero"}
+        //                 href={'#'}
+        //                 itinerary={
+        //                   <Itinerary>
+        //                     <Address label={user.origin}  />
+        //                     <Address label={user.destination}  />
+        //                   </Itinerary>
+        //                 }
+        //                 price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+        //                 originalPrice={{}}
+        //                 mainTitle={user.tripDate}
+        //                 button={
+        //                     <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+        //                       <li style={{ marginRight: '10px' }}>
+        //                         <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+        //                       </li>
+        //                       <li style={{ marginRight: '10px' }}>
+        //                         <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
+        //                       </li>
+        //                     </ul>
+        //                 }
+        //               />
+        //             </div>
+        //           ) : (
+        //             <div>
+        //               <TripCard
+        //                 driver={user.userDriver}
+        //                 tag={(user.esChofer) ? "Conductor" : "Pasajero"}
+        //                 href={'#'}
+        //                 itinerary={
+        //                   <Itinerary>
+        //                     <Address label={user.origin} />
+        //                     <Address label={user.destination} />
+        //                   </Itinerary>
+        //                 }
+        //                 price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
+        //                 originalPrice={{}}
+        //                 mainTitle={user.tripDate}
+        //                 button={                             
+        //                 <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
+        //                   <li style={{ marginRight: '10px' }}>
+        //                     <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+        //                   </li>
+        //                   <li style={{ marginRight: '10px' }}>
+        //                     <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
+        //                   </li>
+        //                 </ul> 
+        //               }
+        //               />
+        //             </div>
+        //           )
+        //         ))
+        //     }
+        //   </CardsStackSection>
+        //   <div style={{"textAlign": "center"}}>
+        //     <div className="load-more-message-container">
+        //       {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+        //     </div>
+        //   </div>
+        //   </div>
+        //   ),
+        //   badgeContent: '',
+        // },
         {
           id: 'tab1',
-          label: 'Todos',
-          panelContent: (
-            <div className="wrapper">
-            <CardsStackSection>
-            {(total) &&
-              ((((sliceIntoChunks(total, 5)[pageNumber]) !== undefined) ? [... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])] : []))
-                .map((user, index) => (
-                  ([... new Set([...prevViajes, ...sliceIntoChunks(total, 5)[pageNumber]])].length === index + 1) ? (
-                    <div ref={lastCardElementAll}>
-                      <TripCard
-                        driver={user.userDriver}
-                        tag={(user.esChofer) ? "Conductor" : "Pasajero"}
-                        href={'#'}
-                        itinerary={
-                          <Itinerary>
-                            <Address label={user.origin}  />
-                            <Address label={user.destination}  />
-                          </Itinerary>
-                        }
-                        price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
-                        originalPrice={{}}
-                        mainTitle={user.tripDate}
-                        button={
-                            <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                              <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
-                              </li>
-                              <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
-                              </li>
-                            </ul>
-                        }
-                      />
-                    </div>
-                  ) : (
-                    <div>
-                      <TripCard
-                        driver={user.userDriver}
-                        tag={(user.esChofer) ? "Conductor" : "Pasajero"}
-                        href={'#'}
-                        itinerary={
-                          <Itinerary>
-                            <Address label={user.origin} />
-                            <Address label={user.destination} />
-                          </Itinerary>
-                        }
-                        price={(user.price != 0) ? `$ ${user.price}` : 'GRATIS'}
-                        originalPrice={{}}
-                        mainTitle={user.tripDate}
-                        button={                             
-                        <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-                          <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
-                          </li>
-                          <li style={{ marginRight: '10px' }}>
-                            <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
-                          </li>
-                        </ul> 
-                      }
-                      />
-                    </div>
-                  )
-                ))
-            }
-          </CardsStackSection>
-          <div style={{"textAlign": "center"}}>
-            <div className="load-more-message-container">
-              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
-            </div>
-          </div>
-          </div>
-          ),
-          badgeContent: '',
-        },
-        {
-          id: 'tab2',
           label: 'Conductor',
           panelContent: (
-            <div className="wrapper">
+            <div className="wrapper listadoWrapper">
             <CardsStackSection>
             {(driver) &&
               ((((sliceIntoChunks(driver, 5)[pageNumberDriver]) !== undefined) ? [... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])] : []))
@@ -281,10 +280,10 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                                <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                               </li>
                             </ul>
                         }
@@ -307,10 +306,10 @@ const HistorialViajes = () => {
                         button={ 
                           <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                              <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                              <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                             </li>
                           </ul>
                         }
@@ -322,7 +321,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+              {visibleDriver && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>
@@ -330,10 +329,10 @@ const HistorialViajes = () => {
           badgeContent: '',
         },
         {
-          id: 'tab3',
+          id: 'tab2',
           label: 'Pasajero',
           panelContent: (
-            <div className="wrapper">
+            <div className="wrapper listadoWrapper">
             <CardsStackSection>
             {(passenger) &&
               ((((sliceIntoChunks(passenger, 5)[pageNumberPassenger]) !== undefined) ? [... new Set([...prevViajesPassenger, ...sliceIntoChunks(passenger, 5)[pageNumberPassenger]])] : []))
@@ -355,10 +354,10 @@ const HistorialViajes = () => {
                         button={
                             <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                                <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
                               <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                                <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                               </li>
                             </ul>
                         }
@@ -381,10 +380,10 @@ const HistorialViajes = () => {
                         button={ 
                           <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
+                              <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} status="green" disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar Viaje </Button>
+                              <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                             </li>
                           </ul>
                         }
@@ -396,7 +395,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visible && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+              {visiblePassenger && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>

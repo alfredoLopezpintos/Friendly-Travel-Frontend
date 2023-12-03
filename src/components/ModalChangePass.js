@@ -7,7 +7,7 @@ import {
     DialogContent,
     DialogActions,
     TextField,
-    Button,
+    // Button,
     Grid,
     FormHelperText
 } from "@material-ui/core";
@@ -18,6 +18,7 @@ import ModalInfo from '../components/ModalInfo';
 import {
     isValidEmail
   } from "../utils/ValidationFunctions";
+import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 
 export default function ModalChangePass() {
     const history = useHistory();
@@ -96,7 +97,7 @@ export default function ModalChangePass() {
                     <h5 onClick={handleClickOpen} style={{ "text-align": "right", "color": "#004346", "cursor": "pointer" }}>¿Olvidaste tu contraseña?</h5>
                     <Dialog open={displayModal} onClose={handleClose} data-testid="form">
                         <form onSubmit={handleSubmit2}>
-                            <DialogTitle style={{"userSelect": "none"}}>Solicitud de cambio de contraseña</DialogTitle>
+                            <DialogTitle style={{"userSelect": "none", "color": "#172A3A"}}>Solicitud de cambio de contraseña</DialogTitle>
                             <DialogContent>
                                 <Grid container direction="column" alignItems="stretch" spacing={1}>
                                     <Grid item>
@@ -114,11 +115,11 @@ export default function ModalChangePass() {
                                 </Grid>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={handleClose} color="primary">
+                                <Button onClick={handleClose} color="primary" status={ButtonStatus.SECONDARY}>
                                     Cancelar
                                 </Button>
                                 {/* <Button type="submit" color="primary" disabled={isSubmitting}> */}
-                                <Button onClick={handleSubmit2} color="primary" disabled={isSubmitting}>
+                                <Button style={{"padding-inline": "50px"}} onClick={handleSubmit2} color="primary" disabled={isSubmitting}>
                                     {isSubmitting ? 'Cargando...' : 'Enviar'}
                                 </Button>
                             </DialogActions>

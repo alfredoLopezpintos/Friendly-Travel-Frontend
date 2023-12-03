@@ -8,6 +8,7 @@ import { TripCard } from '@rodrisu/friendly-ui/build/tripCard';
 import { toast } from "react-toastify";
 import { getToken, getUser } from "./components/service/AuthService";
 import Rating from "@mui/material/Rating"
+import { Title } from '@rodrisu/friendly-ui/build/title'
 import TextItem from "./components/TextItem";
 
 const ReviewTravel = () => {
@@ -83,7 +84,12 @@ const ReviewTravel = () => {
   }
 
   return (
-    <div className="wrapper">
+    <div className="wrapper listadoWrapper">
+      <br />
+      <Title headingLevel={1}>
+        Calificar a los usuarios
+      </Title>
+      <br />
       <CardsStackSection>
         {(passengers)
             .map((user, index) => (
