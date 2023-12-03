@@ -56,6 +56,9 @@ body {
 
 .cards {
   background: #EDF2F7;
+  padding-inline: 4rem !important;
+  padding-top: 1rem !important;
+  padding-bottom: 0 !important;
 }
 
 .btns {

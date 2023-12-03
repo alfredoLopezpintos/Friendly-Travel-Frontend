@@ -4,6 +4,10 @@
   margin-top: 1rem;
 }
 
+.everythingWrapper {
+  height: 760px !important;
+}
+
 .MuiBox-root {
   padding: 20px;
   border-radius: 16px;
