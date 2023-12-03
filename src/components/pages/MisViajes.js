@@ -151,6 +151,7 @@ const MisViajes = () => {
       <Title headingLevel={1}>
         Mis Viajes
       </Title>
+      <br />
       <TabsSection tabsProps={{
         activeTabId: 'tab1',
         status: TabStatus.FIXED,

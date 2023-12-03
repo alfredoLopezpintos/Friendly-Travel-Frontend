@@ -106,7 +106,7 @@ export default function ModalTravelInfo({
               <CloseIcon />
             </IconButton>
           </DialogTitle>
-          <DialogContent>
+          <DialogContent style={{"padding": "0px", "overflow": "hidden"}}>
             <Grid container direction="column" alignItems="stretch" spacing={1} style={{ "padding": "8px 24px" }}>
               <div
                 style={{
