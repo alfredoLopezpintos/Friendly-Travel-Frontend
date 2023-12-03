@@ -41,7 +41,7 @@ export default function ModalTravelInfo({
   const [libraries] = useState(["places"]);
   const containerStyle = {
     width: "300px",
-    height: "200px",
+    height: "265px",
   };
 
   const { isLoaded: isMapsApiLoaded } = useJsApiLoader({
@@ -107,7 +107,7 @@ export default function ModalTravelInfo({
             </IconButton>
           </DialogTitle>
           <DialogContent>
-            <Grid container direction="column" alignItems="stretch" spacing={1} style={{"padding": "8px 24px"}}>
+            <Grid container direction="column" alignItems="stretch" spacing={1} style={{ "padding": "8px 24px" }}>
               <div
                 style={{
                   display: "flex",
@@ -155,13 +155,13 @@ export default function ModalTravelInfo({
               </div>
             </Grid>
             <div style={{ textAlign: "center" }}>
-                <MapSection>
-                  <MapView
-                    directionsResponse={directionsResponse}
-                    style={containerStyle}
-                  />
-                </MapSection>
-              </div>
+              <MapSection style={{"height": "265px"}}>
+                <MapView
+                  directionsResponse={directionsResponse}
+                  style={containerStyle}
+                />
+              </MapSection>
+            </div>
           </DialogContent>
         </Dialog>
       )}
