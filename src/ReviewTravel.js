@@ -87,7 +87,7 @@ const ReviewTravel = () => {
     <div className="wrapper listadoWrapper">
       <br />
       <Title headingLevel={1}>
-        Calificar al conductor
+        Calificar a los usuarios
       </Title>
       <br />
       <CardsStackSection>

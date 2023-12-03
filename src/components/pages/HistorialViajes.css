@@ -9,7 +9,7 @@
 .listadoWrapper {
   max-width: 850px;
   overflow-y: scroll;
-  max-height: 630px;
+  /* max-height: 579px; */
   margin: 0 auto;
   /* overflow: hidden; */
 }
@@ -22,4 +22,22 @@
 .listadoWrapper {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.gofehg .kirk-tabs {
+  border-bottom: none !important;
+}
+
+.kirk-tablist-wrapper {
+  width: 600px !important;
+  /* width: 134.656px !important;
+  left: 320px !important; */
+  background-color: #fff !important;
+  border-radius: 11px !important;
+  padding-inline: 19px !important;
+}
+
+.kirk-tablist {
+  /* border-radius: 19px !important; */
+  height: 65px !important;
 }
