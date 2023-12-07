@@ -43,7 +43,8 @@ const Login = () => {
           } else {
             setUserSession(
               jwt_decode(response.data.object.idToken).email,
-              response.data.object.idToken
+              response.data.object.idToken,
+              response.data.object.avatarUrl
             );
             history.push("/");
             toast.success("Bienvenido", {

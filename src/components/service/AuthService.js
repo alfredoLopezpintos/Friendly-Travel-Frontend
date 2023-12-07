@@ -23,10 +23,11 @@ export function getExpire() {
   return window.localStorage.getItem("dateOfExpire");
 }
 
-export function setUserSession(user, token) {
+export function setUserSession(user, token, avatarUrl) {
   window.localStorage.setItem("email", JSON.stringify(user));
   window.localStorage.setItem("token", JSON.stringify(token));
   window.localStorage.setItem("dateOfExpire", JSON.stringify(moment().add(1, "hours").format('DD MMMM YYYY, h:mm:ss a').toString()));
+  window.localStorage.setItem("avatarUrl", avatarUrl);
   // window.localStorage.setItem("timeOfExpire", JSON.stringify(getTime().add(1, 'hours')));
 }
 
@@ -34,6 +35,10 @@ export function resetUserSession() {
   window.localStorage.removeItem("email");
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("dateOfExpire");
+}
+
+export function getAvatar() {
+  return window.localStorage.getItem("avatarUrl");
 }
 
 // export function authorizeChangePassAccess() {

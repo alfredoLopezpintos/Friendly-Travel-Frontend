@@ -1,6 +1,6 @@
-import React, { useRef, useState, useCallback, useEffect, Fragment } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { getToken, resetUserSession } from "./service/AuthService";
+import React, { useRef, useState, Fragment } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { getToken, resetUserSession, getAvatar } from "./service/AuthService";
 import "./Navbar.css";
 import { color, font } from '@rodrisu/friendly-ui/build/_utils/branding'
 import { ArrowIcon } from '@rodrisu/friendly-ui/build/icon/arrowIcon'
@@ -22,7 +22,6 @@ import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
 function Navbar() {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
   const [click, setClick] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
   const closeMobileMenu = () => setClick(false);
   const history = useHistory();
 
@@ -43,7 +42,7 @@ function Navbar() {
     <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
       <Avatar
         isBubble
-        image={require("../assets/images/user.png")}
+        image={getAvatar()}
       />
     </DropdownButton>
   ) : (<Button
@@ -108,7 +107,7 @@ function Navbar() {
       <DropdownButton onClick={() => setDrawerOpened(!drawerOpened)}>
         <Avatar
           isBubble
-          image={require("../assets/images/user.png")}
+          image={getAvatar()}
         />
       </DropdownButton>
       <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
@@ -144,7 +143,7 @@ function Navbar() {
       <DropdownButton onClick={() => setDrawerOpened(!drawerOpened)}>
         <Avatar
           isBubble
-          image={require("../assets/images/user.png")}
+          image={getAvatar()}
         />
       </DropdownButton>
       <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
