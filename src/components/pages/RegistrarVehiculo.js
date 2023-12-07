@@ -35,7 +35,7 @@ export default function RegistrarVehiculo() {
   }
   const history = useHistory();
 
-  const [plate, setPlateNumber] = useState(0);
+  const [plate, setPlateNumber] = useState("");
   const [seats, setSeats] = useState(0);
   const [year, setYear] = useState(0);
   const [model, setModel] = useState("");
