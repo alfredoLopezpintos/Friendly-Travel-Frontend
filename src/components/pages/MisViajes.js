@@ -70,6 +70,7 @@ const MisViajes = () => {
         //   temporalData = [...temporalData, {...temporalData, ...{ ...response.data.DRIVER[i], "esChofer": true }}]
         // }
         // -------------------------------
+        console.log(response)
         setDriverData(response.data.DRIVER)
         setPassengerData(response.data.PASSENGER)
 

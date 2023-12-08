@@ -48,7 +48,7 @@ export const isValidDocument = (cedula) => {
 
 // Funcion para validar la matricula
 export const checkPlate = (plate) => {
-    console.log(plate)
+    // console.log(plate)
     const formattedPlate = plate.replace(/\s+/g, ''); // Remove all spaces
     if (!/^[A-Za-z0-9 ]+$/i.test(formattedPlate)) {
         return { valid: false, message: "Ingrese una matrícula válida" };

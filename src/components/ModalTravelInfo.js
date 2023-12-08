@@ -90,7 +90,7 @@ export default function ModalTravelInfo({
   return (
     <>
       {!isMapsApiLoaded ? (
-        <>Loading...</>
+        <>Cargando...</>
       ) : (
         <Dialog open={displayModal} onClose={handleClose} data-testid="form">
           <DialogTitle

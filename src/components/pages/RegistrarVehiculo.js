@@ -116,7 +116,7 @@ export default function RegistrarVehiculo() {
         //console.log(JSON.stringify(requestBody))
         //console.log(requestConfig)
 
-        console.log(requestBody)
+        // console.log(requestBody)
 
         toast.promise(axios.post(
           URLS.POST_VEHICLE_URL,

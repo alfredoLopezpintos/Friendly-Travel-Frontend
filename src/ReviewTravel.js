@@ -51,7 +51,7 @@ const ReviewTravel = () => {
         email +
         "/ratings"
 
-      console.log(travelId)
+      // console.log(travelId)
 
       toast.promise(axios.post(reviewGetEndPoint, {score: value, tripId: travelId} ,requestConfig)
         .then((response) => {
