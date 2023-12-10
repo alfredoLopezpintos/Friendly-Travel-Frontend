@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { TextField } from '@rodrisu/friendly-ui/build/textField'
 import { Button } from '@rodrisu/friendly-ui/build/button';
 import { DataArray } from "@mui/icons-material";
+import { resetUserSession } from "../service/AuthService";
 
 export default function ChangePass() {
   const history = useHistory();
@@ -91,6 +92,7 @@ export default function ChangePass() {
 
   async function redirect(data, e) {
     toast.success("Contraseña modificada correctamente");
+    resetUserSession();
     history.push("/login");
   }
 
