@@ -85,7 +85,7 @@ pipeline {
                 attachLog: true,
                 subject: "Build FRONTEND exitoso: ${currentBuild.currentResult}-${env.JOB_NAME}",
                 compressLog: true,
-                body: "El nuevo dominio es: ${DOMAIN_NAME}\n\nGrupo Tranqui."
+                body: "El nuevo dominio es: ${DOMAIN_NAME}\n\nGrupo Tranqui. "
         }
     }
 }
