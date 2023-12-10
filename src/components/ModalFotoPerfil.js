@@ -71,7 +71,10 @@ export default function ModalFotoPerfil() {
         setIsSubmitting(false);
         handleSnackbarClose();
         handleClose();
-        toast.success("Foto agregada correctamente");
+        toast.success("Foto agregada correctamente",
+        {
+          autoClose: 3000,
+        });
 
         setTimeout(() => {
           window.location.reload();
@@ -92,7 +95,7 @@ export default function ModalFotoPerfil() {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
-    if (result === "Vehículo agregado correctamente.") {
+    if (result === "Foto agregada correctamente.") {
       handleClose();
     }
   };
