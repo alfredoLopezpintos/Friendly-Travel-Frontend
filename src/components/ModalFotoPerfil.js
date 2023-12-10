@@ -61,7 +61,7 @@ export default function ModalFotoPerfil() {
       if (image) {
         requestBody.image = image;
 
-        console.log(requestBody);
+        // console.log(requestBody);
       }
 
       try {
@@ -75,9 +75,9 @@ export default function ModalFotoPerfil() {
 
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 3000);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         setResult(error.response.data.message);
         setIsSubmitting(false);
         setSnackbarOpen(true);
@@ -109,7 +109,7 @@ export default function ModalFotoPerfil() {
       </Button>
       <Dialog open={displayModal} onClose={handleClose} data-testid="form">
         <form onSubmit={handleSubmit}>
-          <DialogTitle>Agregar Foto de Perfil</DialogTitle>
+          <DialogTitle style={{"color": "#172A3A"}} >Agregar Foto de Perfil</DialogTitle>
           <DialogContent>
             <Grid container direction="column" alignItems="stretch" spacing={1}>
               <Grid item>

@@ -35,11 +35,22 @@ export function resetUserSession() {
   window.localStorage.removeItem("email");
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("dateOfExpire");
+  window.localStorage.removeItem("avatarUrl");
 }
 
 export function getAvatar() {
   return window.localStorage.getItem("avatarUrl");
 }
+
+export function resetAvatar(avatarUrl) {
+  window.localStorage.removeItem("avatarUrl");
+  window.localStorage.setItem("avatarUrl", avatarUrl);
+}
+
+// export function reSetAvatar() {
+//   window.localStorage.removeItem("avatarUrl");
+//   window.localStorage.getItem("avatarUrl");
+// }
 
 // export function authorizeChangePassAccess() {
 //   window.localStorage.setItem()
