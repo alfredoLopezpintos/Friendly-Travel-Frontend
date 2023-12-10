@@ -105,11 +105,11 @@ export default function ModalFotoPerfil() {
         buttonSize="btn--large"
         onClick={handleClickOpen}
       >
-        Agregar Foto de Perfil
+        Cambiar foto de perfil
       </Button>
       <Dialog open={displayModal} onClose={handleClose} data-testid="form">
         <form onSubmit={handleSubmit}>
-          <DialogTitle style={{"color": "#172A3A"}} >Agregar Foto de Perfil</DialogTitle>
+          <DialogTitle style={{"color": "#172A3A"}} >Cambiar foto de perfil</DialogTitle>
           <DialogContent>
             <Grid container direction="column" alignItems="stretch" spacing={1}>
               <Grid item>
