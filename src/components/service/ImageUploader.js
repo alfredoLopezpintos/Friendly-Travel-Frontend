@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { URLS } from "../../utils/urls";
+import { toast } from "react-toastify";
 
 const MAX_IMAGE_SIZE = 10000000;
 
@@ -19,10 +20,10 @@ export function useImageUploader() {
     reader.onload = (e) => {
       const imageData = e.target.result;
       if (!imageData.includes("data:image/")) {
-        return alert("Tipo de archivo incorrecto, solo se aceptan imágenes");
+        return toast.error("Tipo de archivo incorrecto, solo se aceptan imágenes");
       }
       if (e.target.result.length > MAX_IMAGE_SIZE) {
-        return alert("La imagen es muy grande. Máximo 10 MB");
+        return toast.error("La imagen es muy grande. Máximo 10 MB");
       }
       setImage(e.target.result);
     };
@@ -34,15 +35,19 @@ export function useImageUploader() {
     setImage("");
   }
 
-  async function uploadImage(emailOrPlate) {
+  async function uploadImage(emailOrPlateOrAvatar) {
     try {
       // Get the presigned URL
       const response = await axios({
         method: "GET",
         url: URLS.GET_PRESIGNED_URL,
         params: {
-          email: (emailOrPlate.includes('@') ? emailOrPlate : null),
-          plate: (emailOrPlate.includes('@') ? null : emailOrPlate)
+          // Set email if '@' is present and no '_avatar'
+          email: (emailOrPlateOrAvatar.includes('@') && !emailOrPlateOrAvatar.includes('_avatar') ? emailOrPlateOrAvatar : null),
+          // Set avatar if '@' is present and '_avatar' is also present
+          avatar: (emailOrPlateOrAvatar.includes('@') && emailOrPlateOrAvatar.includes('_avatar') ? emailOrPlateOrAvatar : null),
+          // Set plate if no '@' is present
+          plate: (emailOrPlateOrAvatar.includes('@') ? null : emailOrPlateOrAvatar),
         }
       });
 

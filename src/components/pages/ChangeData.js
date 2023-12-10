@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import "./ChangeData.css"
 // import { Button } from "../Button";
 import { Button }  from '@rodrisu/friendly-ui/build/button';
-// import ModalRegistrarVehiculo from '../../components/ModalRegistrarVehiculo';
+import ModalFotoPerfil from '../../components/ModalFotoPerfil';
 import ModalInfo from '../../components/ModalInfo';
 import {
     isValidEmail
@@ -126,6 +126,8 @@ export function ChangeData() {
                     onClick={handleDeleteData}>
                     Eliminar cuenta
                   </Button>
+                  <br />
+                  <ModalFotoPerfil></ModalFotoPerfil>
                 </div>
               </div>
             </div>
