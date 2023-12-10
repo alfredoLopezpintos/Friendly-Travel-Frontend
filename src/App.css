@@ -13,6 +13,11 @@ header {
   border-bottom: 3px solid #EDF2F7 !important;
 }
 
+.hFRLhI {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
 .home,
 .services,
 .products,
