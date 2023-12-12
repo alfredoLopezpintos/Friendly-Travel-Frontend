@@ -14,5 +14,6 @@ export const URLS = {
     PUT_RESERVE_TRAVEL: configData.AWS_REST_ENDPOINT + "/trips",
     DELETE_USER: configData.AWS_REST_ENDPOINT + "/users",
     USER_HISTORY: configData.AWS_REST_ENDPOINT + "/users",
+    GET_USER_ANALYTICS: configData.AWS_REST_ENDPOINT + "/analytics",
     GET_GAS_PRICE: "http://ec2-54-158-36-197.compute-1.amazonaws.com:5000/api/v1/super_95"
 }

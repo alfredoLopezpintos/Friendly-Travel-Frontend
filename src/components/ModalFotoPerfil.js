@@ -30,6 +30,14 @@ export default function ModalFotoPerfil() {
     setDisplayModal(true);
   };
 
+  const clearCacheData = () => {
+    caches.keys().then((names) => {
+        names.forEach((name) => {
+            caches.delete(name);
+        });
+    });
+};
+
   const handleClose = () => {
     setDisplayModal(false);
     removeImage();
@@ -75,10 +83,10 @@ export default function ModalFotoPerfil() {
         {
           autoClose: 3000,
         });
-
+        clearCacheData();
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 4000);
       } catch (error) {
         // console.error(error);
         setResult(error.response.data.message);

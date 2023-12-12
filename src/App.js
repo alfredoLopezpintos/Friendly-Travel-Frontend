@@ -54,6 +54,11 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
+        <AuthenticatedRoute
+              authed={(getToken() !== null)}
+              path="/statistics" 
+              component={Statistics}
+            />
           <AuthenticatedRoute
               authed={(getToken() !== null)}
               path="/misViajes" 

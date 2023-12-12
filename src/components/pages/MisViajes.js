@@ -239,7 +239,6 @@ const MisViajes = () => {
                         ([... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])].length === index + 1) ? (
                           <div ref={lastCardElementDriver}>
                             <TripCard
-                              driver={user.userDriver}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
@@ -262,7 +261,6 @@ const MisViajes = () => {
                         ) : (
                           <div>
                             <TripCard
-                              driver={user.userDriver}
                               href={'#'}
                               itinerary={
                                 <Itinerary>
@@ -288,7 +286,7 @@ const MisViajes = () => {
                 </CardsStackSection>
                 <div style={{ "textAlign": "center" }}>
                   <div className="load-more-message-container">
-                    {visibleDriver && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+                    {(driver || visibleDriver) && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
                   </div>
                 </div>
               </div>
@@ -356,7 +354,7 @@ const MisViajes = () => {
                 </CardsStackSection>
                 <div style={{ "textAlign": "center" }}>
                   <div className="load-more-message-container">
-                    {visiblePassenger && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+                    {(visiblePassenger || passenger) && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
                   </div>
                 </div>
               </div>

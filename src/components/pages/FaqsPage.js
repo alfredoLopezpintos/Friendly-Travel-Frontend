@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import FAQ from "../FAQ";
 import Footer from "../Footer";
 import "../Faqs.css";
+import FormulaImage from "../../assets/illustrations/formula.png";
+import FormulaDetallesImage from "../../assets/illustrations/formula_detalles.png";
 
 function FaqsPage() {
   const [faqs, setfaqs] = useState([
@@ -55,6 +57,47 @@ function FaqsPage() {
       question: "¿Cómo nace Friendly Travel? ¿Quiénes lo hacen?",
       answer:
         "Friendly Travel nace como un proyecyo académico de estudiantes de UTEC, los cuales padecen la problemática de trasladarse hacia el centro educativo desde sus respectivas locaciones y con un problema de escaza movilidad evidente. La idea es que cuando tengamos que viajar en auto porque no hay colectivo o no nos conviene por algún motivo, siempre busquemos de llenar el auto para hacer un mejor aprovechamiento de los recursos fósiles y contaminación asociada al viaje. Más allá de la motivación ambiental, también Friendly Travel nos parece muy importante porque ayuda a generar vínculos entre las personas, quienes muchas veces no se hubieran encontrado de otra forma.",
+      open: false,
+    },
+    {
+      question: "¿Cómo se calculan los ahorros de emisiones de CO2?",
+      answer: (
+        <>
+          <p>
+            Los ahorros de emisiones de CO2 se calculan comparando las emisiones de CO2 generadas en un viaje individual en automóvil con las emisiones compartidas en un viaje Friendly Travel.
+          </p>
+          <br />
+          <p>
+            La contribución ambiental positiva se logra al compartir el viaje y dividir los costos, reduciendo la cantidad total de emisiones de CO2 por persona.
+          </p>
+          <br />
+          <p>
+            Los factores importantes para este cálculo incluyen la distancia del viaje, la eficiencia del combustible del automóvil, el número de pasajeros y el factor de emisión de CO2 asociado al tipo de combustible utilizado.
+          </p>
+          <br />
+          <p>
+            La fórmula utilizada para calcular el ahorro de CO2 es la siguiente:
+            <img src={FormulaImage} alt="Formula principal" style={{ maxWidth: "100%", height: "auto" }} />
+            <p>Donde:</p>
+            <img src={FormulaDetallesImage} alt="Formula detalles" style={{ maxWidth: "100%", height: "auto" }} />
+          </p>
+        </>
+      ),
+      open: false,
+    },
+    {
+      question: "¿Cuál es el factor de emisión de CO2?",
+      answer: (
+        <>
+          <p>
+          El factor de emisión de CO2 depende el tipo de nafta y otros factores propios del combustible. En Friendly Travel nos basamos en la Nafta Super 95, la cual tiene un factor de emisión de CO2 de 2,30 Kg/L.
+          </p>
+          <br />
+          <p>
+            Fuente: http://www.eficienciaenergetica.gub.uy
+          </p>
+        </>
+      ),
       open: false,
     },
   ]);

@@ -60,6 +60,9 @@ const ReviewTravel = () => {
             "Usuario calificado correctamente."
           ) {
             toast.success("Usuario calificado con éxito");
+            setTimeout(() => {
+              history.push("/travelHistory");
+            }, 3000);
           } else {
             toast.error(response);
           }
@@ -87,7 +90,7 @@ const ReviewTravel = () => {
     <div className="wrapper listadoWrapper">
       <br />
       <Title headingLevel={1}>
-        Calificar a los usuarios
+        Calificar al conductor
       </Title>
       <br />
       <CardsStackSection>

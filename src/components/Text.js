@@ -56,6 +56,32 @@ function Text() {
             />
             <CardItem2 src={require("../assets/images/comparte.jpg")} />
           </ul>
+
+          <br />
+          <br />
+          <br />
+          <br />
+          <hr />
+          <br />
+          <br />
+            <ul className="text__items">
+              <ul>
+                <CardItem2 src={require("../assets/images/pic2.JPG")} />
+                <TextItem text="Accesibilidad y ahorro en viajes" />
+              </ul>
+              <ul>
+                <CardItem2 src={require("../assets/images/pic1.JPG")} />
+                <TextItem text="Contribuir con el medio ambiente" />
+              </ul>
+              <ul>
+                <CardItem2 src={require("../assets/images/pic3.JPG")} />
+                <TextItem text="Disminución del tránsito urbano" />
+              </ul>
+              <ul>
+                <CardItem2 src={require("../assets/images/pic5.JPG")} />
+                <TextItem text="Ciudades más verdes y limpias" />
+              </ul>
+            </ul>
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ import { TabStatus } from '@rodrisu/friendly-ui/build/tabs'
 import { BaseSection } from '@rodrisu/friendly-ui/build/layout/section/baseSection'
 import TextItem from "../TextItem";
 import ModalTravelInfo from '../ModalTravelInfo';
+import ModalQualify from '../ModalQualify';
 import { useHistory } from "react-router-dom";
 import { Title } from '@rodrisu/friendly-ui/build/title'
 
@@ -39,12 +40,15 @@ const HistorialViajes = () => {
   const observerPassenger = useRef();
 
   const [showModalInfo, setShowModalInfo] = useState(false);
+  const [showModalQualify, setShowModalQualify] = useState(false);
   const email = getUser()
   const [driver, setDriverData] = useState([]);
   const [passenger, setPassengerData] = useState([]);
   // const [total, setTotalData] = useState([]);
   const [modal, setModal] = useState(false);
+  const [modalQualify, setModalQualify] = useState(false);
   const [dataToModal, setDataToModal] = useState({});
+  const [dataToModalQualify, setDataToModalQualify] = useState({});
   const history = useHistory();
 
   const requestConfig = {
@@ -142,28 +146,37 @@ const HistorialViajes = () => {
   const handleClose = () => {
     setShowModalInfo(false);
   };
-
+  
   function handleTravelInfo(user) {
     setDataToModal(user)
     setShowModalInfo(true)
   }
 
-  function handleReview(user) {
-    if((user.esChofer) || (user.userDriver.email == getUser())) {
-      var dataToSend = { passengers: user.passengers,
-        passengersQuantity: user.passengersQuantity,
-        userDriver: undefined,
-        tripId: user.tripId }
+  const handleCloseQualify = () => {
+    setShowModalQualify(false);
+  };
 
-      history.push('/reviewTravel', { data: dataToSend });
-    } else {
+  function handleReview(user) {
+    // if((user.esChofer) || (user.userDriver.email == getUser())) {
+    //   var dataToSend = { passengers: user.passengers,
+    //     passengersQuantity: user.passengersQuantity,
+    //     userDriver: undefined,
+    //     tripId: user.tripId }
+
+    //   history.push('/reviewTravel', { data: dataToSend });
+    // } else {
+      // console.log(user.isReviewed)
       var dataToSend = { passengers: undefined,
         passengersQuantity: user.passengersQuantity,
         userDriver: user.userDriver,
         tripId: user.tripId }
 
-      history.push('/reviewTravel', { data: dataToSend });
-    }
+        setDataToModalQualify(dataToSend)
+        setShowModalQualify(true)
+
+      // history.push('/reviewTravel', { data: dataToSend });
+
+    // }
     // setDataToModal(user)
     // setShowModalInfo(true)
   }
@@ -266,7 +279,6 @@ const HistorialViajes = () => {
                   ([... new Set([...prevViajesDriver, ...sliceIntoChunks(driver, 5)[pageNumberDriver]])].length === index + 1) ? (
                     <div ref={lastCardElementDriver}>
                       <TripCard
-                        driver={user.userDriver}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -282,9 +294,6 @@ const HistorialViajes = () => {
                               <li style={{ marginRight: '10px' }}>
                                 <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                               </li>
-                              <li style={{ marginRight: '10px' }}>
-                                <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
-                              </li>
                             </ul>
                         }
                       />
@@ -292,7 +301,6 @@ const HistorialViajes = () => {
                   ) : (
                     <div>
                       <TripCard
-                        driver={user.userDriver}
                         href={'#'}
                         itinerary={
                           <Itinerary>
@@ -308,9 +316,6 @@ const HistorialViajes = () => {
                             <li style={{ marginRight: '10px' }}>
                               <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
-                            <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
-                            </li>
                           </ul>
                         }
                       />
@@ -321,7 +326,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visibleDriver && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+              {(visibleDriver || driver) && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>
@@ -383,7 +388,7 @@ const HistorialViajes = () => {
                               <Button status={ButtonStatus.SECONDARY} onClick={() => handleTravelInfo(user)}> Información del viaje </Button>
                             </li>
                             <li style={{ marginRight: '10px' }}>
-                              <Button onClick={() => handleReview(user)} disabled={(user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
+                              <Button onClick={() => handleReview(user)} disabled={(user.isReviewed == true) || (user.passengersQuantity == 0) || (user.passengers == []) ? true : false}> Calificar viaje </Button>
                             </li>
                           </ul>
                         }
@@ -395,7 +400,7 @@ const HistorialViajes = () => {
           </CardsStackSection>
           <div style={{"textAlign": "center"}}>
             <div className="load-more-message-container">
-              {visiblePassenger && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
+              {(passenger || visiblePassenger) && <><br /><br /><br /><br /> <TextItem text="No hay más viajes para mostrar" /></>}
             </div>
           </div>
           </div>
@@ -406,6 +411,7 @@ const HistorialViajes = () => {
     }}
     />
     {(showModalInfo === true) ? <ModalTravelInfo setModal={setModal} handlePrevModalClose={handleClose} data={dataToModal} /> : <></>}
+    {(showModalQualify === true) ? <ModalQualify setModal={setModalQualify} handlePrevModalClose={handleCloseQualify} data={dataToModalQualify} /> : <></>}
   </div>
   );
 };

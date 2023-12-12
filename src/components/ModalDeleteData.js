@@ -44,7 +44,13 @@ export default function ModalDeleteData({ setModal, handlePrevModalClose }) {
         toast.promise((axios.delete(deleteUserEndPoint, requestConfig)
             .then(() => {
                 resetUserSession();
-                history.push('/', { data: { message: "Cuenta eliminada con éxito" } });
+                history.push('/');
+                toast.success("Cuenta eliminada con éxito");
+
+                setTimeout(() => {
+                    window.location.reload();
+                  }, 5000);
+
             }
             ).catch((error) => {
                 console.error(error);

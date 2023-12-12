@@ -88,6 +88,10 @@ export function ChangeData() {
     history.push("/registerVehicle")
   }
 
+  function handleStatistics() {
+    history.push("/statistics")
+  }
+
   return (
     <>
       {(success === true) ? (<ModalInfo setSuccess={setSuccess} handlePrevModalClose={handleClose} message={result} errorMessage={errorMessage} />) :
@@ -118,6 +122,14 @@ export function ChangeData() {
                   <br />
                   <div className="divider" />
                   <h2 style={{"color": "#004346"}}>Datos de usuario</h2>
+                  <br />
+                  <Button 
+                    className="btns"
+                    buttonStyle="btn--test"
+                    buttonSize="btn--large"
+                    onClick={handleStatistics}>
+                    Estadísticas
+                  </Button>
                   <br />
                   <Button 
                     className="btns"

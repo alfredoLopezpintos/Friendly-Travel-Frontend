@@ -18,6 +18,8 @@ import { AloneInTheBackIcon } from '@rodrisu/friendly-ui/build/icon/aloneInTheBa
 import { ProfileIcon } from '@rodrisu/friendly-ui/build/icon/profileIcon'
 import { CarIcon } from '@rodrisu/friendly-ui/build/icon/carIcon'
 import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
+import { AvatarIcon } from '@rodrisu/friendly-ui/build/icon/avatarIcon'
+
 
 function Navbar() {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
@@ -49,7 +51,7 @@ function Navbar() {
     onClick={() => {
       history.push("/login");
     }}
-    // className="SignIn"
+  // className="SignIn"
   >
     <div className="Text">Iniciar Sesión</div>
   </Button>)
@@ -63,9 +65,9 @@ function Navbar() {
   const rightAction = (
     <>
       <Link style={{ "userSelect": "none" }} to="/" className="navbar-logo" onClick={() => {
-          // closeMobileMenu
-          setDrawerOpened(false)
-        }}>
+        // closeMobileMenu
+        setDrawerOpened(false)
+      }}>
         <img
           src={require("../assets/images/Friendly-Logo-new.png")}
           alt="travel logo"
@@ -86,14 +88,16 @@ function Navbar() {
         }}
       >
         <ul className="navRouteContainer">
-          <li className="navRoute" onClick={() => { 
+          <li className="navRoute" onClick={() => {
             history.push("/about")
             setDrawerOpened(false)
           }}>Sobre nosotros</li>
-          <li className="navRoute" onClick={() => { history.push("/viajes")
+          <li className="navRoute" onClick={() => {
+            history.push("/viajes")
             setDrawerOpened(false)
           }}>Listado de viajes</li>
-          <li className="navRoute" onClick={() => { history.push("/faqsPage")
+          <li className="navRoute" onClick={() => {
+            history.push("/faqsPage")
             setDrawerOpened(false)
           }}>Preguntas frecuentes</li>
         </ul>
@@ -160,6 +164,10 @@ function Navbar() {
             history.push("/travelHistory")
             setDrawerOpened(false)
           }} />
+          <ItemAction action="Estadísticas" leftAddon={<InfoIcon />} onClick={() => {
+            history.push("/statistics")
+            setDrawerOpened(false)
+          }} />
           <ItemAction action="Opciones" leftAddon={<InfoIcon />} onClick={() => {
             history.push("/changeData")
             setDrawerOpened(false)
@@ -213,7 +221,11 @@ function Navbar() {
                   history.push("/travelHistory")
                   setDrawerOpened(false)
                 }} />
-                <ItemAction action="Opciones" leftAddon={<InfoIcon />} onClick={() => {
+                <ItemAction action="Estadísticas" leftAddon={<InfoIcon />} onClick={() => {
+                  history.push("/statistics")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Opciones" leftAddon={<AvatarIcon />} onClick={() => {
                   history.push("/changeData")
                   setDrawerOpened(false)
                 }} />

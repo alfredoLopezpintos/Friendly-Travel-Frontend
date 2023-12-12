@@ -21,17 +21,17 @@ function About() {
             />
             <br />
             <ul className="text__items">
-              <ul>
-                <CardItem2 src={require("../../assets/images/diego.png")} />
-                <TextItem text=" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;Diego Rosales &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" />
+              <ul align="center" >
+                <img width= "80%" alt="Diego Rosales" src={require("../../assets/images/diego.png")} />
+                <TextItem text="Diego Rosales" />
               </ul>
-              <ul>
-                <CardItem2 src={require("../../assets/images/rodrigo.png")} />
-                <TextItem text=" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Rodrigo Serrón &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" />
+              <ul align="center" >
+              <img width= "82%" alt="Rodrigo Serron" src={require("../../assets/images/rodrigo.png")} />
+                <TextItem text="Rodrigo Serrón" />
               </ul>
-              <ul>
-                <CardItem2 src={require("../../assets/images/alfredo.png")} />
-                <TextItem text=" &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Alfredo López Píntos  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" />
+              <ul align="center" >
+              <img width= "90%" alt="Alfredo Lopez Pintos" src={require("../../assets/images/alfredo.png")} />
+                <TextItem text="Alfredo López Píntos" />
               </ul>
             </ul>
             <br />
