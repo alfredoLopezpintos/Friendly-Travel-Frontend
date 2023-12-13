@@ -86,7 +86,7 @@ function HeroSectionFriendly() {
                   renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
                   datepickerProps={{
                     defaultValue: new Date().toISOString(),
-                    format: value => new Date(value).toLocaleDateString(),
+                    format: value => new Date(value).toLocaleDateString('es-UY', { timeZone: 'UTC' }),
                   }}
                   stepperProps={{
                     defaultValue: 1,

@@ -295,7 +295,7 @@ export default function ListadoDeViajes() {
                 renderAutocompleteTo={props => <AutoCompleteUy {...props} embeddedInSearchForm />}
                 datepickerProps={{
                   defaultValue: ((receivedData.fecha !== undefined) ? receivedData.fecha : new Date().toISOString()),
-                  format: value => new Date(value).toLocaleDateString(),
+                  format: value => new Date(value).toLocaleDateString('es-UY', { timeZone: 'UTC' }),
                 }}
                 stepperProps={{
                   defaultValue: ((receivedData.asientos !== undefined) ? receivedData.asientos : 1),

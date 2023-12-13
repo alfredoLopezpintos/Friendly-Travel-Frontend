@@ -380,7 +380,7 @@ function TravelPreviewer() {
           renderAutocompleteTo={props => <AutoCompleteUy onClickItem={(selectedItem) => setDestinationForm(selectedItem.description)} {...props} embeddedInSearchForm />}
           datepickerProps={{
             defaultValue: new Date().toISOString(),
-            format: value => new Date(value).toLocaleDateString(),
+            format: value => new Date(value).toLocaleDateString('es-UY', { timeZone: 'UTC' }),
           }}
           stepperProps={{
             defaultValue: 1,
