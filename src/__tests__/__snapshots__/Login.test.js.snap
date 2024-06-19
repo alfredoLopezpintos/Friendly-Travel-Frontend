@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login Renders correctly 1`] = `
+<div>
+  <div>
+    <div
+      class="grid align__item"
+    >
+      <div
+        class="register"
+      >
+        <div
+          class="big_logo"
+        >
+          <img
+            alt="travel logo"
+            src="logo2.png"
+            width="200"
+          />
+        </div>
+        <br />
+        <h2>
+          Iniciar sesión ?
+        </h2>
+        <br />
+        <form
+          class="form"
+          data-testid="login-form"
+        >
+          <div
+            class="form__field"
+            data-testid="email-input"
+          >
+            <input
+              placeholder="info@mailaddress.com"
+              type="email"
+              value=""
+            />
+          </div>
+          <div
+            class="form__field"
+            data-testid="password-input"
+          >
+            <input
+              placeholder="••••••••••••"
+              type="password"
+              value=""
+            />
+          </div>
+          <div
+            class="form__field"
+            data-testid="submit-button"
+          >
+            <input
+              type="submit"
+              value="Aceptar"
+            />
+          </div>
+          <br />
+        </form>
+        <p>
+          ¿Aún no tienes cuenta? 
+          <a
+            href="/register"
+          >
+            Regístrate aquí
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    class="footer-container"
+  >
+    <section
+      class="footer-subscription"
+    >
+      <p
+        class="footer-subscription-heading"
+      >
+        ¡Únete a la aventura y comienza a viajar con Friendly Travel!
+      </p>
+      <div
+        class="input-areas"
+      />
+    </section>
+    <div
+      class="footer-links"
+    >
+      <div
+        class="footer-link-wrapper"
+      >
+        <div
+          class="footer-link-items"
+        >
+          <h2>
+            Mapa del sitio
+          </h2>
+          <a
+            href="/faqsPage"
+          >
+            Preguntas frecuentes
+          </a>
+          <a
+            href="/services"
+          >
+            Quienes somos
+          </a>
+          <a
+            href="/carpool"
+          >
+            Acerca de Carpooling
+          </a>
+          <a
+            href="/policy"
+          >
+            Términos y Condiciones
+          </a>
+        </div>
+        <div
+          class="footer-link-items"
+        >
+          <div
+            class="big_logo"
+          >
+            <img
+              alt="travel logo"
+              src="logo2.png"
+              width="150"
+            />
+          </div>
+        </div>
+        <div
+          class="footer-link-items"
+        >
+          <h2>
+            Contactanos
+          </h2>
+          <small
+            class="website-rights"
+          >
+            friendly.travel.uy@gmail.com
+          </small>
+          <small
+            class="website-rights"
+          >
+            diego.rosales@estudiantes.utec.edu.uy
+          </small>
+          <small
+            class="website-rights"
+          >
+            rodrigo.serron@estudiantes.utec.edu.uy
+          </small>
+          <small
+            class="website-rights"
+          >
+            alfredo.lopezpintos@estudiantes.utec.edu.uy
+          </small>
+        </div>
+      </div>
+    </div>
+    <section
+      class="social-media"
+    >
+      <div
+        class="social-media-wrap"
+      >
+        <div
+          class="footer-logo"
+        >
+          <a
+            class="social-logo"
+            href="/"
+          >
+            FRIENDLY TRAVEL
+            <i
+              class="fab fa-typo3"
+            />
+          </a>
+        </div>
+        <small
+          class="website-rights"
+        >
+          FRIENDLY TRAVEL © 2022
+        </small>
+        <div
+          class="social-icons"
+        >
+          <a
+            aria-label="Facebook"
+            class="social-icon-link facebook"
+            href="/"
+            target="_blank"
+          >
+            <i
+              class="fab fa-facebook-f"
+            />
+          </a>
+          <a
+            aria-label="Instagram"
+            class="social-icon-link instagram"
+            href="/"
+            target="_blank"
+          >
+            <i
+              class="fab fa-instagram"
+            />
+          </a>
+          <a
+            aria-label="Youtube"
+            class="social-icon-link youtube"
+            href="/"
+            target="_blank"
+          >
+            <i
+              class="fab fa-youtube"
+            />
+          </a>
+          <a
+            aria-label="Twitter"
+            class="social-icon-link twitter"
+            href="/"
+            target="_blank"
+          >
+            <i
+              class="fab fa-twitter"
+            />
+          </a>
+          <a
+            aria-label="LinkedIn"
+            class="social-icon-link twitter"
+            href="/"
+            target="_blank"
+          >
+            <i
+              class="fab fa-linkedin"
+            />
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+`;

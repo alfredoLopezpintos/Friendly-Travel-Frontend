@@ -1,148 +1,273 @@
-import { Autocomplete, DirectionsRenderer, GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import axios from 'axios';
-import Moment from 'moment';
-import React, { useRef, useState } from "react";
-import 'react-datepicker/dist/react-datepicker.css';
-import { useForm } from "react-hook-form";
+import {
+  DirectionsRenderer,
+  GoogleMap,
+  useJsApiLoader
+} from "@react-google-maps/api";
+import { MediaSizeProvider } from '@rodrisu/friendly-ui/build/_utils/mediaSizeProvider';
+import { AutoComplete } from "@rodrisu/friendly-ui/build/autoComplete";
+import { DatePicker, DatePickerOrientation } from "@rodrisu/friendly-ui/build/datePicker";
+import { BaseSection, SectionContentSize } from '@rodrisu/friendly-ui/build/layout/section/baseSection';
+import { SearchForm, SearchFormDisplay } from '@rodrisu/friendly-ui/build/searchForm';
+import axios from "axios";
+import Moment from "moment";
+import React, { useEffect, useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { useMediaQuery } from 'react-responsive';
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
-import configData from '../../configData.json';
+import configData from "../../configData.json";
+import { URLS } from "../../utils/urls";
+import { AutoCompleteUy } from "../AutoCompleteUy";
+import { months, weekdaysLong, weekdaysShort } from "../DatePickerProps.js";
+import MapView from '../MapView';
+import { formValidate } from "../Utilities";
+import { getToken } from "../service/AuthService";
+import "./Login.css";
+
+const TopSection = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 999;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BottomSection = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 998;
+`;
 
 const MapContainer = styled.div`
   position: relative;
-  `;
+`;
 
-  const Modal = styled.div`
+const Modal = styled.div`
   position: fixed;
-  left: 20%;
-  transform: translate(-50%, 20px);
-  width: 300px;
-  height:500px;
+  left: 12%;
+  transform: translate(-40%, 20px);
+  width: 400px;
+  height: 650px;
   padding: 40px 80px;
-  background-color: gray;
+  background-color: white;
   border-radius: 8px;
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
   z-index: 999;
-  `;
-  
-const Button = styled.button`
-  background: transparent;
-  border-radius: 3px;
-  border: 2px solid black;
-  color: black;
-  margin: 0 1em;
-  padding: 0.25em 1em;
-  `;
+  background: rgba(0, 0, 0, 0);
+  align-items: center;
+  justify-content: center;
+`;
 
 function TravelPreviewer() {
-
-  const [ libraries ] = useState(['places']);
+  const [libraries] = useState(["places"]);
   const center = { lat: -32.522779, lng: -55.765835 };
   const containerStyle = {
-    width: "50%",
-    height: "650px",
-    position: 'fixed',
-    left: '50%'
+    width: "100%",
+    height: "700px",
+    position: "fixed",
   };
-  
+  const isMobile = useMediaQuery({ maxWidth: 700 });
+
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyDPAJQ9rD8Qjsz1mzrVF5i0nT_XhhC-F3w',
-    libraries
+    googleMapsApiKey: configData.MAPS_KEY,
+    libraries,
+    language: "es",
   });
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
+  const [vehiculo, setVehiculo] = useState([]);
+  const [originForm, setOriginForm] = useState("");
+  const [destinationForm, setDestinationForm] = useState("");
+  const [gasPrice, setGasPrice] = useState(0);
 
-  const [origen, setOrigen] = useState("");
-  const [destino, setDestino] = useState("");
-  
-  const [first, setFirst] = useState('');
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data, e) => fetchViajes(data, e);
   const onError = (errors, e) => console.log(errors, e);
-  const redirect = (data, e) => redirect2(data, e);
   const history = useHistory();
 
-  const originRef = useRef();
-  const destiantionRef = useRef();
-  const dateRef = useRef();
+  const [sugerido, setSugerido] = useState("");
+  const [dist, setDist] = useState("");
+  const [dur, setDur] = useState("");
 
-  const currentDate = new Date()
-  const formatDate = Moment().format('DD-MM-YYYY')
-  console.log(currentDate)
-  console.log(formatDate)
+  const [items, setItems] = useState([])
+  const [isSearching, setSearching] = useState(false)
+  const vehiclesList = vehiculo.map((e, i) => ({
+    label: e.model,
+    labelInfo: e.plate,
+  }));
 
-  function isNumber(str) {
-    if (str.trim() === '') {
-      return false;
+  const searchForItems = (query) => {
+    if (query === undefined) {
+      console.error("query is undefined");
+      return;
     }
-  
-    return !isNaN(str);
+
+    const lowercaseQuery = query.toLowerCase();
+
+    setSearching(true);
+    setTimeout(() => {
+      setItems(
+        vehiclesList.filter((place) => {
+          // Convert label and labelInfo to lowercase for case-insensitive search
+          const lowercaseLabel = place.label.toLowerCase();
+          const lowercaseLabelInfo = place.labelInfo.toLowerCase();
+
+          // Check if either label or labelInfo contains the query
+          return (
+            lowercaseLabel.includes(lowercaseQuery) ||
+            lowercaseLabelInfo.includes(lowercaseQuery)
+          );
+        })
+      );
+      setSearching(false);
+    });
+  };
+
+
+  async function redirect(data, e) {
+    history.push("/");
+    toast.success("Viaje creado correctamente!");
   }
 
-  async function redirect2(data, e) {
-    history.push("/success");
-  } 
+  async function traerVehiculos() {
 
-  
-  async function fetchViajes(data, e) {
-    // A MANO POR AHORA
-    data.user = "user";
-    data.vehicle = "GAB1234";
-    data.origin = origen;
-    data.destination = destino;
-    data.tripDate = dateRef.current.value;
-
-    console.log(data)
-
-    if(formValidate(data)) {
-      
-      data.tripDate = Moment(data.tripDate).format('DD-MM-YYYY')
-      const viajesGetEndpoint = configData.AWS_REST_ENDPOINT + "/trips"
-    
-      try {
-        console.log(data)
-        const response = await axios.post(viajesGetEndpoint, data);
-        console.log(response)
-        redirect();
-      } catch(error) {
-        console.error(error);
+    toast.promise(
+      axios
+        .get(URLS.GET_VEHICLES_URL, {
+          headers: {
+            Authorization: JSON.parse(getToken()),
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          if (response.data.length) {
+            setVehiculo(response.data);
+          } else {
+            toast.warning(
+              "No tiene vehículos registrados. Dirigete a tu panel de usuario para agregar uno."
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        }),
+      {
+        pending: {
+          render() {
+            return "Cargando";
+          },
+          icon: true,
+        },
+        error: {
+          render({ data }) {
+            return toast.error("Error");
+          },
+        },
       }
+    );
+  }
+
+  useEffect(() => {
+    traerVehiculos();
+  }, []);
+
+  useEffect(() => {
+    if (originForm && destinationForm) {
+      calculateRoute();
     }
-  }
-  
-  function transformDate(dateObj) {
-    const month = dateObj.getUTCMonth();
-    const day = dateObj.getUTCDate();
-    const year = dateObj.getUTCFullYear();
-    return (day + "-" + month + "-" + year);
-  }
 
-  function formValidate(data) {
-    const dateObj = new Date();
-    const today = transformDate(dateObj);
+  }, [originForm, destinationForm]);
 
-    if(data.tripDate === "" ||
-     data.origin === "" ||
-     data.price === "" ||
-     data.destination === "" ||
-     data.availablePlaces === "") {
-        alert("Debe llenar todos los campos para poder crear el viaje.")
+  useEffect(() => {
+    axios
+      .get(URLS.GET_GAS_PRICE)
+      .then((response) => {
+        if (response.data) {
+          setGasPrice(response.data.max_price);
+        } else {
+          toast.warning("No fue posible obtener el precio de la nafta.");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Hubo un error al obtener el precio de la nafta.");
+      });
+  }, [URLS.GET_GAS_PRICE, setGasPrice]);  
+
+
+  async function handleSubmit(data) {
+
+    const bodyToSendToBackend = {
+      origin: data.AUTOCOMPLETE_FROM !== undefined ? data.AUTOCOMPLETE_FROM.item : "",
+      destination: data.AUTOCOMPLETE_TO !== undefined ? data.AUTOCOMPLETE_TO.item : "",
+      tripDate: data.DATEPICKER,
+      // tripDate: new Date("2020-06-11"),
+      availablePlaces: data.STEPPER,
+      price: data.PRICE,
+      distance: distance,
+      duration: duration,
+      vehicle: data.AUTOCOMPLETE_VEHICLE !== undefined ? data.AUTOCOMPLETE_VEHICLE.item.labelInfo : "",
+    };
+    // console.log(bodyToSendToBackend);
+
+    if (formValidate(bodyToSendToBackend.origin,
+      bodyToSendToBackend.destination,
+      bodyToSendToBackend.tripDate,
+      bodyToSendToBackend.price,
+      bodyToSendToBackend.availablePlaces)) {
+
+      //Convertimos la fecha aca, porque sino el if anterior falla en la validacion de la fecha
+      bodyToSendToBackend.tripDate = Moment(bodyToSendToBackend.tripDate).format("DD-MM-YYYY");
+
+      if (!bodyToSendToBackend.vehicle) {
+        toast.warning("Debe seleccionar un vehículo");
         return false;
-    }else if (!isNumber(data.price)){
-      alert("El precio debe ser un número.")
-    }else if (!isNumber(data.availablePlaces)){
-      alert("Lugares disponibles debe ser un número.")
-    }else if (Moment(data.tripDate) < Moment(today)){
-        alert("La fecha del viaje no puede ser anterior al día actual.")
-    }else if (!Moment(data.tripDate).isValid()){
-      alert("Fecha inválida.")
+      }
 
-    }else {
-      return true;
+      toast.promise(
+        axios
+          .post(URLS.POST_TRIPS_URL, bodyToSendToBackend, {
+            headers: {
+              Authorization: JSON.parse(getToken()),
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            clearRoute();
+            redirect();
+          })
+          .catch((error) => {
+            console.error(error);
+            toast.error(error.response.data.message);
+          }),
+        {
+          pending: {
+            render() {
+              return "Cargando";
+            },
+            icon: true,
+          },
+          error: {
+            render({ data }) {
+              return toast.error("Error");
+            },
+          },
+        }
+      );
     }
   }
 
@@ -150,85 +275,170 @@ function TravelPreviewer() {
     return <>loading...</>;
   }
 
-  async function calculateRoute(e) {
-    e.preventDefault();
-    if (originRef.current.value === "" || destiantionRef.current.value === "") {
-      e.preventDefault();
+  function calculateRoute(e) {
+    // console.log("Desde: " + originForm);
+    // console.log("Hasta: " + destinationForm);
+    e?.preventDefault();
+    if (originForm === "" || destinationForm === "") {
       return;
     }
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
-    const results = await directionsService.route({
-      origin: originRef.current.value,
-      destination: destiantionRef.current.value,
-      // eslint-disable-next-line no-undef
-      travelMode: google.maps.TravelMode.DRIVING,
-    });
-    setDirectionsResponse(results);
-    setDistance(results.routes[0].legs[0].distance.text);
-    setDuration(results.routes[0].legs[0].duration.text);
-    setOrigen(originRef.current.value);
-    setDestino(destiantionRef.current.value);
+    toast.promise(
+      directionsService
+        .route({
+          origin: originForm,
+          destination: destinationForm,
+          // eslint-disable-next-line no-undef
+          travelMode: google.maps.TravelMode.DRIVING,
+        })
+        .then((results) => {
+          setDirectionsResponse(results);
+          setDistance(results.routes[0].legs[0].distance.text);
+          setDuration(results.routes[0].legs[0].duration.text);
+          setDist("Distancia: " + results.routes[0].legs[0].distance.text);
+          setDur("Duración: " + results.routes[0].legs[0].duration.text);
+        })
+        .catch((error) => {
+          console.error(error);
+        }),
+      {
+        pending: {
+          render() {
+            return "Cargando";
+          },
+          icon: true,
+        },
+        error: {
+          render({ data }) {
+            return toast.error("Error");
+          },
+        },
+      }
+    );
   }
 
   function clearRoute() {
     setDirectionsResponse(null);
     setDistance("");
     setDuration("");
-    originRef.current.value = "";
-    destiantionRef.current.value = "";
+    setDist("");
+    setDur("");
+    setOriginForm("");
+    setDestinationForm("");
   }
 
-  return (
-    <MapContainer>
-        <Modal>
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
-          <div>
-          <label>Origen</label>
-            <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
-              <input {...register("origin")} type="text" ref={originRef} />
-            </Autocomplete>
-            <label>Destino</label>
-            <Autocomplete options={{componentRestrictions: { country: "uy" }}}>
-              <input  {...register("destination")} type="text" ref={destiantionRef} />
-            </Autocomplete>  
+  // Function to calculate the suggested price
+  const calculateSuggestedPrice = (formData) => {
+    if (distance && vehiculo.length > 0) {
+      const distanceInKilometers = parseFloat(distance.replace(" km", "").replace(",", ".")); // Parse the distance
+      const tripCost = (distanceInKilometers / 12) * gasPrice;
+      
+      
+      // const suggestedPrice = tripCost / (formData.STEPPER + 1); //Comentado porque al actualizar la cantidad de asientos, se reinicia el mapa
 
-            <Button onClick={calculateRoute} value={first} onChange={event => setFirst(event.target.value)}>Ver Ruta</Button>
+      // Calculate the cost based on the tripCost and the number of passengers
+      const suggestedPrice = tripCost / 4;
 
-          <label>Fecha del Viaje
-            <input {...register("tripDate")} type="date" ref={dateRef} min="01-01-2020"/>
-          </label>
+      // Update the state with the suggested price
+      setSugerido(`Sugerido: $ ${suggestedPrice.toFixed(0)}`);
+    } else {
+      setSugerido(""); // Clear the suggested price if distance or vehiculo is not available
+    }
+  };
 
-          <label>Lugares Disponibles
-          <input {...register("availablePlaces")} type="number"min="1" max="4" id="lugares" name="availablePlaces"/>
-          </label>
-
-          <label>Precio
-          <input {...register("price")} type="number"min="1" max="1000" id="precio" name="price"/>
-          </label>
-
-            <Button>Crear Viaje</Button>
-            <span>Distancia: {distance}</span>
-            <span>Duracion: {duration}</span>
-          </div>
-          </form>
-        </Modal>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={7}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
+  const SearchFormComponent = (
+    <MediaSizeProvider>
+      <BaseSection contentSize={SectionContentSize.LARGE}>
+        <SearchForm
+          onSubmit={handleSubmit}
+          onChange={calculateSuggestedPrice}
+          initialFrom=""
+          initialTo=""
+          disabledFrom={false}
+          disabledTo={false}
+          autocompleteFromPlaceholder="Desde"
+          autocompleteToPlaceholder="Hasta"
+          autocompleteVehiclePlaceholder="Seleccione su vehículo"
+          renderDatePickerComponent={props => <DatePicker {...props}
+            numberOfMonths={1}
+            orientation={DatePickerOrientation.HORIZONTAL}
+            locale="es-UY"
+            weekdaysShort={weekdaysShort('es-UY')}
+            weekdaysLong={weekdaysLong('es-UY')}
+            months={months('es-UY')}
+          />}
+          renderAutocompleteVehicle={props => <AutoComplete {...props}
+            renderNoResults={() => 'No hay vehículos disponibles'}
+            searchForItems={searchForItems}
+            items={items}
+            isSearching={isSearching}
+            renderEmptySearch={vehiclesList}
+            embeddedInSearchForm
+          />}
+          renderAutocompleteFrom={props => <AutoCompleteUy onClickItem={(selectedItem) => setOriginForm(selectedItem.description)} {...props} embeddedInSearchForm />}
+          renderAutocompleteTo={props => <AutoCompleteUy onClickItem={(selectedItem) => setDestinationForm(selectedItem.description)} {...props} embeddedInSearchForm />}
+          datepickerProps={{
+            defaultValue: new Date().toISOString(),
+            format: value => new Date(value).toLocaleDateString('es-UY', { timeZone: 'UTC' }),
           }}
-        >
-          {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} />
+          stepperProps={{
+            defaultValue: 1,
+            min: 1,
+            max: 4,
+            title: 'Elija la cantidad de asientos que desea reservar',
+            increaseLabel: 'Incrementar la cantidad de asientos en 1',
+            decreaseLabel: 'Decrementar la cantidad de asientos en 1',
+            format: value => `${value} asiento(s)`,
+            confirmLabel: 'Aceptar',
+          }}
+          priceProps={{
+            defaultValue: 0,
+            min: 0,
+            title: 'Precio',
+            format: value => `$ ${value}`,
+            confirmLabel: 'Aceptar',
+          }}
+          submitButtonText="Publicar viaje"
+          display={SearchFormDisplay.SMALL}
+          showInvertButton={false}
+          addon={<>
+            <p>{dist}</p>
+            <p>{dur}</p>
+            <p>{sugerido}</p>
+          </>}
+        />
+      </BaseSection>
+    </MediaSizeProvider>
+  );
+
+  return (
+    <>
+      {isLoaded && (
+        <>
+          {isMobile ? (
+            <>
+              <TopSection>
+                {SearchFormComponent}
+              </TopSection>
+              <BottomSection>
+                <MapView directionsResponse={directionsResponse} />
+              </BottomSection>
+            </>
+          ) : (
+            <>
+              <MapContainer>
+                <Modal>
+                  {SearchFormComponent}
+                </Modal>
+              </MapContainer>
+              <MapView 
+              directionsResponse={directionsResponse} />
+            </>
           )}
-        </GoogleMap>
-    </MapContainer>
+        </>
+      )}
+    </>
   );
 }
 

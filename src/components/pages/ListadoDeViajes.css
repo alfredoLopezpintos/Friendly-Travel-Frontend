@@ -1,112 +1,255 @@
+/* BUTTON */
+.contacto {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.everythingWrapper {
+  height: 760px !important;
+}
+
+.MuiBox-root {
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.css-1o75lh5-MuiListItemText-root > span {
+  font-weight: bold !important;
+}
+
+.css-g28sfz-MuiListItem-root>.MuiListItemButton-root {
+  padding-inline: 0;
+}
+
+.bBEEeY .section-content {
+  padding-inline: 0;
+}
+
+.contactoicon {
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contacto a {
+  outline: 0;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  cursor: pointer;
+  color: #242424;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 250ms;
+}
+
+.contacto a:hover {
+  color: #fff;
+  transition: color 250ms;
+}
+
 /* DROPDOWN */
 
 /* Dropdown Button */
 .dropbtn {
-	vertical-align: middle;
-	margin: 5px 10px 5px 0;
-	padding: 10px;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	width: 180px;
-  }
-  
-  /* The container <div> - needed to position the dropdown content */
-  .dropdown {
-	position: relative;
-	display: inline-block;
-  }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f1f1f1;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-  }
-
-  .dropdown-content option {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-  }
-  
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #ddd;}
-  
-  /* Show the dropdown menu on hover */
-  .dropdown:hover .dropdown-content {display: block;}
-  
-  /* Change the background color of the dropdown button when the dropdown content is shown */
-  .dropdown:hover .dropbtn {background-color: #ddd;}
-
-/* BUSCAR VIAJE */
-
-.field1 {
-	display: flex;
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  width: 180px;
 }
 
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content option {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #ddd;
+}
+
+/* FILTROS EXTRA */
+.wrapper {
+  /* display: grid; */
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.css-144ebsl {
+  width: auto !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+main {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+/* BUSCAR VIAJE */
+.field1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* @media screen and (min-width: 800px) {
+  aside {
+    width: 480px;
+  }
+} */
+
 .btn-submit {
-	max-height: 50px;
-	margin-top: 15px;
-	padding: 10px 20px;
-	background-color: dodgerblue;
-	border: 1px solid #ddd;
-	color: white;
+  max-height: 40px;
+  margin-top: 1rem;
+  padding: 10px 20px;
+  background-color: #fff;
+  border: 2px solid #000;
+  color: #000;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-out, color 0.3s ease-out;
 }
 
 .btn-submit:hover {
-	background-color: royalblue;
+  background-color: rgba(0, 0, 0, 0.548);
+  color: white;
+}
+
+/* Style the form - display items vertically on small screens */
+.form-inline {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add some margins for each label */
+.form-inline label {
+  margin: 5px 10px 5px 0;
+}
+
+/* Style the input fields */
+.form-inline input {
+  vertical-align: middle;
+  margin: 5px 10px 5px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 1268px) {
+  .form-inline label {
+    width: 700px;
+  }
+}
+
+@media screen and (max-width: 1268px) {
+  .everythingWrapper {
+    grid-template-columns: 0.5fr 500px 600px 0.5fr !important;
   }
 
-/* Style the form - display items horizontally */
-.form-inline {
-	height: 80px;
-    display: flex;
-    justify-content: center;
-	flex-flow: row wrap;
-	align-items: center;
+  .mainSubContainer {
+    max-width: 650px;
   }
-  
-  /* Add some margins for each label */
-  .form-inline label {
-	margin: 5px 10px 5px 0;
+}
+
+@media screen and (max-width: 1168px) {
+  .everythingWrapper {
+    grid-template-columns: 0.5fr 500px 500px 0.5fr !important;
   }
-  
-  /* Style the input fields */
-  .form-inline input {
-	vertical-align: middle;
-	margin: 5px 10px 5px 0;
-	padding: 10px;
-	background-color: #fff;
-	border: 1px solid #ddd;
+
+  .mainSubContainer {
+    max-width: 650px;
   }
-  
-  /* Style the submit button */
-  
-  .form-inline button
-  
-  /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
-  @media (max-width: 800px) {
-	.form-inline input {
-	  margin: 10px 0;
-	}
-  
-	.form-inline {
-	  flex-direction: column;
-	  align-items: stretch;
-	}
+}
+
+@media screen and (max-width: 1068px) {
+  .everythingWrapper {
+    display: flow !important;
+    grid-template-columns: 0fr 500px 500px 0fr;
   }
+
+  aside {
+    padding-left: 0 !important;
+  }
+
+  .EncuentraTuViaje {
+    padding-top: 2rem !important;
+  }
+
+  .mainSubContainer {
+    max-width: none;
+  }
+}
+
+/* Style the submit button */
+
+/*.form-inline button*/
+
+/* Media Queries for Responsive Design */
+
+/* For screens wider than 768px */
+/* @media screen and (min-width: 768px) {
+  .wrapper {
+    grid-template-columns: 0.5fr 0.8fr;
+    column-gap: 100px;
+    margin-left: 100px;
+  }
+
+  .contactoicon {
+    margin-left: 460px;
+  }
+
+  .contacto a {
+    margin-left: 440px;
+    margin-top: 30px;
+  }
+} */
 
 /* */
 
@@ -116,106 +259,152 @@
 /* Colors */
 /*** EXTEND ***/
 /* box-shadow */
- ol.gradient-list > li, ol.gradient-list > li::before {
-	 box-shadow: 0.25rem 0.25rem 0.6rem rgba(0, 0, 0, 0.05), 0 0.5rem 1.125rem rgba(75, 0, 0, 0.05);
+ol.gradient-list > li,
+ol.gradient-list > li::before {
+  box-shadow: 0.25rem 0.25rem 0.6rem rgba(0, 0, 0, 0.05),
+    0 0.5rem 1.125rem rgba(75, 0, 0, 0.05);
 }
 /*** STYLE ***/
- *, *:before, *:after {
-	 box-sizing: border-box;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }
- html, body {
-	 margin: 0;
-	 padding: 0;
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
- body {
-	 background-color: #fafafa;
-	 color: #1d1f20;
-	 font-family: "Raleway", sans-serif;
+body {
+  background-color: #fafafa;
+  color: #1d1f20;
+  font-family: "Raleway", sans-serif;
 }
- main {
-	 display: block;
-	 margin: 0 auto;
-	 max-width: 40rem;
-	 padding: 1rem;
+
+main {
+  display: block;
+  margin: 0 auto;
+  padding: 1rem;
 }
- ol.gradient-list {
-	 counter-reset: gradient-counter;
-	 list-style: none;
-	 margin: 1.75rem 0;
-	 padding-left: 1rem;
+ol.gradient-list {
+  counter-reset: gradient-counter;
+  list-style: none;
+  margin: 1.75rem 0;
+  padding-left: 1rem;
 }
- ol.gradient-list > li {
-	 background: white;
-	 border-radius: 0 0.5rem 0.5rem 0.5rem;
-	 counter-increment: gradient-counter;
-	 margin-top: 1rem;
-	 min-height: 3rem;
-	 padding: 1rem 1rem 1rem 3rem;
-	 position: relative;
+ol.gradient-list > li {
+  background: white;
+  border-radius: 0 0.5rem 0.5rem 0.5rem;
+  counter-increment: gradient-counter;
+  margin-top: 1rem;
+  min-height: 3rem;
+  padding: 1rem 1rem 1rem 3rem;
+  position: relative;
+  background: rgb(199,236,255);
+  background: linear-gradient(126deg, rgba(199,236,255,1) 0%, rgba(232,232,232,1) 57%, rgba(255,239,205,1) 100%);
 }
- ol.gradient-list > li > div.destination {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	margin: 40px auto 0 auto;
-	margin-right: 100px;
+ol.gradient-list > li > div.destination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 40px auto 0 auto;
+  margin-right: 100px;
 }
- ol.gradient-list > li > div.price {
-	
+ol.gradient-list > li > div.price {
 }
- ol.gradient-list > li::before, ol.gradient-list > li::after {
-	 background: linear-gradient(135deg, #83e4e2 0%, #a2ed56 100%);
-	 border-radius: 1rem 1rem 0 1rem;
-	 content: "";
-	 height: 3rem;
-	 left: -1rem;
-	 overflow: hidden;
-	 position: absolute;
-	 top: -1rem;
-	 width: 3rem;
+ol.gradient-list > li::before,
+ol.gradient-list > li::after {
+  background: linear-gradient(135deg, #83e4e2 0%, #a2ed56 100%);
+  border-radius: 1rem 1rem 0 1rem;
+  content: "";
+  height: 3rem;
+  left: -1rem;
+  overflow: hidden;
+  position: absolute;
+  top: -1rem;
+  width: 3rem;
 }
- ol.gradient-list > li::before {
-	 align-items: flex-end;
-	 content: counter(gradient-counter);
-	 color: #1d1f20;
-	 display: flex;
-	 font: 900 1.5em/1 "Montserrat";
-	 justify-content: flex-end;
-	 padding: 0.125em 0.25em;
-	 z-index: 1;
+ol.gradient-list > li::before {
+  align-items: flex-end;
+  content: counter(gradient-counter);
+  color: #1d1f20;
+  display: flex;
+  font: 900 1.5em/1 "Montserrat";
+  justify-content: flex-end;
+  padding: 0.125em 0.25em;
+  z-index: 1;
 }
- ol.gradient-list > li:nth-child(10n + 1):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.2) 0%, rgba(253, 220, 50, 0.2) 100%);
+ol.gradient-list > li:nth-child(10n + 1):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.2) 0%,
+    rgba(253, 220, 50, 0.2) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 2):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.4) 0%, rgba(253, 220, 50, 0.4) 100%);
+ol.gradient-list > li:nth-child(10n + 2):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.4) 0%,
+    rgba(253, 220, 50, 0.4) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 3):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.6) 0%, rgba(253, 220, 50, 0.6) 100%);
+ol.gradient-list > li:nth-child(10n + 3):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.6) 0%,
+    rgba(253, 220, 50, 0.6) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 4):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.8) 0%, rgba(253, 220, 50, 0.8) 100%);
+ol.gradient-list > li:nth-child(10n + 4):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.8) 0%,
+    rgba(253, 220, 50, 0.8) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 5):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 1) 0%, rgba(253, 220, 50, 1) 100%);
+ol.gradient-list > li:nth-child(10n + 5):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 1) 0%,
+    rgba(253, 220, 50, 1) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 6):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.8) 0%, rgba(253, 220, 50, 0.8) 100%);
+ol.gradient-list > li:nth-child(10n + 6):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.8) 0%,
+    rgba(253, 220, 50, 0.8) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 7):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.6) 0%, rgba(253, 220, 50, 0.6) 100%);
+ol.gradient-list > li:nth-child(10n + 7):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.6) 0%,
+    rgba(253, 220, 50, 0.6) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 8):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.4) 0%, rgba(253, 220, 50, 0.4) 100%);
+ol.gradient-list > li:nth-child(10n + 8):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.4) 0%,
+    rgba(253, 220, 50, 0.4) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 9):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0.2) 0%, rgba(253, 220, 50, 0.2) 100%);
+ol.gradient-list > li:nth-child(10n + 9):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0.2) 0%,
+    rgba(253, 220, 50, 0.2) 100%
+  );
 }
- ol.gradient-list > li:nth-child(10n + 10):before {
-	 background: linear-gradient(135deg, rgba(162, 237, 86, 0) 0%, rgba(253, 220, 50, 0) 100%);
+ol.gradient-list > li:nth-child(10n + 10):before {
+  background: linear-gradient(
+    135deg,
+    rgba(162, 237, 86, 0) 0%,
+    rgba(253, 220, 50, 0) 100%
+  );
 }
- ol.gradient-list > li + li {
-	 margin-top: 2rem;
+ol.gradient-list > li + li {
+  margin-top: 2rem;
 }
- 

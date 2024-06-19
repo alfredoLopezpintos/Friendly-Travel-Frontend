@@ -1,25 +1,57 @@
-module.exports = {
-    getUser: function() {
-      //console.log(sessionStorage)
-      const user = sessionStorage.getItem('email');
-      if (user === 'undefined' || !user) {
-        return null;
-      } else {
-        return JSON.parse(user);
-      }
-    },
-  
-    getToken: function() {
-      return sessionStorage.getItem('token');
-    },
-  
-    setUserSession: function(user, token) {
-      sessionStorage.setItem('email', JSON.stringify(user));
-      sessionStorage.setItem('token', token);
-    },
-  
-    resetUserSession: function() {
-      sessionStorage.removeItem('email');
-      sessionStorage.removeItem('token');
-    }
+import { getTime, getDate } from "./../Utilities"
+import moment from 'moment'
+
+export function getUser() {
+  const user = window.localStorage.getItem("email");
+  if (user === "undefined" || !user) {
+    return null;
+  } else {
+    return JSON.parse(user);
   }
+}
+
+export function getToken() {
+  return window.localStorage.getItem("token");
+}
+
+export function getExpire() {
+  // const expire = window.localStorage.getItem("dateOfExpire") + ' ' + window.localStorage.getItem("timeOfExpire")
+  // if((window.localStorage.getItem("dateOfExpire") !== null) || (window.localStorage.getItem("timeOfExpire") !== null)) {
+  //   return expire;
+  // } else return null;
+
+  return window.localStorage.getItem("dateOfExpire");
+}
+
+export function setUserSession(user, token, avatarUrl) {
+  window.localStorage.setItem("email", JSON.stringify(user));
+  window.localStorage.setItem("token", JSON.stringify(token));
+  window.localStorage.setItem("dateOfExpire", JSON.stringify(moment().add(1, "hours").format('DD MMMM YYYY, h:mm:ss a').toString()));
+  window.localStorage.setItem("avatarUrl", avatarUrl);
+  // window.localStorage.setItem("timeOfExpire", JSON.stringify(getTime().add(1, 'hours')));
+}
+
+export function resetUserSession() {
+  window.localStorage.removeItem("email");
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("dateOfExpire");
+  window.localStorage.removeItem("avatarUrl");
+}
+
+export function getAvatar() {
+  return window.localStorage.getItem("avatarUrl");
+}
+
+export function resetAvatar(avatarUrl) {
+  window.localStorage.removeItem("avatarUrl");
+  window.localStorage.setItem("avatarUrl", avatarUrl);
+}
+
+// export function reSetAvatar() {
+//   window.localStorage.removeItem("avatarUrl");
+//   window.localStorage.getItem("avatarUrl");
+// }
+
+// export function authorizeChangePassAccess() {
+//   window.localStorage.setItem()
+// }

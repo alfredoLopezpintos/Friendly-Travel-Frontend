@@ -1,91 +1,239 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
-import { Link, useHistory } from 'react-router-dom';
-import { getUser, getToken, resetUserSession } from './service/AuthService';
-import './Navbar.css';
+import React, { useRef, useState, Fragment } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { getToken, resetUserSession, getAvatar } from "./service/AuthService";
+import "./Navbar.css";
+import { color, font } from '@rodrisu/friendly-ui/build/_utils/branding'
+import { ArrowIcon } from '@rodrisu/friendly-ui/build/icon/arrowIcon'
+import { Avatar } from '@rodrisu/friendly-ui/build//avatar'
+import { Drawer, DropdownButton, Menu, TopBar } from '@rodrisu/friendly-ui/build/topBar'
+import { ItemAction } from '@rodrisu/friendly-ui/build/itemAction'
+import { CrossDiscIcon } from '@rodrisu/friendly-ui/build/icon/crossDiscIcon'
+import { InfoIcon } from '@rodrisu/friendly-ui/build/icon/infoIcon'
+import { CalendarIcon } from '@rodrisu/friendly-ui/build/icon/calendarIcon'
+import { HomeIcon } from '@rodrisu/friendly-ui/build/icon/homeIcon'
+import { CrewIcon } from '@rodrisu/friendly-ui/build/icon/crew'
+import { BubbleIcon } from '@rodrisu/friendly-ui/build/icon/bubbleIcon'
+import { QuestionIcon } from '@rodrisu/friendly-ui/build/icon/questionIcon'
+import { AloneInTheBackIcon } from '@rodrisu/friendly-ui/build/icon/aloneInTheBackIcon'
+import { ProfileIcon } from '@rodrisu/friendly-ui/build/icon/profileIcon'
+import { CarIcon } from '@rodrisu/friendly-ui/build/icon/carIcon'
+import { Button, ButtonStatus } from '@rodrisu/friendly-ui/build/button';
+import { AvatarIcon } from '@rodrisu/friendly-ui/build/icon/avatarIcon'
+
 
 function Navbar() {
+  const windowSize = useRef([window.innerWidth, window.innerHeight]);
   const [click, setClick] = useState(false);
-  const [button, setButton] = useState(true);
-
-  const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
   const history = useHistory();
-
-  const handleHistory = () => {
-    history.push("/login");
-  }
 
   const logoutHandler = () => {
     resetUserSession();
     closeMobileMenu();
-    //props.history.push('login');
-  }
+  };
 
   const logoutHandler2 = () => {
     resetUserSession();
     window.location.reload(false);
-    //closeMobileMenu();
-  }
-
-  const showButton = () => {
-    if (window.innerWidth <= 1185) {
-      setButton(false);
-    } else {
-      setButton(true);
-    }
   };
 
-  useEffect(() => {
-    showButton();
-  }, []);
+  // --------------------------
 
+  const [drawerOpened, setDrawerOpened] = useState(false)
+  const dropdownButton = (getToken() !== null) ? (
+    <DropdownButton onClick={(): void => setDrawerOpened(!drawerOpened)}>
+      <Avatar
+        isBubble
+        image={getAvatar()}
+      />
+    </DropdownButton>
+  ) : (<Button
+    onClick={() => {
+      history.push("/login");
+    }}
+  // className="SignIn"
+  >
+    <div className="Text">Iniciar Sesión</div>
+  </Button>)
 
+  const leftAction = (
+    <Button isBubble status={ButtonStatus.PRIMARY} onClick={() => { }} aria-label="back">
+      <ArrowIcon iconColor={color.blue} />
+    </Button>
+  )
 
-  window.addEventListener('resize', showButton);
+  const rightAction = (
+    <>
+      <Link style={{ "userSelect": "none" }} to="/" className="navbar-logo" onClick={() => {
+        // closeMobileMenu
+        setDrawerOpened(false)
+      }}>
+        <img
+          src={require("../assets/images/Friendly-Logo-new.png")}
+          alt="travel logo"
+          width={50}
+        ></img> &nbsp;
+        Friendly-Travel
+      </Link>
+    </>
+  )
+
+  const centerContent = (
+    <div>
+      <span
+        style={{
+          ...font.m,
+          color: color.midnightGreen,
+          "lineHeight": "normal"
+        }}
+      >
+        <ul className="navRouteContainer">
+          <li className="navRoute" onClick={() => {
+            history.push("/about")
+            setDrawerOpened(false)
+          }}>Sobre nosotros</li>
+          <li className="navRoute" onClick={() => {
+            history.push("/viajes")
+            setDrawerOpened(false)
+          }}>Listado de viajes</li>
+          <li className="navRoute" onClick={() => {
+            history.push("/faqsPage")
+            setDrawerOpened(false)
+          }}>Preguntas frecuentes</li>
+        </ul>
+
+      </span>
+    </div>
+  )
+
+  const mobileMenu = (
+    <>
+      <DropdownButton onClick={() => setDrawerOpened(!drawerOpened)}>
+        <Avatar
+          isBubble
+          image={getAvatar()}
+        />
+      </DropdownButton>
+      <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
+        <Menu>
+          <ItemAction action="Inicio" leftAddon={<HomeIcon />} onClick={() => {
+            history.push("/")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Sobre nosotros" leftAddon={<CrewIcon />} onClick={() => {
+            history.push("/about")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Listado de Viajes" leftAddon={<BubbleIcon />} onClick={() => {
+            history.push("/viajes")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Preguntas Frecuentes" leftAddon={<QuestionIcon />} onClick={() => {
+            history.push("/faqsPage")
+            setDrawerOpened(false)
+          }} />
+          <Menu.Divider />
+          <ItemAction action="Iniciar sesión" leftAddon={<ProfileIcon />} onClick={() => {
+            history.push("/login")
+            setDrawerOpened(false)
+          }} />
+        </Menu>
+      </Drawer>
+    </>
+  )
+
+  const mobileMenuExtended = (
+    <>
+      <DropdownButton onClick={() => setDrawerOpened(!drawerOpened)}>
+        <Avatar
+          isBubble
+          image={getAvatar()}
+        />
+      </DropdownButton>
+      <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
+        <Menu>
+          <ItemAction action="Crear viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
+            history.push("/map")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Mis viajes" leftAddon={<CarIcon />} onClick={() => {
+            history.push("/misViajes")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Historial de viajes" leftAddon={<CalendarIcon />} onClick={() => {
+            history.push("/travelHistory")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Estadísticas" leftAddon={<InfoIcon />} onClick={() => {
+            history.push("/statistics")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Opciones" leftAddon={<InfoIcon />} onClick={() => {
+            history.push("/changeData")
+            setDrawerOpened(false)
+          }} />
+          <Menu.Divider />
+          <ItemAction action="Inicio" leftAddon={<HomeIcon />} onClick={() => {
+            history.push("/")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Sobre nosotros" leftAddon={<CrewIcon />} onClick={() => {
+            history.push("/about")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Listado de viajes" leftAddon={<BubbleIcon />} onClick={() => {
+            history.push("/viajes")
+            setDrawerOpened(false)
+          }} />
+          <ItemAction action="Preguntas frecuentes" leftAddon={<QuestionIcon />} onClick={() => {
+            history.push("/faqsPage")
+            setDrawerOpened(false)
+          }} />
+          <Menu.Divider />
+          <ItemAction action="Cerrar sesión" leftAddon={<CrossDiscIcon />} onClick={logoutHandler2} />
+        </Menu>
+      </Drawer> </>
+  )
+
+  // --------------------------
 
   return (
     <>
-      <nav className='navbar'>
-        <div className='navbar-container'>
-          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-            FRIENDLY TRAVEL
-            <i className='fab fa-typo3' />
-          </Link>
-          <div className='menu-icon' onClick={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-          </div>
-          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-            <li className='nav-item'>
-              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-                Inicio
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                to='/services'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Sobre nosotros
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
-                to='/products'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Carpooling
-              </Link>
-            </li>
-
-            <li onClick={handleHistory}>
-            {getToken() === null ? (<Link to='/login' className='nav-links-mobile' onClick={closeMobileMenu}>Iniciar sesión</Link>) : (<Link to='/' className='nav-links-mobile' onClick={logoutHandler}>Cerrar sesión</Link>)}
-              
-            </li>
-          </ul>
-          {button && (getToken() === null ? (<Button onClick={handleHistory} buttonStyle='btn--outline'>Iniciar sesión</Button>) : (<Button onClick={logoutHandler2} buttonStyle='btn--outline'>Cerrar sesión</Button>))}
+      <nav className="navbar">
+        <div className="navbar-container">
+          <Fragment>
+            <TopBar zIndex={50} style={{ "background-color": "black" }}
+              leftItem={rightAction}
+              centerItem={(windowSize.current[0] < 1000) ? true : centerContent}
+              rightItem={((windowSize.current[0] < 1000) ? ((getToken() !== null) ? mobileMenuExtended : mobileMenu) : dropdownButton)}
+            />
+            <Drawer zIndex={40} open={drawerOpened} onClose={() => setDrawerOpened(false)}>
+              <Menu>
+                <ItemAction action="Crear viaje" leftAddon={<AloneInTheBackIcon />} onClick={() => {
+                  history.push("/map")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Mis viajes" leftAddon={<CarIcon />} onClick={() => {
+                  history.push("/misViajes")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Historial de viajes" leftAddon={<CalendarIcon />} onClick={() => {
+                  history.push("/travelHistory")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Estadísticas" leftAddon={<InfoIcon />} onClick={() => {
+                  history.push("/statistics")
+                  setDrawerOpened(false)
+                }} />
+                <ItemAction action="Opciones" leftAddon={<AvatarIcon />} onClick={() => {
+                  history.push("/changeData")
+                  setDrawerOpened(false)
+                }} />
+                <Menu.Divider />
+                <ItemAction action="Cerrar sesión" leftAddon={<CrossDiscIcon />} onClick={logoutHandler2} />
+              </Menu>
+            </Drawer>
+          </Fragment>
         </div>
       </nav>
     </>
